@@ -1,0 +1,65 @@
+{
+    "name": "openeuropa/eu_login",
+    "description": "Authentication against the EU Login service.",
+    "type": "drupal-module",
+    "license": "EUPL",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "drupal/core": "~8.6",
+        "php": "^7.1",
+        "openeuropa/pcas": "dev-master"
+    },
+    "require-dev": {
+        "cweagans/composer-patches": "~1.0",
+        "composer/installers": "^1.2",
+        "drupal-composer/drupal-scaffold": "^2.2",
+        "drupal/console": "^1.6",
+        "drupal/config_devel": "~1.2",
+        "drush/drush": "^9",
+        "drupal/drupal-extension": "^4.0.0@alpha",
+        "openeuropa/code-review": "^0.2",
+        "openeuropa/task-runner": "^0.5",
+        "webflo/drupal-core-require-dev": "8.6.x"
+    },
+    "scripts": {
+        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
+        "post-install-cmd": "./vendor/bin/run drupal:site-setup",
+        "post-update-cmd": "./vendor/bin/run drupal:site-setup"
+    },
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        "openeuropa/pcas": {
+            "type": "vcs",
+            "url": "./lib/pcas"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Drupal\\eu_login\\": "./src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Drupal\\Tests\\eu_login\\": "./tests/"
+        }
+    },
+    "extra": {
+        "composer-exit-on-patch-failure": true,
+        "installer-paths": {
+            "build/core": ["type:drupal-core"],
+            "build/profiles/contrib/{$name}": ["type:drupal-profile"],
+            "build/modules/contrib/{$name}": ["type:drupal-module"],
+            "build/themes/contrib/{$name}": ["type:drupal-theme"]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.1.9"
+        }
+    }
+}

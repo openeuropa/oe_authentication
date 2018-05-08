@@ -1,0 +1,34 @@
+drupal:
+  root: "build"
+  base_url: "http://web:8080/build"
+  database:
+    host: "mysql"
+    port: "3306"
+    name: "drupal"
+    user: "root"
+    password: ""
+  post_install:
+    - "./vendor/bin/drush en config_devel -y"
+    - "./vendor/bin/drush en eu_login -y"
+    - "./vendor/bin/drush cr"
+  settings:
+    settings:
+      file_scan_ignore_directories:
+        - "node_modules"
+        - "bower_components"
+        - "vendor"
+        - "${drupal.root}"
+
+commands:
+  drupal:site-setup:
+    - { task: "mkdir", dir: "${drupal.root}/profiles" }
+    - { task: "mkdir", dir: "${drupal.root}/themes" }
+    - { task: "symlink", from: "../../..", to: "${drupal.root}/modules/custom/eu_login" }
+    - { task: "run", command: "drupal:drush-setup" }
+    - { task: "run", command: "drupal:settings-setup" }
+    - { task: "run", command: "setup:phpunit" }
+    - { task: "run", command: "setup:behat" }
+  setup:phpunit:
+    - { task: "process", source: "phpunit.xml.dist", destination: "phpunit.xml" }
+  setup:behat:
+    - { task: "process", source: "behat.yml.dist", destination: "behat.yml" }

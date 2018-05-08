@@ -1,0 +1,5 @@
+name: EU Login
+description: Authentication against the EU Login service.
+package: OpenEuropa
+type: module
+core: 8.x
