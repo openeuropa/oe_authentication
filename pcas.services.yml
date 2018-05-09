@@ -1,0 +1,57 @@
+parameters:
+  p_cas:
+    logger_startup_message: 'Logger just got started!!! (from original config)'
+    protocol:
+      version: 2
+      login:
+        uri: http://eulogin-server:8000/login
+        query: []
+        allowed_parameters:
+          - service
+          - renew
+          - gateway
+      servicevalidate:
+        uri: http://eulogin-server:8080/serviceValidate
+        query: []
+        allowed_parameters:
+          - service
+          - ticket
+          - pgtUrl
+          - renew
+          - format
+      logout:
+        uri: http://eulogin-server:8000/logout
+        query: []
+        allowed_parameters:
+          - service
+
+services:
+  pcas:
+    class: OpenEuropa\pcas\PCas
+    arguments: ['%p_cas%']
+    calls:
+        - [setSession, ['@?session']]
+        - [setLogger, ['@?pcas.logger']]
+        - [setHttpClient, ['@?pcas.httpclient']]
+        - [setProtocol, ['@?pcas.protocol']]
+    public: true
+
+  pcas.httpclient:
+    class: OpenEuropa\pcas\Http\Client
+
+  pcas.protocol:
+    class: OpenEuropa\pcas\Cas\Protocol\V2\CasProtocolV2
+    arguments: ['@pcas.userfactory', '@pcas.serializerfactory']
+    public: true
+
+  pcas.logger:
+    class: Psr\Log\NullLogger
+
+  pcas.userfactory:
+    class: OpenEuropa\pcas\Security\Core\User\PCasUserFactory
+
+  pcas.serializerfactory:
+    class: OpenEuropa\pcas\Utils\PCasSerializerFactory
+
+  pcas.sessionfactory:
+    class: OpenEuropa\pcas\Utils\PCasSessionFactory

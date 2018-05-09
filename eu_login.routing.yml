@@ -1,0 +1,15 @@
+eu_login.login:
+  path: '/eu-login/login'
+  defaults:
+    _title: 'Authenticate'
+    _controller: '\Drupal\eu_login\Controller\EuLoginController::login'
+  requirements:
+    _permission: 'access content'
+
+eu_login.logout:
+  path: '/eu-login/logout'
+  defaults:
+    _title: 'De-authenticate'
+    _controller: '\Drupal\eu_login\Controller\EuLoginController::logout'
+  requirements:
+    _permission: 'access content'

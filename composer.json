@@ -8,7 +8,8 @@
     "require": {
         "drupal/core": "~8.6",
         "php": "^7.1",
-        "openeuropa/pcas": "dev-master"
+        "openeuropa/pcas": "dev-master",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "require-dev": {
         "cweagans/composer-patches": "~1.0",
