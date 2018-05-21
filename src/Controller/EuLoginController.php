@@ -3,19 +3,25 @@
 namespace Drupal\eu_login\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\user\UserInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use OpenEuropa\pcas\PCas;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Returns responses for EU Login routes.
  */
 class EuLoginController extends ControllerBase {
 
+  /** @var \Symfony\Component\HttpFoundation\RequestStack $requestStack */
   protected $requestStack;
 
+  /** @var \OpenEuropa\pcas\PCas $pCas */
   protected $pCas;
+
+  /** @var \Drupal\Core\Session\AccountProxyInterface $currentUser */
+  protected $currentUser;
 
   /**
    * Constructs the controller object.
@@ -23,9 +29,10 @@ class EuLoginController extends ControllerBase {
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date formatter service.
    */
-  public function __construct(RequestStack $requestStack, PCas $pCas) {
+  public function __construct(RequestStack $requestStack, PCas $pCas, AccountProxyInterface $current_user) {
     $this->requestStack = $requestStack;
     $this->pCas = $pCas;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -34,90 +41,53 @@ class EuLoginController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('request_stack'),
-      $container->get('pcas')
+      $container->get('pcas'),
+      $container->get('current_user')
     );
   }
 
   public function login() {
-    /** @var \Drupal\Core\Session\AccountProxyInterface $account */
-    $account = \Drupal::currentUser();
-    if ($account->isAuthenticated()) {
-      // If uid is not set on the session, we just got redirected back from
-      // EU Login, and we have to do the actual login of the user.
-      if (!\Drupal::service('session')->get('uid')) {
-        $user = \Drupal::entityTypeManager()->getStorage('user')->load($account->id());
-        $this->userLoginFinalize($user);
-        return ['#markup' => t("Authenticated as %name", ['%name' => $user->label()])];
-      }
-      return $this->redirect('<front>');
-    }
-    // EU Login session started, no active Drupal user yet.
-    if ($pcas_account = $this->pCas->getAuthenticatedUser()) {
-      /** @var \Drupal\eu_login\UserProvider $serv */
-      $serv = \Drupal::service('eulogin.userprovider');
-      $user = $serv->loadAccount($pcas_account);
-      if ($account) {
-        $this->userLoginFinalize($user);
-      }
-
-    }
-    // No active session yet, redirect to EU Login for authentication.
+    // There is no access to this route for authenticated users,
+    // Therefore we can directly redirect the user to the EU Login path.
     if ($response = $this->pCas->login()) {
       return $response;
     }
-    return ['#markup' => 'Que?'];
-  }
-
-  protected function userLoginFinalize(UserInterface $account) {
-  \Drupal::currentUser()->setAccount($account);
-  \Drupal::logger('user')->notice('Session opened for %name.', ['%name' => $account->getUsername()]);
-  // Update the user table timestamp noting user has logged in.
-  // This is also used to invalidate one-time login links.
-  $account->setLastLoginTime(REQUEST_TIME);
-  \Drupal::entityTypeManager()
-    ->getStorage('user')
-    ->updateLastLoginTimestamp($account);
-
-  // Regenerate the session ID to prevent against session fixation attacks.
-  // This is called before hook_user_login() in case one of those functions
-  // fails or incorrectly does a redirect which would leave the old session
-  // in place.
-  \Drupal::service('session')->migrate();
-  \Drupal::service('session')->set('uid', $account->id());
-  \Drupal::moduleHandler()->invokeAll('user_login', [$account]);
-}
-
-  protected function available_username($name) {
-    $requested_name = $name;
-    $user_storage = \Drupal::entityTypeManager()->getStorage('user');
-    $suffix = 0;
-    do {
-      $accounts = $user_storage->loadByProperties(['name' => $name]);
-      if ($accounts) {
-        $name = $requested_name . '_' . $suffix;
-        $suffix++;
-      }
-    } while (!empty($accounts));
-    return $name;
+    return new AccessDeniedHttpException();
   }
 
   /**
-   * Builds the response.
+   * Logs a user out of the system.
    */
   public function logout() {
-    $query['service'] = \Drupal::url('<front>', [], ['absolute' => TRUE]);
-    $logout_url = $this->pCas->logoutUrl($query);
-    $response = $this->pCas->getHttpClient()->redirect($logout_url);
+    $response = $this->getLogoutRedirect();
+
+    if ($this->currentUser->isAuthenticated()) {
+      $this->doDrupalLogout();
+    }
     if ($response) {
-      if (\Drupal::currentUser()->isAuthenticated()) {
-        user_logout();
-      }
       return $response;
     }
-    if (\Drupal::currentUser()->isAuthenticated()) {
-      user_logout();
-    }
-    return $this->redirect('<front>');
+    return new AccessDeniedHttpException();
+  }
+
+  /**
+   * Logs a user out from Drupal.
+   */
+  protected function doDrupalLogout() {
+    user_logout();
+  }
+
+  /**
+   * Get the redirect object to the EU Login logout URL.
+   *
+   * @return \Psr\Http\Message\ResponseInterface
+   *   The HTTP redirect object.
+   */
+  protected function getLogoutRedirect() {
+    $query['service'] = \Drupal::url('<front>', [], ['absolute' => TRUE]);
+    $logout_url = $this->pCas->logoutUrl($query);
+    $http_client = $this->pCas->getHttpClient();
+    return $http_client->redirect($logout_url);
   }
 
 }

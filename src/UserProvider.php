@@ -7,8 +7,11 @@ use OpenEuropa\pcas\Security\Core\User\PCasUserInterface;
 
 class UserProvider {
 
-  public function __construct(EntityTypeManagerInterface $entityTypeManger) {
+  /** @var \Drupal\user\UserStorageInterface $userStorage */
+  protected $userStorage;
 
+  public function __construct(EntityTypeManagerInterface $entityTypeManger) {
+    $this->userStorage = $entityTypeManger->getStorage('user');
   }
 
   /**
@@ -32,12 +35,11 @@ class UserProvider {
   }
 
   protected function doLoadAccount(PCasUserInterface $pCasUser) {
-    $user_storage = \Drupal::entityTypeManager()->getStorage('user');
     $mail = $pCasUser->get('cas:email');
     if (empty($mail)) {
       throw new \Exception('Email address not provided by EU Login.');
     }
-    $accounts = $user_storage->loadByProperties(['mail' => $mail]);
+    $accounts = $this->userStorage->loadByProperties(['mail' => $mail]);
     if (empty($accounts)) {
       // Account does not exist, creation of new accounts is handled in
       // @see \Drupal\eu_login\Controller\EuLoginController::login
@@ -46,12 +48,21 @@ class UserProvider {
     return array_pop($accounts);
   }
 
+  /**
+   * Create a local user account.
+   *
+   * @param \OpenEuropa\pcas\Security\Core\User\PCasUserInterface $pCasUser
+   *   The PCas user object.
+   *
+   * @return \Drupal\user\Entity\User
+   *   The new created Drupal user object.
+   */
   protected function createAccount(PCasUserInterface $pCasUser) {
-    $name = $this->availableUsername($pCasUser->getUsername());
+    $name = $this->uniqueUsername($pCasUser->getUsername());
     $mail = $pCasUser->get('cas:email');
 
     /** @var \Drupal\user\Entity\User $account */
-    $account = \Drupal::entityTypeManager()->getStorage('user')->create([
+    $account = $this->userStorage->create([
       'mail' => $mail,
       'name' => $name,
     ]);
@@ -60,18 +71,22 @@ class UserProvider {
   }
 
   /**
-   * Generate an available username, as this must be unique in Drupal.
+   * Generate available username, as this must be unique in Drupal.
+   *
+   * @todo This might lead to race condition.
+   * Generate username in authorization service?
    *
    * @param $name
+   *   The proposed username.
    *
    * @return string
+   *   The available username.
    */
-  protected function availableUsername($name) {
+  protected function uniqueUsername($name) {
     $requested_name = $name;
-    $user_storage = \Drupal::entityTypeManager()->getStorage('user');
     $suffix = 0;
     do {
-      $accounts = $user_storage->loadByProperties(['name' => $name]);
+      $accounts = $this->userStorage->loadByProperties(['name' => $name]);
       if ($accounts) {
         $name = $requested_name . '_' . $suffix;
         $suffix++;
@@ -80,6 +95,10 @@ class UserProvider {
     return $name;
   }
 
+  /**
+   * Stub function: Determine if lazy account creation is allowed.
+   * @return bool
+   */
   protected function canCreateNewAccounts() {
     // @todo Implement this stub with a setting?
     return TRUE;

@@ -5,6 +5,9 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\YamlFileLoader;
 use Drupal\eu_login\Controller\EuLoginController;
 
+/**
+ * Discovery for the EU Login library settings.
+ */
 class EuLoginServiceProvider extends ServiceProviderBase {
   /**
    * {@inheritdoc}
@@ -17,9 +20,12 @@ class EuLoginServiceProvider extends ServiceProviderBase {
     $yaml_loader->load($path);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function alter(ContainerBuilder $container) {
     parent::alter($container);
-    // Disable the cookie authentication provider.
+    // Disable the cookie authentication provider (default login provider).
     $container->removeDefinition('user.authentication.cookie');
     // Register application services.
     $yaml_loader = new YamlFileLoader($container);

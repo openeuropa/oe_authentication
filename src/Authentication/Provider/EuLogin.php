@@ -13,17 +13,20 @@ use Symfony\Component\HttpFoundation\Request;
 class EuLogin implements AuthenticationProviderInterface {
 
   /**
-   * @var \OpenEuropa\pcas\PCas
+   * @var \OpenEuropa\pcas\PCas $pCas
    */
   protected $pCas;
 
   /**
-   * @var \Drupal\eu_login\UserProvider
+   * @var \Drupal\eu_login\UserProvider $userProvider
    */
   protected $userProvider;
 
   /**
+   * EuLogin constructor.
    *
+   * @param \OpenEuropa\pcas\PCas $pCas
+   * @param \Drupal\eu_login\UserProvider $userProvider
    */
   public function __construct(PCas $pCas, UserProvider $userProvider) {
     $this->pCas = $pCas;
