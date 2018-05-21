@@ -30,7 +30,7 @@ services:
     class: OpenEuropa\pcas\PCas
     arguments: ['%p_cas%']
     calls:
-        - [setSession, ['@?session']]
+        - [setSession, ['@session']]
         - [setLogger, ['@?pcas.logger']]
         - [setHttpClient, ['@?pcas.httpclient']]
         - [setProtocol, ['@?pcas.protocol']]

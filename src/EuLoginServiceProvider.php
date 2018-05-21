@@ -3,6 +3,7 @@ namespace Drupal\eu_login;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\YamlFileLoader;
+use Drupal\eu_login\Controller\EuLoginController;
 
 class EuLoginServiceProvider extends ServiceProviderBase {
   /**
@@ -18,6 +19,8 @@ class EuLoginServiceProvider extends ServiceProviderBase {
 
   public function alter(ContainerBuilder $container) {
     parent::alter($container);
+    // Disable the cookie authentication provider.
+    $container->removeDefinition('user.authentication.cookie');
     // Register application services.
     $yaml_loader = new YamlFileLoader($container);
     $path = __DIR__ . '/../pcas.services.yml';

@@ -1,0 +1,15 @@
+services:
+  eulogin.authentication:
+    class: \Drupal\eu_login\Authentication\Provider\EuLogin
+    arguments: ['@pcas', '@eulogin.userprovider']
+    tags:
+      - { name: authentication_provider, provider_id: 'eulogin', priority: -10, global: TRUE }
+
+  eulogin.userprovider:
+    class: \Drupal\eu_login\UserProvider
+    arguments: ['@entity_type.manager']
+
+  eulogin.route_subscriber:
+    class: \Drupal\eu_login\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
