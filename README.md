@@ -90,7 +90,7 @@ This will:
 
 Then setup the mock servers dependencies by running:
 ```
-$ ./vendor/bin/composer --no-ansi --working-dir=/var/www/html/vendor/OpenEuropa/pcas/demo-server/ install
+$ ./vendor/bin/composer --no-ansi --working-dir=/var/www/html/vendor/openeuropa/pcas/demo-server/ install
 ```
 
 ### Using Docker Compose
@@ -114,7 +114,7 @@ Then:
 $ docker-compose exec -u web web composer install
 $ docker-compose exec -u web web ./vendor/bin/run drupal:site-setup
 $ docker-compose exec -u web web ./vendor/bin/run drupal:site-install
-$ docker-compose exec -u web eulogin-server composer --no-ansi --working-dir=/var/www/html/vendor/OpenEuropa/pcas/demo-server/ install
+$ docker-compose exec -u web eulogin-server composer --no-ansi --working-dir=/var/www/html/vendor/openeuropa/pcas/demo-server/ install
 ```
 
 To be able to interact with the EU Login mock container you need to add the internal container hostname to the hosts file _of your host OS_.

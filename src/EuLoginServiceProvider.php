@@ -16,7 +16,7 @@ class EuLoginServiceProvider extends ServiceProviderBase {
     parent::register($container);
     // Register application services.
     $yaml_loader = new YamlFileLoader($container);
-    $path = DRUPAL_ROOT . '/../vendor/OpenEuropa/pcas/Resources/config/p_cas.yml';
+    $path = DRUPAL_ROOT . '/../vendor/openeuropa/pcas/Resources/config/p_cas.yml';
     $yaml_loader->load($path);
   }
 
