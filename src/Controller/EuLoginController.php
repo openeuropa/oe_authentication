@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\eu_login\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -14,20 +16,36 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class EuLoginController extends ControllerBase {
 
-  /** @var \Symfony\Component\HttpFoundation\RequestStack $requestStack */
+  /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
   protected $requestStack;
 
-  /** @var \OpenEuropa\pcas\PCas $pCas */
+  /**
+   * The pCas variable.
+   *
+   * @var \OpenEuropa\pcas\PCas
+   */
   protected $pCas;
 
-  /** @var \Drupal\Core\Session\AccountProxyInterface $currentUser */
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
   protected $currentUser;
 
   /**
    * Constructs the controller object.
    *
-   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
-   *   The date formatter service.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   *   The request stack.
+   * @param \OpenEuropa\pcas\PCas $pCas
+   *   The pCas variable.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user.
    */
   public function __construct(RequestStack $requestStack, PCas $pCas, AccountProxyInterface $current_user) {
     $this->requestStack = $requestStack;
@@ -46,6 +64,9 @@ class EuLoginController extends ControllerBase {
     );
   }
 
+  /**
+   * Logs a user in of the system.
+   */
   public function login() {
     // There is no access to this route for authenticated users,
     // Therefore we can directly redirect the user to the EU Login path.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\eu_login\Authentication\Provider;
 
 use Drupal\Core\Authentication\AuthenticationProviderInterface;
@@ -13,12 +15,16 @@ use Symfony\Component\HttpFoundation\Request;
 class EuLogin implements AuthenticationProviderInterface {
 
   /**
-   * @var \OpenEuropa\pcas\PCas $pCas
+   * The pCas variable.
+   *
+   * @var \OpenEuropa\pcas\PCas
    */
   protected $pCas;
 
   /**
-   * @var \Drupal\eu_login\UserProvider $userProvider
+   * The user provider variable.
+   *
+   * @var \Drupal\eu_login\UserProvider
    */
   protected $userProvider;
 
@@ -26,7 +32,9 @@ class EuLogin implements AuthenticationProviderInterface {
    * EuLogin constructor.
    *
    * @param \OpenEuropa\pcas\PCas $pCas
+   *   The pCas variable.
    * @param \Drupal\eu_login\UserProvider $userProvider
+   *   The user provider variable.
    */
   public function __construct(PCas $pCas, UserProvider $userProvider) {
     $this->pCas = $pCas;

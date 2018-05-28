@@ -1,14 +1,18 @@
 <?php
+
+declare(strict_types = 1);
+
 namespace Drupal\eu_login;
+
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\YamlFileLoader;
-use Drupal\eu_login\Controller\EuLoginController;
 
 /**
  * Discovery for the EU Login library settings.
  */
 class EuLoginServiceProvider extends ServiceProviderBase {
+
   /**
    * {@inheritdoc}
    */
