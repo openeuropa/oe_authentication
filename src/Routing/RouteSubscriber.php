@@ -31,7 +31,6 @@ class RouteSubscriber extends RouteSubscriberBase {
     // @see user.routing.yml for original definition.
     $routes_to_remove = [
       'user.register',
-      'user.logout',
       'user.admin_create',
       'user.multiple_cancel_confirm',
       'user.pass',
@@ -41,7 +40,7 @@ class RouteSubscriber extends RouteSubscriberBase {
       'user.cancel_confirm',
       'user.reset.login',
       'user.reset',
-      'user.reset.form'
+      'user.reset.form',
     ];
     foreach ($routes_to_remove as $route_to_remove) {
       if ($route = $collection->get($route_to_remove)) {

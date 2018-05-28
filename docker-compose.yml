@@ -21,10 +21,11 @@ services:
     image: fpfis/php71-dev
     working_dir: /var/www/html
     ports:
-      - 8000:8080
+      - 1080:1080
     volumes:
       - .:/var/www/html
     environment:
+      PORT: 1080
       DOCUMENT_ROOT: /var/www/html/vendor/OpenEuropa/pcas/demo-server/public
       XDEBUG_CONFIG: "remote_enable=1 remote_host=${DOCKER_HOST_IP} remote_port=9000 idekey=PHPSTORM remote_autostart=1"
       PHP_IDE_CONFIG: "serverName=Test"

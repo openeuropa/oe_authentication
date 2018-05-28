@@ -88,6 +88,11 @@ This will:
 - Install the test site
 - Enable the EU Login module
 
+Then setup the mock servers dependencies by running:
+```
+$ ./vendor/bin/composer --no-ansi --working-dir=/var/www/html/vendor/OpenEuropa/pcas/demo-server/ install
+```
+
 ### Using Docker Compose
 
 The setup procedure described above can be sensitively simplified by using Docker Compose.
@@ -109,6 +114,12 @@ Then:
 $ docker-compose exec -u web web composer install
 $ docker-compose exec -u web web ./vendor/bin/run drupal:site-setup
 $ docker-compose exec -u web web ./vendor/bin/run drupal:site-install
+$ docker-compose exec -u web eulogin-server composer --no-ansi --working-dir=/var/www/html/vendor/OpenEuropa/pcas/demo-server/ install
+```
+
+To be able to interact with the EU Login mock container you need to add the internal container hostname to the hosts file _of your host OS_.
+```
+$ echo "127.0.1.1       eulogin-server" >> /etc/hosts
 ```
 
 Your test site will be available at [http://localhost:8080/build](http://localhost:8080/build).

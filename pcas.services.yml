@@ -2,16 +2,15 @@ parameters:
   p_cas:
     logger_startup_message: 'Logger just got started!!! (from original config)'
     protocol:
-      version: 2
       login:
-        uri: http://eulogin-server:8000/login
+        uri: http://eulogin-server:1080/login
         query: []
         allowed_parameters:
           - service
           - renew
           - gateway
       servicevalidate:
-        uri: http://eulogin-server:8080/serviceValidate
+        uri: http://eulogin-server:1080/serviceValidate
         query: []
         allowed_parameters:
           - service
@@ -20,7 +19,7 @@ parameters:
           - renew
           - format
       logout:
-        uri: http://eulogin-server:8000/logout
+        uri: http://eulogin-server:1080/logout
         query: []
         allowed_parameters:
           - service
@@ -28,16 +27,12 @@ parameters:
 services:
   pcas:
     class: OpenEuropa\pcas\PCas
-    arguments: ['%p_cas%']
-    calls:
-        - [setSession, ['@session']]
-        - [setLogger, ['@?pcas.logger']]
-        - [setHttpClient, ['@?pcas.httpclient']]
-        - [setProtocol, ['@?pcas.protocol']]
+    arguments: ['%p_cas%', '@?pcas.httpclient', '@?pcas.protocol', '@session', '@?pcas.logger']
     public: true
 
   pcas.httpclient:
     class: OpenEuropa\pcas\Http\Client
+    factory: 'pcas.httpclientfactory:getHttpClient'
 
   pcas.protocol:
     class: OpenEuropa\pcas\Cas\Protocol\V2\CasProtocolV2
@@ -53,5 +48,5 @@ services:
   pcas.serializerfactory:
     class: OpenEuropa\pcas\Utils\PCasSerializerFactory
 
-  pcas.sessionfactory:
-    class: OpenEuropa\pcas\Utils\PCasSessionFactory
+  pcas.httpclientfactory:
+    class: OpenEuropa\pcas\Http\HttpClientFactory
