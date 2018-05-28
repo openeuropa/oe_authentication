@@ -6,19 +6,19 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "drupal/core": "~8.6",
         "php": "^7.1",
         "openeuropa/pcas": "dev-master",
         "php-http/guzzle6-adapter": "^1.1"
     },
     "require-dev": {
-        "cweagans/composer-patches": "~1.0",
         "composer/installers": "^1.2",
+        "cweagans/composer-patches": "~1.0",
         "drupal-composer/drupal-scaffold": "^2.2",
-        "drupal/console": "^1.6",
         "drupal/config_devel": "~1.2",
-        "drush/drush": "^9",
+        "drupal/console": "^1.6",
         "drupal/drupal-extension": "^4.0.0@alpha",
+        "drush/drush": "^9",
+        "nikic/php-parser": "~3",
         "openeuropa/code-review": "^0.2",
         "openeuropa/task-runner": "^0.5",
         "webflo/drupal-core-require-dev": "8.6.x"
@@ -32,10 +32,6 @@
         "drupal": {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
-        },
-        "openeuropa/pcas": {
-            "type": "vcs",
-            "url": "./lib/pcas"
         }
     },
     "autoload": {
@@ -50,6 +46,11 @@
     },
     "extra": {
         "composer-exit-on-patch-failure": true,
+        "patches": {
+            "drupal/core": {
+                "https://www.drupal.org/project/drupal/issues/2943172": "https://www.drupal.org/files/issues/2018-04-15/2943172-kernel-test-base-2.patch"
+            }
+        },
         "installer-paths": {
             "build/core": ["type:drupal-core"],
             "build/profiles/contrib/{$name}": ["type:drupal-profile"],
