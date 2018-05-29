@@ -18,16 +18,6 @@ services:
     image: fpfis/mysql56
 
   eulogin-server:
-    image: fpfis/php71-dev
-    working_dir: /var/www/html
-    ports:
-      - 1080:1080
-    volumes:
-      - .:/var/www/html
-    environment:
-      PORT: 1080
-      DOCUMENT_ROOT: /var/www/html/vendor/openeuropa/pcas/demo-server/public
-      XDEBUG_CONFIG: "remote_enable=1 remote_host=${DOCKER_HOST_IP} remote_port=9000 idekey=PHPSTORM remote_autostart=1"
-      PHP_IDE_CONFIG: "serverName=Test"
-      COMPOSER_MEMORY_LIMIT: "2G"
-      COMPOSER_CACHE_DIR: "/tmp/composer"
+    image: openeuropa/pcas-server
+    expose:
+      - 8001

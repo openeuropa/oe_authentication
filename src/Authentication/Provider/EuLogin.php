@@ -17,23 +17,23 @@ class EuLogin implements AuthenticationProviderInterface {
   /**
    * The pCas variable.
    *
-   * @var \OpenEuropa\pcas\PCas
+   * @var OpenEuropa\pcas\PCas
    */
   protected $pCas;
 
   /**
    * The user provider variable.
    *
-   * @var \Drupal\eu_login\UserProvider
+   * @var Drupal\eu_login\UserProvider
    */
   protected $userProvider;
 
   /**
    * EuLogin constructor.
    *
-   * @param \OpenEuropa\pcas\PCas $pCas
+   * @param OpenEuropa\pcas\PCas $pCas
    *   The pCas variable.
-   * @param \Drupal\eu_login\UserProvider $userProvider
+   * @param Drupal\eu_login\UserProvider $userProvider
    *   The user provider variable.
    */
   public function __construct(PCas $pCas, UserProvider $userProvider) {

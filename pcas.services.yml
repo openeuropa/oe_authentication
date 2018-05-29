@@ -1,16 +1,16 @@
 parameters:
   p_cas:
-    logger_startup_message: 'Logger just got started!!! (from original config)'
+    logger_startup_message: 'Logger just got started.'
     protocol:
       login:
-        uri: http://eulogin-server:1080/login
+        uri: http://eulogin-server:8001/login
         query: []
         allowed_parameters:
           - service
           - renew
           - gateway
       servicevalidate:
-        uri: http://eulogin-server:1080/serviceValidate
+        uri: http://eulogin-server:8001/serviceValidate
         query: []
         allowed_parameters:
           - service
@@ -19,7 +19,7 @@ parameters:
           - renew
           - format
       logout:
-        uri: http://eulogin-server:1080/logout
+        uri: http://eulogin-server:8001/logout
         query: []
         allowed_parameters:
           - service
@@ -27,7 +27,7 @@ parameters:
 services:
   pcas:
     class: OpenEuropa\pcas\PCas
-    arguments: ['%p_cas%', '@?pcas.httpclient', '@?pcas.protocol', '@session', '@?pcas.logger']
+    arguments: ['%p_cas%', '@?pcas.httpclient', '@?pcas.protocol', '@session']
     public: true
 
   pcas.httpclient:

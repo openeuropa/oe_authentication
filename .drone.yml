@@ -11,6 +11,8 @@ services:
     image: percona/percona-server:5.6
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  eulogin-server:
+    image: openeuropa/pcas-server:latest
   frpc-tunnel:
     image: fpfis/drone-frpc-plugin:latest
     when:
@@ -19,7 +21,7 @@ services:
     environment:
       - PLUGIN_ENDPOINT=web:8080
       - PLUGIN_GEN_AUTH=yes
-      - PLUGIN_DOMAIN=eu_login-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
+      - PLUGIN_DOMAIN=eu-login-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
       - PLUGIN_URL_OUTPUT_FILE=/test/eu_login/.frpc
 
 matrix:
@@ -33,7 +35,7 @@ pipeline:
     volumes:
       - /cache:/cache
     commands:
-      - composer require webflo/drupal-core-require-dev:${DRUPAL_VERSION=8.6.x}
+      - composer require --dev webflo/drupal-core-require-dev:${DRUPAL_VERSION=8.6.x}
 
   site-install:
     image: fpfis/php71-build
