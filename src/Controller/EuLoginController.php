@@ -31,13 +31,6 @@ class EuLoginController extends ControllerBase {
   protected $pCas;
 
   /**
-   * The current user.
-   *
-   * @var Drupal\Core\Session\AccountProxyInterface
-   */
-  protected $currentUser;
-
-  /**
    * Constructs the controller object.
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
@@ -76,7 +69,8 @@ class EuLoginController extends ControllerBase {
     if ($response = $this->pCas->login()) {
       return $response;
     }
-    return new AccessDeniedHttpException();
+
+    throw new AccessDeniedHttpException();
   }
 
   /**
@@ -85,15 +79,19 @@ class EuLoginController extends ControllerBase {
    * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
    */
   public function logout() {
-    $response = $this->getLogoutRedirect();
-
     if ($this->currentUser->isAuthenticated()) {
       $this->doDrupalLogout();
     }
-    if ($response) {
+
+    $query = [
+      'service' => \Drupal::url('<front>', [], ['absolute' => TRUE]),
+    ];
+
+    if ($response = $this->getLogoutRedirect($query)) {
       return $response;
     }
-    return new AccessDeniedHttpException();
+
+    throw new AccessDeniedHttpException();
   }
 
   /**
@@ -112,11 +110,10 @@ class EuLoginController extends ControllerBase {
    * @return \Psr\Http\Message\ResponseInterface
    *   The HTTP redirect object.
    */
-  protected function getLogoutRedirect() {
-    $query['service'] = \Drupal::url('<front>', [], ['absolute' => TRUE]);
-    $logout_url = $this->pCas->logoutUrl($query);
-    $http_client = $this->pCas->getHttpClient();
-    return $http_client->redirect($logout_url);
+  protected function getLogoutRedirect(array $query = []) {
+    return $this->pCas->getHttpClient()->redirect(
+      $this->pCas->logoutUrl($query)
+    );
   }
 
 }
