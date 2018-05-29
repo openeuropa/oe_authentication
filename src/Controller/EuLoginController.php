@@ -19,14 +19,14 @@ class EuLoginController extends ControllerBase {
   /**
    * The request stack.
    *
-   * @var Symfony\Component\HttpFoundation\RequestStack
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
   protected $requestStack;
 
   /**
    * The pCas variable.
    *
-   * @var OpenEuropa\pcas\PCas
+   * @var \OpenEuropa\pcas\PCas
    */
   protected $pCas;
 
@@ -40,11 +40,11 @@ class EuLoginController extends ControllerBase {
   /**
    * Constructs the controller object.
    *
-   * @param Symfony\Component\HttpFoundation\RequestStack $requestStack
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
-   * @param OpenEuropa\pcas\PCas $pCas
+   * @param \OpenEuropa\pcas\PCas $pCas
    *   The pCas variable.
-   * @param Drupal\Core\Session\AccountProxyInterface $current_user
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
    */
   public function __construct(RequestStack $requestStack, PCas $pCas, AccountProxyInterface $current_user) {
@@ -66,6 +66,9 @@ class EuLoginController extends ControllerBase {
 
   /**
    * Logs a user in of the system.
+   *
+   * @throws \Exception
+   * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
    */
   public function login() {
     // There is no access to this route for authenticated users,
@@ -78,6 +81,8 @@ class EuLoginController extends ControllerBase {
 
   /**
    * Logs a user out of the system.
+   *
+   * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
    */
   public function logout() {
     $response = $this->getLogoutRedirect();
@@ -101,7 +106,10 @@ class EuLoginController extends ControllerBase {
   /**
    * Get the redirect object to the EU Login logout URL.
    *
-   * @return Psr\Http\Message\ResponseInterface
+   * @param string[] $query
+   *   The query strings if any.
+   *
+   * @return \Psr\Http\Message\ResponseInterface
    *   The HTTP redirect object.
    */
   protected function getLogoutRedirect() {

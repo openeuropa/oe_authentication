@@ -23,8 +23,11 @@ class UserProvider {
   /**
    * Provides the user.
    *
-   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->userStorage = $entityTypeManager->getStorage('user');
@@ -33,11 +36,13 @@ class UserProvider {
   /**
    * Returns the user object for the given Pcas user.
    *
-   * @param OpenEuropa\pcas\Security\Core\User\PCasUserInterface $pCasUser
+   * @param \OpenEuropa\pcas\Security\Core\User\PCasUserInterface $pCasUser
    *   User for pCas.
    *
-   * @return Drupal\user\Entity\User
+   * @return \Drupal\user\UserInterface|null
    *   The user object.
+   *
+   * @throws \Exception
    */
   public function loadAccount(PCasUserInterface $pCasUser) : ?UserInterface {
     $account = $this->doLoadAccount($pCasUser);
@@ -49,15 +54,16 @@ class UserProvider {
       return NULL;
     }
     $this->attachRoles($account, $pCasUser);
+
     return $account;
   }
 
   /**
    * Attach a roles to the Pcas user.
    *
-   * @param Drupal\user\UserInterface $account
+   * @param \Drupal\user\UserInterface $account
    *   Account in drupal.
-   * @param OpenEuropa\pcas\Security\Core\User\PCasUserInterface $pCasUser
+   * @param \OpenEuropa\pcas\Security\Core\User\PCasUserInterface $pCasUser
    *   User for pCas.
    */
   protected function attachRoles(UserInterface $account, PCasUserInterface $pCasUser) {
@@ -67,11 +73,13 @@ class UserProvider {
   /**
    * Load the Pcas user.
    *
-   * @param OpenEuropa\pcas\Security\Core\User\PCasUserInterface $pCasUser
+   * @param \OpenEuropa\pcas\Security\Core\User\PCasUserInterface $pCasUser
    *   User for pCas.
    *
-   * @return Drupal\user\Entity\User
-   *   The user object.
+   * @return \Drupal\user\Entity\User|false
+   *   The user object if any, false otherwise.
+   *
+   * @throws \Exception
    */
   protected function doLoadAccount(PCasUserInterface $pCasUser) {
     $mail = $pCasUser->get('cas:email');
@@ -84,16 +92,17 @@ class UserProvider {
       // @see \Drupal\eu_login\Controller\EuLoginController::login.
       return FALSE;
     }
+
     return array_pop($accounts);
   }
 
   /**
    * Create a local user account.
    *
-   * @param OpenEuropa\pcas\Security\Core\User\PCasUserInterface $pCasUser
+   * @param \OpenEuropa\pcas\Security\Core\User\PCasUserInterface $pCasUser
    *   The PCas user object.
    *
-   * @return Drupal\user\Entity\User
+   * @return \Drupal\user\Entity\User
    *   The new created Drupal user object.
    */
   protected function createAccount(PCasUserInterface $pCasUser) {
@@ -106,6 +115,7 @@ class UserProvider {
       'name' => $name,
     ]);
     $account->activate()->save();
+
     return $account;
   }
 
@@ -131,6 +141,7 @@ class UserProvider {
         $suffix++;
       }
     } while (!empty($accounts));
+
     return $name;
   }
 
