@@ -2,16 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\eu_login;
+namespace Drupal\oe_auth;
 
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\YamlFileLoader;
 
 /**
- * Discovery for the EU Login library settings.
+ * Discovery for the OE Auth library settings.
  */
-class EuLoginServiceProvider extends ServiceProviderBase {
+class OeAuthServiceProvider extends ServiceProviderBase {
 
   /**
    * {@inheritdoc}

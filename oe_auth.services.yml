@@ -1,0 +1,15 @@
+services:
+  oeauth.authentication:
+    class: \Drupal\oe_auth\Authentication\Provider\OeAuth
+    arguments: ['@pcas', '@oeauth.userprovider']
+    tags:
+      - { name: authentication_provider, provider_id: 'oeauth', priority: -10, global: TRUE }
+
+  oeauth.userprovider:
+    class: \Drupal\oe_auth\UserProvider
+    arguments: ['@entity_type.manager']
+
+  oeauth.route_subscriber:
+    class: \Drupal\oe_auth\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
