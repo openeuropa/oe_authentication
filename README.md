@@ -1,8 +1,8 @@
-# EU Login
+# OpenEuropa Auth
 
-[![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/eu_login/status.svg?branch=master)](https://drone.fpfis.eu/openeuropa/eu_login)
+[![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe_auth/status.svg?branch=master)](https://drone.fpfis.eu/openeuropa/oe_auth)
 
-The EU Login module allows to authenticate against the EU Login service.
+The OpenEuropa Auth module allows to authenticate against the European Commission login service.
 
 **Table of contents:**
 
@@ -15,22 +15,10 @@ The EU Login module allows to authenticate against the EU Login service.
 
 ## Installation
 
-The recommended way of installing the EU Login module is via a [Composer-based workflow][2].
+The recommended way of installing the OpenEuropa Auth module is via a [Composer][2].
 
-In your Drupal project's main `composer.json` add the following dependency:
-
-```json
-{
-    "require": {
-        "openeuropa/eu_login": "dev-master"
-    }
-}
-```
-
-And run:
-
-```
-$ composer update
+```bash
+composer require openeuropa/oe_auth
 ```
 
 ### Enable the module
@@ -38,12 +26,12 @@ $ composer update
 In order to enable the module in your project run:
 
 ```
-$ ./vendor/bin/drush en eu_login
+$ ./vendor/bin/drush en oe_auth
 ```
 
 ## Development
 
-The EU Login project contains all the necessary code and tools for an effective development process,
+The OpenEuropa Auth project contains all the necessary code and tools for an effective development process,
 such as:
 
 - All PHP development dependencies (Drupal core included) are required by [composer.json](composer.json)
@@ -73,7 +61,7 @@ $ ./vendor/bin/run drupal:site-setup
 
 This will:
 
-- Symlink the theme in  `./build/modules/custom/eu_login` so that it's available for the test site
+- Symlink the theme in  `./build/modules/custom/oe_auth` so that it's available for the test site
 - Setup Drush and Drupal's settings using values from `./runner.yml.dist`
 - Setup PHPUnit and Behat configuration files using values from `./runner.yml.dist`
 
@@ -86,7 +74,7 @@ $ ./vendor/bin/run drupal:site-install
 This will:
 
 - Install the test site
-- Enable the EU Login module
+- Enable the OpenEuropa Auth module
 
 Then setup the mock servers dependencies by running:
 ```
@@ -114,12 +102,12 @@ Then:
 $ docker-compose exec -u web web composer install
 $ docker-compose exec -u web web ./vendor/bin/run drupal:site-setup
 $ docker-compose exec -u web web ./vendor/bin/run drupal:site-install
-$ docker-compose exec -u web eulogin-server composer --no-ansi --working-dir=/var/www/html/vendor/openeuropa/pcas/demo-server/ install
+$ docker-compose exec -u web oeauth-server composer --no-ansi --working-dir=/var/www/html/vendor/openeuropa/pcas/demo-server/ install
 ```
 
-To be able to interact with the EU Login mock container you need to add the internal container hostname to the hosts file _of your host OS_.
+To be able to interact with the OpenEuropa Auth mock container you need to add the internal container hostname to the hosts file _of your host OS_.
 ```
-$ echo "127.0.1.1       eulogin-server" >> /etc/hosts
+$ echo "127.0.1.1       oeauth-server" >> /etc/hosts
 ```
 
 Your test site will be available at [http://localhost:8080/build](http://localhost:8080/build).
