@@ -1,0 +1,5 @@
+name: OE Auth
+description: Authentication against the OpenEuropa Auth service.
+package: OpenEuropa
+type: module
+core: 8.x

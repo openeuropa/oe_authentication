@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\eu_login\Controller;
+namespace Drupal\oe_auth\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Returns responses for EU Login routes.
+ * Returns responses for OE Auth routes.
  */
-class EuLoginController extends ControllerBase {
+class OeAuthController extends ControllerBase {
 
   /**
    * The request stack.
@@ -65,7 +65,7 @@ class EuLoginController extends ControllerBase {
    */
   public function login() {
     // There is no access to this route for authenticated users,
-    // Therefore we can directly redirect the user to the EU Login path.
+    // Therefore we can directly redirect the user to the OE Auth path.
     if ($response = $this->pCas->login()) {
       return $response;
     }
@@ -102,7 +102,7 @@ class EuLoginController extends ControllerBase {
   }
 
   /**
-   * Get the redirect object to the EU Login logout URL.
+   * Get the redirect object to the OE Auth logout URL.
    *
    * @param string[] $query
    *   The query strings if any.

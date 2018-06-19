@@ -2,17 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\eu_login\Authentication\Provider;
+namespace Drupal\oe_auth\Authentication\Provider;
 
 use Drupal\Core\Authentication\AuthenticationProviderInterface;
-use Drupal\eu_login\UserProvider;
+use Drupal\oe_auth\UserProvider;
 use OpenEuropa\pcas\PCas;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Cookie based authentication provider.
  */
-class EuLogin implements AuthenticationProviderInterface {
+class OeAuth implements AuthenticationProviderInterface {
 
   /**
    * The pCas variable.
@@ -24,16 +24,16 @@ class EuLogin implements AuthenticationProviderInterface {
   /**
    * The user provider variable.
    *
-   * @var Drupal\eu_login\UserProvider
+   * @var Drupal\oe_auth\UserProvider
    */
   protected $userProvider;
 
   /**
-   * EuLogin constructor.
+   * OeAuth constructor.
    *
    * @param OpenEuropa\pcas\PCas $pCas
    *   The pCas variable.
-   * @param Drupal\eu_login\UserProvider $userProvider
+   * @param Drupal\oe_auth\UserProvider $userProvider
    *   The user provider variable.
    */
   public function __construct(PCas $pCas, UserProvider $userProvider) {

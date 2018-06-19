@@ -1,6 +1,6 @@
 {
-    "name": "openeuropa/eu_login",
-    "description": "Authentication against the EU Login service.",
+    "name": "openeuropa/oe_auth",
+    "description": "Authentication against the OpenEuropa Auth service.",
     "type": "drupal-module",
     "license": "EUPL",
     "minimum-stability": "dev",
@@ -20,7 +20,7 @@
         "drush/drush": "^9",
         "nikic/php-parser": "~3",
         "openeuropa/code-review": "^0.2",
-        "openeuropa/task-runner": "^0.5",
+        "openeuropa/task-runner": "^0.6",
         "webflo/drupal-core-require-dev": "8.6.x"
     },
     "scripts": {
@@ -36,12 +36,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Drupal\\eu_login\\": "./src/"
+            "Drupal\\oe_auth\\": "./src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Drupal\\Tests\\eu_login\\": "./tests/"
+            "Drupal\\Tests\\oe_auth\\": "./tests/"
         }
     },
     "extra": {
