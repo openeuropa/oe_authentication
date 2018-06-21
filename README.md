@@ -100,9 +100,7 @@ Then:
 
 ```
 $ docker-compose exec -u web web composer install
-$ docker-compose exec -u web web ./vendor/bin/run drupal:site-setup
 $ docker-compose exec -u web web ./vendor/bin/run drupal:site-install
-$ docker-compose exec -u web oeauth-server composer --no-ansi --working-dir=/var/www/html/vendor/openeuropa/pcas/demo-server/ install
 ```
 
 To be able to interact with the OpenEuropa Auth mock container you need to add the internal container hostname to the hosts file _of your host OS_.
