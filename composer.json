@@ -7,6 +7,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1",
+        "drupal/core": "~8.6",
         "openeuropa/pcas": "dev-master",
         "php-http/guzzle6-adapter": "^1.1"
     },
@@ -21,7 +22,7 @@
         "nikic/php-parser": "~3",
         "openeuropa/code-review": "^0.2",
         "openeuropa/task-runner": "^0.7",
-        "webflo/drupal-core-require-dev": "8.6.x"
+        "webflo/drupal-core-require-dev": "~8.6"
     },
     "scripts": {
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
