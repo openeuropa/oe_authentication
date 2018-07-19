@@ -4,7 +4,7 @@ workspace:
 
 services:
   web:
-    image: fpfis/php71-build:latest
+    image: fpfis/httpd-php-dev:7.1
     environment:
      - DOCUMENT_ROOT=/test/oe_auth
   mysql:
@@ -14,34 +14,34 @@ services:
   authentication:
     image: openeuropa/pcas-server:latest
 
-matrix:
-  DRUPAL_VERSION:
-    - 8.6.x
-
 pipeline:
   composer-install:
-    image: fpfis/php71-build
+    group: prepare
+    image: fpfis/httpd-php-dev:7.1
     volumes:
       - /cache:/cache
     commands:
-      - composer require --dev webflo/drupal-core-require-dev:${DRUPAL_VERSION=8.6.x}
+      - composer install
+
   site-install:
-    image: fpfis/php71-build
+    image: fpfis/httpd-php-dev:7.1
     commands:
-      - ./vendor/bin/run drupal:site-setup
       - ./vendor/bin/run drupal:site-install
+
   grumphp:
     group: test
-    image: fpfis/php71-build
+    image: fpfis/httpd-php-dev:7.1
     commands:
       - ./vendor/bin/grumphp run
+
   phpunit:
     group: test
-    image: fpfis/php71-build
+    image: fpfis/httpd-php-dev:7.1
     commands:
       - ./vendor/bin/phpunit
+
   behat:
     group: test
-    image: fpfis/php71-build
+    image: fpfis/httpd-php-dev:7.1
     commands:
       - ./vendor/bin/behat
