@@ -7,7 +7,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1",
-        "drupal/core": "~8.6",
+        "drupal/core": "~8.6@alpha",
         "openeuropa/pcas": "dev-master",
         "php-http/guzzle6-adapter": "^1.1"
     },
