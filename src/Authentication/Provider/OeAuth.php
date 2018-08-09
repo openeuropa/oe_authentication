@@ -6,7 +6,7 @@ namespace Drupal\oe_auth\Authentication\Provider;
 
 use Drupal\Core\Authentication\AuthenticationProviderInterface;
 use Drupal\oe_auth\UserProvider;
-use OpenEuropa\pcas\PCas;
+use OpenEuropa\pcas\PCasFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -31,13 +31,13 @@ class OeAuth implements AuthenticationProviderInterface {
   /**
    * OeAuth constructor.
    *
-   * @param OpenEuropa\pcas\PCas $pCas
+   * @param OpenEuropa\pcas\PCasFactory $pCasFactory
    *   The pCas variable.
    * @param Drupal\oe_auth\UserProvider $userProvider
    *   The user provider variable.
    */
-  public function __construct(PCas $pCas, UserProvider $userProvider) {
-    $this->pCas = $pCas;
+  public function __construct(PCasFactory $pCasFactory, UserProvider $userProvider) {
+    $this->pCas = $pCasFactory->getPCas();
     $this->userProvider = $userProvider;
   }
 

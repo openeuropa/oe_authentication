@@ -6,7 +6,7 @@ namespace Drupal\oe_auth\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountProxyInterface;
-use OpenEuropa\pcas\PCas;
+use OpenEuropa\pcas\PCasFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -35,14 +35,14 @@ class OeAuthController extends ControllerBase {
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
-   * @param \OpenEuropa\pcas\PCas $pCas
+   * @param \OpenEuropa\pcas\PCasFactory $pCasFactory
    *   The pCas variable.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
    */
-  public function __construct(RequestStack $requestStack, PCas $pCas, AccountProxyInterface $current_user) {
+  public function __construct(RequestStack $requestStack, PCasFactory $pCasFactory, AccountProxyInterface $current_user) {
     $this->requestStack = $requestStack;
-    $this->pCas = $pCas;
+    $this->pCas = $pCasFactory->getPCas();
     $this->currentUser = $current_user;
   }
 
@@ -52,7 +52,7 @@ class OeAuthController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('request_stack'),
-      $container->get('pcas'),
+      $container->get('pcas.factory'),
       $container->get('current_user')
     );
   }
