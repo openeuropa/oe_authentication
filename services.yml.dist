@@ -23,9 +23,3 @@ parameters:
         query: []
         allowed_parameters:
           - service
-
-services:
-    pcas.factory:
-        class: OpenEuropa\pcas\PCasFactory
-        arguments: ['@session', '%p_cas%']
-

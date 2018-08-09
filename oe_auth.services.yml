@@ -13,3 +13,7 @@ services:
     class: \Drupal\oe_auth\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
+
+  pcas.factory:
+    class: OpenEuropa\pcas\PCasFactory
+    arguments: ['@session', '%p_cas%']
