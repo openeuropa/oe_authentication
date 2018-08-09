@@ -1,0 +1,31 @@
+parameters:
+  p_cas:
+    base_url: ${authentication.server.base_url}
+    protocol:
+      login:
+        path: /login
+        query: []
+        allowed_parameters:
+          - service
+          - renew
+          - gateway
+      servicevalidate:
+        path: /serviceValidate
+        query: []
+        allowed_parameters:
+          - service
+          - ticket
+          - pgtUrl
+          - renew
+          - format
+      logout:
+        path: /logout
+        query: []
+        allowed_parameters:
+          - service
+
+services:
+    pcas.factory:
+        class: OpenEuropa\pcas\PCasFactory
+        arguments: ['@session', '%p_cas%']
+

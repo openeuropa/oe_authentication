@@ -1,29 +1,3 @@
-parameters:
-  p_cas:
-    base_url: http://127.0.0.1:8000
-    protocol:
-      login:
-        path: /login
-        query: []
-        allowed_parameters:
-          - service
-          - renew
-          - gateway
-      servicevalidate:
-        path: /serviceValidate
-        query: []
-        allowed_parameters:
-          - service
-          - ticket
-          - pgtUrl
-          - renew
-          - format
-      logout:
-        path: /logout
-        query: []
-        allowed_parameters:
-          - service
-
 services:
   oeauth.authentication:
     class: \Drupal\oe_auth\Authentication\Provider\OeAuth
@@ -39,7 +13,3 @@ services:
     class: \Drupal\oe_auth\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
-
-  pcas.factory:
-      class: OpenEuropa\pcas\PCasFactory
-      arguments: ['@session', '%p_cas%']
