@@ -21,6 +21,17 @@ The recommended way of installing the OpenEuropa Auth module is via a [Composer]
 composer require openeuropa/oe_auth
 ```
 
+Before being able to use the module, you will need to specify the ECAS service base URL
+in your Drupal installation's `./sites/default/default.services.yml` file as shown below:
+
+```
+parameters:
+  oe_auth.pcas.base_url: http://my-ecas-service.com 
+```
+
+For more information about how to override service parameters in Drupal 8
+check the [related documentation page](https://www.drupal.org/docs/8/api/services-and-dependency-injection/services-and-dependency-injection-in-drupal-8)
+
 ### Enable the module
 
 In order to enable the module in your project run:
