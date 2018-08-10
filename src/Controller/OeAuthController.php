@@ -52,7 +52,7 @@ class OeAuthController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('request_stack'),
-      $container->get('pcas.factory')->getPCas(),
+      $container->get('oe_auth.pcas.factory')->getPCas(),
       $container->get('current_user')
     );
   }
