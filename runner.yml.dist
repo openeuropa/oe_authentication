@@ -1,6 +1,8 @@
 drupal:
   root: "build"
   base_url: "http://web:8080/build"
+  site:
+    name: "OpenEuropa"
   database:
     host: "mysql"
     port: "3306"
