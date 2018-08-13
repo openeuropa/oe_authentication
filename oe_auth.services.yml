@@ -1,15 +1,21 @@
+parameters:
+  oe_auth.pcas.base_url: ~
 services:
-  oeauth.authentication:
+  oe_auth.authentication:
     class: \Drupal\oe_auth\Authentication\Provider\OeAuth
-    arguments: ['@pcas', '@oeauth.userprovider']
+    arguments: ['@oe_auth.pcas.factory', '@oe_auth.user_provider']
     tags:
-      - { name: authentication_provider, provider_id: 'oeauth', priority: -10, global: TRUE }
+      - { name: authentication_provider, provider_id: 'oe_auth', priority: -10, global: TRUE }
 
-  oeauth.userprovider:
+  oe_auth.user_provider:
     class: \Drupal\oe_auth\UserProvider
     arguments: ['@entity_type.manager']
 
-  oeauth.route_subscriber:
+  oe_auth.route_subscriber:
     class: \Drupal\oe_auth\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
+
+  oe_auth.pcas.factory:
+    class: OpenEuropa\pcas\PCasFactory
+    arguments: ['@session', '%oe_auth.pcas.base_url%']

@@ -6,9 +6,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.1",
         "drupal/core": "~8.6@alpha",
-        "openeuropa/pcas": "dev-master",
+        "openeuropa/pcas": "~0.1",
+        "php": "^7.1",
         "php-http/guzzle6-adapter": "^1.1"
     },
     "require-dev": {
@@ -20,9 +20,9 @@
         "drupal/drupal-extension": "^4.0.0@alpha",
         "drush/drush": "^9",
         "nikic/php-parser": "~3",
-        "openeuropa/code-review": "^0.2",
-        "openeuropa/task-runner": "^0.7",
-        "webflo/drupal-core-require-dev": "~8.6@alpha"
+        "openeuropa/code-review": "~0.2",
+        "openeuropa/drupal-core-require-dev": "~8.6",
+        "openeuropa/task-runner": "~0.7"
     },
     "scripts": {
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
@@ -47,11 +47,7 @@
     },
     "extra": {
         "composer-exit-on-patch-failure": true,
-        "patches": {
-            "drupal/core": {
-                "https://www.drupal.org/project/drupal/issues/2943172": "https://www.drupal.org/files/issues/2018-07-05/2943172-kernel-test-base-3.patch"
-            }
-        },
+        "enable-patching": true,
         "installer-paths": {
             "build/core": ["type:drupal-core"],
             "build/profiles/contrib/{$name}": ["type:drupal-profile"],
