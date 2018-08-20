@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\oe_auth;
+namespace Drupal\oe_authentication;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\user\UserInterface;
@@ -84,12 +84,12 @@ class UserProvider {
   protected function doLoadAccount(PCasUserInterface $pCasUser) {
     $mail = $pCasUser->get('cas:email');
     if (empty($mail)) {
-      throw new \Exception('Email address not provided by OE Auth.');
+      throw new \Exception('Email address not provided by OE Authentication.');
     }
     $accounts = $this->userStorage->loadByProperties(['mail' => $mail]);
     if (empty($accounts)) {
       // Account does not exist, creation of new accounts is handled in.
-      // @see \Drupal\oe_auth\Controller\OeAuthController::login.
+      // @see \Drupal\oe_authentication\Controller\OeAuthenticationController::login.
       return FALSE;
     }
 

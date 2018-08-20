@@ -1,6 +1,6 @@
 {
-    "name": "openeuropa/oe_auth",
-    "description": "Authentication against the OpenEuropa Auth service.",
+    "name": "openeuropa/oe_authentication",
+    "description": "Authentication against the OpenEuropa Authentication service.",
     "type": "drupal-module",
     "license": "EUPL-1.2",
     "minimum-stability": "dev",
@@ -37,12 +37,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Drupal\\oe_auth\\": "./src/"
+            "Drupal\\oe_authentication\\": "./src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Drupal\\Tests\\oe_auth\\": "./tests/"
+            "Drupal\\Tests\\oe_authentication\\": "./tests/"
         }
     },
     "extra": {
