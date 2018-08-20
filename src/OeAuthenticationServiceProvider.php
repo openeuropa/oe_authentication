@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\oe_auth;
+namespace Drupal\oe_authentication;
 
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 
 /**
- * Discovery for the OE Auth library settings.
+ * Discovery for the OE Authentication library settings.
  */
-class OeAuthServiceProvider extends ServiceProviderBase {
+class OeAuthenticationServiceProvider extends ServiceProviderBase {
 
   /**
    * {@inheritdoc}

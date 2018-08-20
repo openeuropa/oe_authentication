@@ -1,0 +1,21 @@
+parameters:
+  oe_authentication.pcas.base_url: ~
+services:
+  oe_authentication.authentication:
+    class: \Drupal\oe_authentication\Authentication\Provider\OeAuthentication
+    arguments: ['@oe_authentication.pcas.factory', '@oe_authentication.user_provider']
+    tags:
+      - { name: authentication_provider, provider_id: 'oe_authentication', priority: -10, global: TRUE }
+
+  oe_authentication.user_provider:
+    class: \Drupal\oe_authentication\UserProvider
+    arguments: ['@entity_type.manager']
+
+  oe_authentication.route_subscriber:
+    class: \Drupal\oe_authentication\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  oe_authentication.pcas.factory:
+    class: OpenEuropa\pcas\PCasFactory
+    arguments: ['@session', '%oe_authentication.pcas.base_url%']

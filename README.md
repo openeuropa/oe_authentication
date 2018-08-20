@@ -1,8 +1,8 @@
-# OpenEuropa Auth
+# OpenEuropa Authentication
 
-[![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe_auth/status.svg?branch=master)](https://drone.fpfis.eu/openeuropa/oe_auth)
+[![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe_authentication/status.svg?branch=master)](https://drone.fpfis.eu/openeuropa/oe_authentication)
 
-The OpenEuropa Auth module allows to authenticate against the European Commission login service.
+The OpenEuropa Authentication module allows to authenticate against the European Commission login service.
 
 **Table of contents:**
 
@@ -15,10 +15,10 @@ The OpenEuropa Auth module allows to authenticate against the European Commissio
 
 ## Installation
 
-The recommended way of installing the OpenEuropa Auth module is via a [Composer][2].
+The recommended way of installing the OpenEuropa Authentication module is via a [Composer][2].
 
 ```bash
-composer require openeuropa/oe_auth
+composer require openeuropa/oe_authentication
 ```
 
 Before being able to use the module, you will need to specify the ECAS service base URL
@@ -26,7 +26,7 @@ in your Drupal installation's `./sites/default/default.services.yml` file as sho
 
 ```
 parameters:
-  oe_auth.pcas.base_url: http://my-ecas-service.com 
+  oe_authentication.pcas.base_url: http://my-ecas-service.com 
 ```
 
 For more information about how to override service parameters in Drupal 8
@@ -37,12 +37,12 @@ check the [related documentation page](https://www.drupal.org/docs/8/api/service
 In order to enable the module in your project run:
 
 ```
-$ ./vendor/bin/drush en oe_auth
+$ ./vendor/bin/drush en oe_authentication
 ```
 
 ## Development
 
-The OpenEuropa Auth project contains all the necessary code and tools for an effective development process,
+The OpenEuropa Authentication project contains all the necessary code and tools for an effective development process,
 such as:
 
 - All PHP development dependencies (Drupal core included) are required by [composer.json](composer.json)
@@ -72,7 +72,7 @@ $ ./vendor/bin/run drupal:site-setup
 
 This will:
 
-- Symlink the theme in  `./build/modules/custom/oe_auth` so that it's available for the test site
+- Symlink the theme in  `./build/modules/custom/oe_authentication` so that it's available for the test site
 - Setup Drush and Drupal's settings using values from `./runner.yml.dist`
 - Setup PHPUnit and Behat configuration files using values from `./runner.yml.dist`
 
@@ -85,7 +85,7 @@ $ ./vendor/bin/run drupal:site-install
 This will:
 
 - Install the test site
-- Enable the OpenEuropa Auth module
+- Enable the OpenEuropa Authentication module
 
 Then setup the mock servers dependencies by running:
 ```
@@ -114,7 +114,7 @@ $ docker-compose exec web composer install
 $ docker-compose exec web ./vendor/bin/run drupal:site-install
 ```
 
-To be able to interact with the OpenEuropa Auth mock container you need to add the internal container hostname to the hosts file _of your host OS_.
+To be able to interact with the OpenEuropa Authentication mock container you need to add the internal container hostname to the hosts file _of your host OS_.
 ```
 $ echo "127.0.1.1       oeauth-server" >> /etc/hosts
 ```

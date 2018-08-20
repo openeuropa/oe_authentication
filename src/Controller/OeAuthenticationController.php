@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\oe_auth\Controller;
+namespace Drupal\oe_authentication\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Returns responses for OE Auth routes.
+ * Returns responses for OE Authentication routes.
  */
-class OeAuthController extends ControllerBase {
+class OeAuthenticationController extends ControllerBase {
 
   /**
    * The request stack.
@@ -52,7 +52,7 @@ class OeAuthController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('request_stack'),
-      $container->get('oe_auth.pcas.factory')->getPCas(),
+      $container->get('oe_authentication.pcas.factory')->getPCas(),
       $container->get('current_user')
     );
   }
@@ -65,7 +65,7 @@ class OeAuthController extends ControllerBase {
    */
   public function login() {
     // There is no access to this route for authenticated users,
-    // Therefore we can directly redirect the user to the OE Auth path.
+    // Therefore we can directly redirect the user to the OE Authentication path.
     if ($response = $this->pCas->login()) {
       return $response;
     }
@@ -102,7 +102,7 @@ class OeAuthController extends ControllerBase {
   }
 
   /**
-   * Get the redirect object to the OE Auth logout URL.
+   * Get the redirect object to the OE Authentication logout URL.
    *
    * @param string[] $query
    *   The query strings if any.

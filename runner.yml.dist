@@ -11,7 +11,7 @@ drupal:
     password: ""
   post_install:
     - "./vendor/bin/drush en config_devel -y"
-    - "./vendor/bin/drush en oe_auth -y"
+    - "./vendor/bin/drush en oe_authentication -y"
     - "./vendor/bin/drush cr"
   settings:
     settings:
@@ -32,7 +32,7 @@ commands:
   drupal:site-setup:
     - { task: "mkdir", dir: "${drupal.root}/profiles" }
     - { task: "mkdir", dir: "${drupal.root}/themes" }
-    - { task: "symlink", from: "../../..", to: "${drupal.root}/modules/custom/oe_auth" }
+    - { task: "symlink", from: "../../..", to: "${drupal.root}/modules/custom/oe_authentication" }
     - { task: "run", command: "drupal:drush-setup" }
     - { task: "run", command: "drupal:settings-setup" }
     - { task: "run", command: "setup:phpunit" }
