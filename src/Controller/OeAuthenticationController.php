@@ -65,7 +65,8 @@ class OeAuthenticationController extends ControllerBase {
    */
   public function login() {
     // There is no access to this route for authenticated users,
-    // Therefore we can directly redirect the user to the OE Authentication path.
+    // Therefore we can directly redirect the user to
+    // the OE Authentication path.
     if ($response = $this->pCas->login()) {
       return $response;
     }
