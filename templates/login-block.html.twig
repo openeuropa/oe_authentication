@@ -1,0 +1,7 @@
+<div class="user-login-block">
+    {% if logged_out %}
+        <a href="{{ path('user.login') }}">{{ 'Log in'|t }}</a>
+    {% else %}
+        <a href="{{ path('user.logout') }}">{{ 'Log out'|t }}</a>
+    {% endif %}
+</div>
