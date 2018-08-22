@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\oe_authentication\Authentication\Provider;
 
 use Drupal\Core\Authentication\AuthenticationProviderInterface;
+use Drupal\oe_authentication\PCasFactory;
 use Drupal\oe_authentication\UserProvider;
-use OpenEuropa\pcas\PCasFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -17,23 +17,23 @@ class OeAuthentication implements AuthenticationProviderInterface {
   /**
    * The pCas variable.
    *
-   * @var OpenEuropa\pcas\PCas
+   * @var \OpenEuropa\pcas\PCas
    */
   protected $pCas;
 
   /**
    * The user provider variable.
    *
-   * @var Drupal\oe_authentication\UserProvider
+   * @var \Drupal\oe_authentication\UserProvider
    */
   protected $userProvider;
 
   /**
    * OeAuthentication constructor.
    *
-   * @param OpenEuropa\pcas\PCasFactory $pCasFactory
+   * @param \OpenEuropa\pcas\PCasFactory $pCasFactory
    *   The pCas variable.
-   * @param Drupal\oe_authentication\UserProvider $userProvider
+   * @param \Drupal\oe_authentication\UserProvider $userProvider
    *   The user provider variable.
    */
   public function __construct(PCasFactory $pCasFactory, UserProvider $userProvider) {
