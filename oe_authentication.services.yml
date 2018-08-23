@@ -2,7 +2,7 @@ parameters:
   oe_authentication.pcas.base_url: ~
 services:
   oe_authentication.authentication:
-    class: \Drupal\oe_authentication\Authentication\Provider\OeAuthentication
+    class: \Drupal\oe_authentication\Authentication\Provider\Authentication
     arguments: ['@oe_authentication.pcas.factory', '@oe_authentication.user_provider']
     tags:
       - { name: authentication_provider, provider_id: 'oe_authentication', priority: -10, global: TRUE }

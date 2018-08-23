@@ -20,13 +20,13 @@ class RouteSubscriber extends RouteSubscriberBase {
     if ($route = $collection->get('user.login')) {
       $defaults = $route->getDefaults();
       unset($defaults['_form']);
-      $defaults['_controller'] = '\Drupal\oe_authentication\Controller\OeAuthenticationController::login';
+      $defaults['_controller'] = '\Drupal\oe_authentication\Controller\AuthenticationController::login';
       $route->setDefaults($defaults);
     }
 
     // Replace the core logout route.
     if ($route = $collection->get('user.logout')) {
-      $route->setDefault('_controller', '\Drupal\oe_authentication\Controller\OeAuthenticationController::logout');
+      $route->setDefault('_controller', '\Drupal\oe_authentication\Controller\AuthenticationController::logout');
     }
     // Remove these routes as to generate fatal errors wherever
     // functionality is missing.

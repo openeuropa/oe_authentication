@@ -90,7 +90,7 @@ class UserProvider {
     $accounts = $this->userStorage->loadByProperties(['name' => $username]);
     if (empty($accounts)) {
       // Account does not exist, creation of new accounts is handled in.
-      // @see \Drupal\oe_authentication\Controller\OeAuthenticationController::login.
+      // @see \Drupal\oe_authentication\Controller\AuthenticationController::login.
       return FALSE;
     }
 

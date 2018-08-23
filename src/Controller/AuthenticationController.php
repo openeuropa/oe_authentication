@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 /**
  * Returns responses for OE Authentication routes.
  */
-class OeAuthenticationController extends ControllerBase {
+class AuthenticationController extends ControllerBase {
 
   /**
    * The request stack.
