@@ -31,7 +31,7 @@ class OeAuthentication implements AuthenticationProviderInterface {
   /**
    * OeAuthentication constructor.
    *
-   * @param \OpenEuropa\pcas\PCasFactory $pCasFactory
+   * @param \Drupal\oe_authentication\PCasFactory $pCasFactory
    *   The pCas variable.
    * @param \Drupal\oe_authentication\UserProvider $userProvider
    *   The user provider variable.
