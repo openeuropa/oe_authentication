@@ -22,11 +22,10 @@ composer require openeuropa/oe_authentication
 ```
 
 Before being able to use the module, you will need to specify the ECAS service base URL
-in your Drupal installation's `./sites/default/default.services.yml` file as shown below:
+in your Drupal installation's `./sites/default/settings.php` file as shown below:
 
 ```
-parameters:
-  oe_authentication.pcas.base_url: http://my-ecas-service.com 
+$config['oe_authentication.settings']['base_url'] = 'http://authentication:8001';
 ```
 
 For more information about how to override service parameters in Drupal 8
@@ -120,7 +119,7 @@ $ docker-compose exec web ./vendor/bin/run drupal:site-install
 
 To be able to interact with the OpenEuropa Authentication mock container you need to add the internal container hostname to the hosts file _of your host OS_.
 ```
-$ echo "127.0.1.1       oeauth-server" >> /etc/hosts
+$ echo "127.0.1.1       authentication" >> /etc/hosts
 ```
 
 Your test site will be available at [http://localhost:8080/build](http://localhost:8080/build).
