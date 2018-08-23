@@ -15,7 +15,7 @@ function oe_authentication_theme($existing, $type, $theme, $path) {
   return [
     'login_block' => [
       'variables' => [
-        'logged_out' => NULL,
+        'link' => NULL,
       ],
     ],
   ];
