@@ -2,6 +2,7 @@ drupal:
   root: "build"
   base_url: "http://web:8080/build"
   site:
+    profile: "minimal"
     name: "OpenEuropa"
   database:
     host: "mysql"
@@ -10,6 +11,14 @@ drupal:
     user: "root"
     password: ""
   post_install:
+    # Prepare the instance.
+    - "./vendor/bin/drush en toolbar -y"
+    - "./vendor/bin/drush en config_devel -y"
+    - "./vendor/bin/drush theme:enable bartik -y"
+    - "./vendor/bin/drush theme:enable seven -y"
+    - "./vendor/bin/drush config-set system.theme default bartik -y"
+    - "./vendor/bin/drush config-set system.theme admin seven -y"
+    - "./vendor/bin/drush config-set node.settings use_admin_theme 1 -y"
     - "./vendor/bin/drush en config_devel -y"
     - "./vendor/bin/drush en oe_authentication -y"
     - "./vendor/bin/drush cr"
