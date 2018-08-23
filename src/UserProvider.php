@@ -83,7 +83,7 @@ class UserProvider {
    */
   protected function doLoadAccount(PCasUserInterface $pCasUser) {
     $username = $pCasUser->get('cas:user');
-    if (!$username) {
+    if ($username === NULL) {
       throw new \Exception('No username found on the PCas user.');
     }
 
