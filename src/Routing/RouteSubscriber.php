@@ -46,7 +46,7 @@ class RouteSubscriber extends RouteSubscriberBase {
     ];
     foreach ($routes_to_remove as $route_to_remove) {
       if ($route = $collection->get($route_to_remove)) {
-        $collection->remove($route_to_remove);
+        $route->setRequirement('_access', 'FALSE');
       }
     }
   }
