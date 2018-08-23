@@ -25,7 +25,7 @@ Before being able to use the module, you will need to specify the ECAS service b
 in your Drupal installation's `./sites/default/settings.php` file as shown below:
 
 ```
-$config['oe_authentication.settings']['base_url'] = 'http://authentication:8001';
+$config['oe_authentication.settings']['base_url'] = 'https://ecas.ec.europa.eu/cas';
 ```
 
 For more information about how to override service parameters in Drupal 8
