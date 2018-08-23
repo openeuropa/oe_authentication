@@ -1,2 +1,0 @@
-parameters:
-  oe_authentication.pcas.base_url: ${authentication.server.base_url}

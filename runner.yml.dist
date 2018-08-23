@@ -10,6 +10,7 @@ drupal:
     user: "root"
     password: ""
   post_install:
+    # Prepare the instance.
     - "./vendor/bin/drush en config_devel -y"
     - "./vendor/bin/drush en oe_authentication -y"
     - "./vendor/bin/drush cr"
@@ -22,11 +23,6 @@ drupal:
         - "${drupal.root}"
       container_yamls:
         - "${runner.working_dir}/build/site/default/services.yml"
-        - "${runner.working_dir}/services.yml"
-
-authentication:
-  server:
-    base_url: "http://authentication:8001"
 
 commands:
   drupal:site-setup:
@@ -37,7 +33,6 @@ commands:
     - { task: "run", command: "drupal:settings-setup" }
     - { task: "run", command: "setup:phpunit" }
     - { task: "run", command: "setup:behat" }
-    - { task: "process", source: "services.yml.dist", destination: "services.yml" }
   setup:phpunit:
     - { task: "process", source: "phpunit.xml.dist", destination: "phpunit.xml" }
   setup:behat:

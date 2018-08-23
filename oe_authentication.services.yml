@@ -17,5 +17,5 @@ services:
       - { name: event_subscriber }
 
   oe_authentication.pcas.factory:
-    class: OpenEuropa\pcas\PCasFactory
-    arguments: ['@session', '%oe_authentication.pcas.base_url%']
+    class: Drupal\oe_authentication\PCasFactory
+    arguments: ['@session', '@config.factory']
