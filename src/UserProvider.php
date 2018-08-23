@@ -82,11 +82,12 @@ class UserProvider {
    * @throws \Exception
    */
   protected function doLoadAccount(PCasUserInterface $pCasUser) {
-    $mail = $pCasUser->get('cas:email');
-    if (empty($mail)) {
-      throw new \Exception('Email address not provided by OE Authentication.');
+    $username = $pCasUser->get('cas:user');
+    if (!$username) {
+      throw new \Exception('No username found on the PCas user.');
     }
-    $accounts = $this->userStorage->loadByProperties(['mail' => $mail]);
+
+    $accounts = $this->userStorage->loadByProperties(['name' => $username]);
     if (empty($accounts)) {
       // Account does not exist, creation of new accounts is handled in.
       // @see \Drupal\oe_authentication\Controller\OeAuthenticationController::login.
@@ -107,6 +108,7 @@ class UserProvider {
    */
   protected function createAccount(PCasUserInterface $pCasUser) {
     $name = $this->uniqueUsername($pCasUser->getUsername());
+    // @todo Fix the retrieval of the email as not all CAS replies have "cas:email".
     $mail = $pCasUser->get('cas:email');
 
     /** @var \Drupal\user\Entity\User $account */
