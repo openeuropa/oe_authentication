@@ -5,18 +5,18 @@ declare(strict_types = 1);
 namespace Drupal\oe_authentication\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Session\AccountProxy;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Link;
 
 /**
- * Provides a 'LoginBlock' block.
+ * Provides a block that renders links to login or logout.
  *
  * @Block(
  *  id = "oe_authentication_login_block",
- *  admin_label = @Translation("EU Login block"),
+ *  admin_label = @Translation("EU Login Link Block"),
  * )
  */
 class LoginBlock extends BlockBase implements ContainerFactoryPluginInterface {
@@ -24,14 +24,14 @@ class LoginBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * Drupal\Core\Session\AccountProxy definition.
    *
-   * @var \Drupal\Core\Session\AccountProxy
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $currentUser;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxyInterface $current_user) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentUser = $current_user;
   }
@@ -52,21 +52,26 @@ class LoginBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function build() {
-
     if ($this->currentUser->isAnonymous()) {
-      $link = Link::fromTextAndUrl('Log in', Url::fromRoute('user.login'));
-    }
-    else {
-      $link = Link::fromTextAndUrl('Log out', Url::fromRoute('user.logout'));
+      return [
+        '#type' => 'link',
+        '#title' => $this->t('Log in'),
+        '#url' => Url::fromRoute('user.login'),
+      ];
     }
 
-    $build = [];
-    $build['login_block'] = [
-      '#theme' => 'login_block',
-      '#link' => $link,
+    return [
+      '#type' => 'link',
+      '#title' => $this->t('Log out'),
+      '#url' => Url::fromRoute('user.logout'),
     ];
+  }
 
-    return $build;
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    return Cache::mergeContexts(parent::getCacheContexts(), ['user.roles:anonymous']);
   }
 
 }

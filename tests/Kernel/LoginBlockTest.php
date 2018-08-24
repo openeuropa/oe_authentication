@@ -27,34 +27,13 @@ class LoginBlockTest extends KernelTestBase {
   ];
 
   /**
-   * The block being tested.
-   *
-   * @var \Drupal\block\Entity\BlockInterface
-   */
-  protected $block;
-
-  /**
-   * The block storage.
-   *
-   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
-   */
-  protected $controller;
-
-  /**
-   * The renderer.
-   *
-   * @var \Drupal\Core\Render\RendererInterface
-   */
-  protected $renderer;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
     $this->installConfig(['system', 'block', 'user']);
-    $this->installSchema('system', ['sequences']);
     $this->installEntitySchema('user');
+    $this->installSchema('system', ['sequences']);
   }
 
   /**
@@ -63,28 +42,18 @@ class LoginBlockTest extends KernelTestBase {
   public function testLoginBlockRendering(): void {
 
     // Setup and render login block.
-    $block_manager = \Drupal::service('plugin.manager.block');
+    $block_manager = $this->container->get('plugin.manager.block');
+    $renderer = $this->container->get('renderer');
 
-    $config = [
-      'id' => 'oe_authentication_login_block',
-      'label' => 'Login block',
-      'provider' => 'oe_authentication',
-      'label_display' => '0',
-    ];
+    /** @var \Drupal\oe_authentication\Plugin\Block\LoginBlock $plugin_block */
+    $plugin_block = $block_manager->createInstance('oe_authentication_login_block');
+    $build = $plugin_block->build();
+    $block = (string) $renderer->renderRoot($build);
 
-    /** @var \Drupal\Core\Block\BlockBase $plugin_block */
-    $plugin_block = $block_manager->createInstance('oe_authentication_login_block', $config);
-    $render = $plugin_block->build();
-    $html = (string) $this->container->get('renderer')->renderRoot($render);
-
-    $crawler = new Crawler($html);
-
-    // Make sure that login block is present.
-    $actual = $crawler->filter('.user-login-block');
-    $this->assertCount(1, $actual);
+    $crawler = new Crawler($block);
 
     // Make sure the login link is present.
-    $link = $crawler->filter('.user-login-block a');
+    $link = $crawler->filter('a');
     $this->assertEquals(t('Log in'), $link->text());
     $this->assertEquals(Url::fromRoute('user.login')->toString(), $link->attr('href'));
 
@@ -97,16 +66,16 @@ class LoginBlockTest extends KernelTestBase {
     $user1->activate();
     $user1->save();
 
-    // Logs in the user we just created.
-    \Drupal::currentUser()->setAccount($user1);
+    // Simulate a login of this user.
+    $this->container->get('current_user')->setAccount($user1);
 
     // Render the block again.
-    $render = $plugin_block->build();
-    $html = (string) $this->container->get('renderer')->renderRoot($render);
+    $build = $plugin_block->build();
+    $block = (string) $renderer->renderRoot($build);
 
     // Asserts if the text changed, and log out text is now present.
-    $crawler = new Crawler($html);
-    $link = $crawler->filter('.user-login-block a');
+    $crawler = new Crawler($block);
+    $link = $crawler->filter('a');
     $this->assertEquals(t('Log out'), $link->text());
     $this->assertEquals(Url::fromRoute('user.logout')->toString(), $link->attr('href'));
   }
