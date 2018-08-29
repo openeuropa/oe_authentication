@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\oe_authentication;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\oe_authentication\Exception\AuthenticationException;
 use Drupal\user\UserInterface;
 use OpenEuropa\pcas\Security\Core\User\PCasUserInterface;
 
@@ -84,13 +85,13 @@ class UserProvider {
   protected function doLoadAccount(PCasUserInterface $pCasUser) {
     $username = $pCasUser->get('cas:user');
     if ($username === NULL) {
-      throw new \Exception('No username found on the PCas user.');
+      throw new AuthenticationException('No username found on the PCas user.');
     }
 
     $accounts = $this->userStorage->loadByProperties(['name' => $username]);
     if (empty($accounts)) {
       // Account does not exist, creation of new accounts is handled in.
-      // @see \Drupal\oe_authentication\Controller\OeAuthenticationController::login.
+      // @see \Drupal\oe_authentication\Controller\AuthenticationController::login.
       return FALSE;
     }
 
@@ -108,8 +109,7 @@ class UserProvider {
    */
   protected function createAccount(PCasUserInterface $pCasUser) {
     $name = $this->uniqueUsername($pCasUser->getUsername());
-    // @todo Fix the retrieval of the email as not all CAS replies have "cas:email".
-    $mail = $pCasUser->get('cas:email');
+    $mail = $this->extractEmailFromCasUser($pCasUser);
 
     /** @var \Drupal\user\Entity\User $account */
     $account = $this->userStorage->create([
@@ -156,6 +156,39 @@ class UserProvider {
   protected function canCreateNewAccounts() {
     // @todo Implement this stub with a setting?
     return TRUE;
+  }
+
+  /**
+   * Extracts the email address from a PCas user object.
+   *
+   * Since CAS implementations return differently the user information,
+   * we need to extract the email value generically.
+   *
+   * @todo Refactor and bring logic for user value retrieval to PCas library
+   *   using configuration.
+   *
+   * @param \OpenEuropa\pcas\Security\Core\User\PCasUserInterface $pCasUser
+   *   The PCas user object.
+   *
+   * @return string
+   *   The email address.
+   */
+  protected function extractEmailFromCasUser(PCasUserInterface $pCasUser): string {
+    if ($pCasUser->get('cas:email') !== NULL) {
+      return $pCasUser->get('cas:email');
+    }
+
+    // ECAS.
+    if ($pCasUser->get('cas:authenticationFactors') !== NULL) {
+      $auth_factors = $pCasUser->get('cas:authenticationFactors');
+      if (isset($auth_factors['cas:moniker'])) {
+        return $auth_factors['cas:moniker'];
+      }
+
+      throw new AuthenticationException('ECAS user email address is missing.');
+    }
+
+    throw new AuthenticationException('Could not determine user email from PCas response.');
   }
 
 }

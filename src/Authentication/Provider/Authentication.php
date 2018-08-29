@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Cookie based authentication provider.
  */
-class OeAuthentication implements AuthenticationProviderInterface {
+class Authentication implements AuthenticationProviderInterface {
 
   /**
    * The pCas variable.
@@ -29,7 +29,7 @@ class OeAuthentication implements AuthenticationProviderInterface {
   protected $userProvider;
 
   /**
-   * OeAuthentication constructor.
+   * Authentication constructor.
    *
    * @param \Drupal\oe_authentication\PCasFactory $pCasFactory
    *   The pCas variable.
