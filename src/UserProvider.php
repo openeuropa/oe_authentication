@@ -180,9 +180,9 @@ class UserProvider {
 
     // ECAS.
     if ($pCasUser->get('cas:authenticationFactors') !== NULL) {
-      $authentication_factors = $pCasUser->get('cas:authenticationFactors');
-      if (isset($authentication_factors['cas:moniker'])) {
-        return $authentication_factors['cas:moniker'];
+      $auth_factors = $pCasUser->get('cas:authenticationFactors');
+      if (isset($auth_factors['cas:moniker'])) {
+        return $auth_factors['cas:moniker'];
       }
 
       throw new AuthenticationException('ECAS user email address is missing.');
