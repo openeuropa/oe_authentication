@@ -2,7 +2,7 @@
 
 /**
  * @file
- * OpenEuropa Webtools Laco Widget module.
+ * OpenEuropa Authentication module.
  */
 
 declare(strict_types = 1);

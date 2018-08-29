@@ -55,7 +55,7 @@ class PCasFactoryTest extends KernelTestBase {
    * Test custom configuration options for the PCasFactory class.
    */
   public function testCustomConfiguration(): void {
-    $this->config("oe_authentication.settings")
+    $this->config('oe_authentication.settings')
       ->set('base_url', 'https://ecas.ec.europa.eu/cas')
       ->save(TRUE);
     $protocols = [
