@@ -21,7 +21,7 @@ function oe_authentication_install() {
     ->set('forced_login.enabled', TRUE)
     ->set('forced_login.paths.pages', '/user/login')
     ->set('user_accounts.prevent_normal_login', TRUE)
-    ->set('user_accounts.auto_register', 'TRUE')
-    ->set('login_link_enabled', 'TRUE')
+    ->set('user_accounts.auto_register', TRUE)
+    ->set('login_link_enabled', TRUE)
     ->save();
 }
