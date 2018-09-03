@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Install module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_install().
+ */
+function oe_authentication_install() {
+  $cas_configs = \Drupal::configFactory()->getEditable('cas.settings');
+  $authentication_configs = \Drupal::configFactory()->get('oe_authentication.cas.settings');
+  $cas_configs->setData($authentication_configs->get());
+  $cas_configs->save();
+}
