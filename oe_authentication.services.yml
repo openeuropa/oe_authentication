@@ -3,3 +3,7 @@ services:
     class: \Drupal\oe_authentication\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
+  oe_authentication.event_subscriber:
+    class: \Drupal\oe_authentication\Event\EventSubscriber
+    tags:
+      - { name: event_subscriber }
