@@ -6,15 +6,3 @@
  */
 
 declare(strict_types = 1);
-
-use Drupal\Core\Form\FormStateInterface;
-
-/**
- * Implements hook_form_alter().
- */
-function oe_authentication_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['account']['mail']['#disabled'] = TRUE;
-  $form['account']['name']['#disabled'] = TRUE;
-  unset($form['account']['pass']);
-  unset($form['account']['current_pass']);
-}

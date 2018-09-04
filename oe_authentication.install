@@ -11,8 +11,17 @@ declare(strict_types = 1);
  * Implements hook_install().
  */
 function oe_authentication_install() {
-  $cas_configs = \Drupal::configFactory()->getEditable('cas.settings');
-  $authentication_configs = \Drupal::configFactory()->get('oe_authentication.cas.settings');
-  $cas_configs->setData($authentication_configs->get());
-  $cas_configs->save();
+
+  // Set default settings for CAS.
+  \Drupal::configFactory()->getEditable('cas.settings')
+    ->set('server.protocol', 'http')
+    ->set('server.hostname', 'authentication')
+    ->set('server.port', '8001')
+    ->set('server.path', '/')
+    ->set('forced_login.enabled', TRUE)
+    ->set('forced_login.paths.pages', '/user/login')
+    ->set('user_accounts.prevent_normal_login', TRUE)
+    ->set('user_accounts.auto_register', TRUE)
+    ->set('login_link_enabled', TRUE)
+    ->save();
 }
