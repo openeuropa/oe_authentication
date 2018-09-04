@@ -21,11 +21,14 @@ The recommended way of installing the OpenEuropa Authentication module is via a 
 composer require openeuropa/oe_authentication
 ```
 
-Before being able to use the module, you will need to specify the ECAS service base URL
+Before being able to use the module, you will need to specify the ECAS service parameters
 in your Drupal installation's `./sites/default/settings.php` file as shown below:
 
 ```
-$config['oe_authentication.settings']['base_url'] = 'https://ecas.ec.europa.eu/cas';
+$config['cas.settings']['server']['hostname'] = 'ecas.ec.europa.eu';
+$config['cas.settings']['server']['port'] = NULL;
+$config['cas.settings']['server']['path'] = '/cas';
+$config['cas.settings']['server']['protocol'] = 'https';
 ```
 
 For more information about how to override service parameters in Drupal 8
