@@ -1,0 +1,10 @@
+oe_authentication.settings:
+  type: config_object
+  label: 'OpenEuropa Authentication settings'
+  mapping:
+    assurance_level:
+      type: string
+      label: 'Application assurance levels'
+    ticket_types:
+      type: string
+      label: 'Application available ticket types'

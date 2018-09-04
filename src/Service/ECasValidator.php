@@ -4,10 +4,13 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_authentication\Service;
 
-use Drupal\cas\Service\CasValidator;
 use Drupal\cas\Service\CasHelper;
+use Drupal\cas\Service\CasValidator;
 use Drupal\cas\Exception\CasValidateException;
-use GuzzleHttp\Exception\RequestException;
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Routing\UrlGeneratorInterface;
+use GuzzleHttp\Client;
 use Drupal\cas\CasPropertyBag;
 use Psr\Log\LogLevel;
 
@@ -20,52 +23,33 @@ use Psr\Log\LogLevel;
 class ECasValidator extends CasValidator {
 
   /**
-   * {@inheritdoc}
+   * Stores ECAS settings object.
+   *
+   * @var \Drupal\Core\Config\Config
    */
-  public function validateTicket($ticket, array $service_params = []) {
-    $options = [];
-    $verify = $this->settings->get('server.verify');
-    switch ($verify) {
-      case CasHelper::CA_CUSTOM:
-        $cert = $this->settings->get('server.cert');
-        $options['verify'] = $cert;
-        break;
+  protected $ecasSettings;
 
-      case CasHelper::CA_NONE:
-        $options['verify'] = FALSE;
-        break;
-
-      case CasHelper::CA_DEFAULT:
-      default:
-        // This triggers for CasHelper::CA_DEFAULT.
-        $options['verify'] = TRUE;
-    }
-
-    $options['timeout'] = $this->settings->get('advanced.connection_timeout');
-
-    $validate_url = $this->getServerValidateUrl($ticket, $service_params);
-    $this->casHelper->log(
-      LogLevel::DEBUG,
-      'Attempting to validate service ticket %ticket by making request to URL %url',
-      ['%ticket' => $ticket, '%url' => $validate_url]
-    );
-
-    try {
-      $response = $this->httpClient->get($validate_url, $options);
-      $response_data = $response->getBody()->__toString();
-      $this->casHelper->log(LogLevel::DEBUG, "Validation response received from CAS server: %data", ['%data' => $response_data]);
-    }
-    catch (RequestException $e) {
-      throw new CasValidateException("Error with request to validate ticket: " . $e->getMessage());
-    }
-
-    return $this->validateEcas($response_data);
+  /**
+   * Constructor.
+   *
+   * @param \GuzzleHttp\Client $http_client
+   *   The HTTP Client library.
+   * @param \Drupal\cas\Service\CasHelper $cas_helper
+   *   The CAS Helper service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory.
+   * @param \Drupal\Core\Routing\UrlGeneratorInterface $url_generator
+   *   The URL generator.
+   */
+  public function __construct(Client $http_client, CasHelper $cas_helper, ConfigFactoryInterface $config_factory, UrlGeneratorInterface $url_generator) {
+    parent::__construct($http_client, $cas_helper, $config_factory, $url_generator);
+    $this->ecasSettings = $config_factory->get('oe_authentication.settings');
   }
 
   /**
    * {@inheritdoc}
    */
-  private function validateEcas($data) {
+  private function validateVersion2($data) {
     $dom = new \DOMDocument();
     $dom->preserveWhiteSpace = FALSE;
     $dom->encoding = "utf-8";
@@ -106,6 +90,7 @@ class ECasValidator extends CasValidator {
     );
     $property_bag = new CasPropertyBag($username);
 
+    // ECAS provides all atributes as children of the success_element.
     $property_bag->setAttributes($this->parseAttributes($success_element));
 
     // Look for a proxy chain, and if it exists, validate it against config.
@@ -242,6 +227,75 @@ class ECasValidator extends CasValidator {
       ['%attributes' => print_r($attributes, TRUE)]
     );
     return $attributes;
+  }
+
+  /**
+   * Return the validation URL used to validate the provided ticket.
+   *
+   * @param string $ticket
+   *   The ticket to validate.
+   * @param array $service_params
+   *   An array of query string parameters to add to the service URL.
+   *
+   * @return string
+   *   The fully constructed validation URL.
+   */
+  public function getServerValidateUrl($ticket, array $service_params = []) {
+    $validate_url = $this->casHelper->getServerBaseUrl();
+    $path = '';
+    switch ($this->settings->get('server.version')) {
+      case "1.0":
+        $path = 'validate';
+        break;
+
+      case "2.0":
+        if ($this->settings->get('proxy.can_be_proxied')) {
+          $path = 'proxyValidate';
+        }
+        else {
+          // Custom ECAS validation path.
+          $path = 'TicketValidationService';
+        }
+        break;
+
+      case "3.0":
+        if ($this->settings->get('proxy.can_be_proxied')) {
+          $path = 'p3/proxyValidate';
+        }
+        else {
+          $path = 'p3/serviceValidate';
+        }
+        break;
+    }
+    $validate_url .= $path;
+
+    $params = [];
+    $params['service'] = $this->urlGenerator->generate('cas.service', $service_params, UrlGeneratorInterface::ABSOLUTE_URL);
+    $params['ticket'] = $ticket;
+    // We add the necessary ECAS parameters.
+    $params['assuranceLevel'] = $this->ecasSettings->get('assurance_level');
+    $params['ticketTypes'] = $this->ecasSettings->get('ticket_types');
+    if ($this->settings->get('proxy.initialize')) {
+      $params['pgtUrl'] = $this->formatProxyCallbackUrl();
+    }
+    return $validate_url . '?' . UrlHelper::buildQuery($params);
+  }
+
+  /**
+   * Format the pgtCallbackURL parameter for use with proxying.
+   *
+   * We have to do a str_replace to force https for the proxy callback URL,
+   * because it must use https, and setting the option 'https => TRUE' in the
+   * options array won't force https if the user accessed the login route over
+   * http and mixed-mode sessions aren't allowed.
+   *
+   * @return string
+   *   The pgtCallbackURL, fully formatted.
+   */
+  private function formatProxyCallbackUrl() {
+    return str_replace('http://', 'https://', $this->urlGenerator->generateFromRoute('cas.proxyCallback', [], [
+      'absolute' => TRUE,
+    ]));
   }
 
 }

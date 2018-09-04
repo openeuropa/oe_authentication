@@ -28,9 +28,6 @@ class RouteSubscriber extends RouteSubscriberBase {
       'user.login.http',
       'user.logout.http',
       'user.cancel_confirm',
-      'user.reset.login',
-      'user.reset',
-      'user.reset.form',
     ];
     foreach ($routes_to_remove as $route_to_remove) {
       if ($route = $collection->get($route_to_remove)) {
