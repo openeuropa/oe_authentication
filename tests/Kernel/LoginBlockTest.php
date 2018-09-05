@@ -24,6 +24,8 @@ class LoginBlockTest extends KernelTestBase {
     'oe_authentication',
     'system',
     'user',
+    'cas',
+    'externalauth',
   ];
 
   /**
