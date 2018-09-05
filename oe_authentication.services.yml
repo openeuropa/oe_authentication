@@ -4,6 +4,6 @@ services:
     tags:
       - { name: event_subscriber }
   oe_authentication.event_subscriber:
-    class: \Drupal\oe_authentication\Event\EventSubscriber
+    class: \Drupal\oe_authentication\Event\EcasEventSubscriber
     tags:
       - { name: event_subscriber }
