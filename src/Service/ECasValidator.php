@@ -51,30 +51,33 @@ class ECasValidator extends CasValidator {
    */
   public function getServerValidateUrl($ticket, array $service_params = []) {
     $validate_url = $this->casHelper->getServerBaseUrl();
-    $path = '';
-    switch ($this->settings->get('server.version')) {
-      case "1.0":
-        $path = 'validate';
-        break;
+    $path = $this->ecasSettings->get('validation_path');
 
-      case "2.0":
-        if ($this->settings->get('proxy.can_be_proxied')) {
-          $path = 'proxyValidate';
-        }
-        else {
-          // Custom ECAS validation path.
-          $path = 'TicketValidationService';
-        }
-        break;
+    if (empty($path)) {
+      switch ($this->settings->get('server.version')) {
+        case "1.0":
+          $path = 'validate';
+          break;
 
-      case "3.0":
-        if ($this->settings->get('proxy.can_be_proxied')) {
-          $path = 'p3/proxyValidate';
-        }
-        else {
-          $path = 'p3/serviceValidate';
-        }
-        break;
+        case "2.0":
+          if ($this->settings->get('proxy.can_be_proxied')) {
+            $path = 'proxyValidate';
+          }
+          else {
+            // Custom ECAS validation path.
+            $path = 'serviceValidate';
+          }
+          break;
+
+        case "3.0":
+          if ($this->settings->get('proxy.can_be_proxied')) {
+            $path = 'p3/proxyValidate';
+          }
+          else {
+            $path = 'p3/serviceValidate';
+          }
+          break;
+      }
     }
     $validate_url .= $path;
 
