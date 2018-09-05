@@ -51,7 +51,7 @@ class EcasEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Generates the user email based on the information taken from ECAS.
+   * Parses the ECAS attributes from the validation response.
    *
    * @param \Drupal\cas\Event\CasAfterValidateEvent $event
    *   The triggered event.
@@ -82,7 +82,7 @@ class EcasEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Parse the attributes list from the CAS Server into an array.
+   * Parse the attributes list from the ECAS Server into an array.
    *
    * @param \DOMElement $node
    *   An XML element containing attributes.

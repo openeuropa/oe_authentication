@@ -14,9 +14,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class ECasValidator.
- *
- * @todo: Replace this custom class whenever
- *  https://www.drupal.org/project/cas/issues/2997099 gets fixed
  */
 class ECasValidator extends CasValidator {
 
@@ -51,6 +48,8 @@ class ECasValidator extends CasValidator {
    */
   public function getServerValidateUrl($ticket, array $service_params = []) {
     $validate_url = $this->casHelper->getServerBaseUrl();
+
+    // We gather the potential custom validation path.
     $path = $this->ecasSettings->get('validation_path');
 
     if (empty($path)) {
