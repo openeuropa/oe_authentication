@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-
 namespace Drupal\oe_authentication\Event;
 
 use Drupal\cas\Event\CasAfterValidateEvent;
@@ -11,9 +10,10 @@ use Drupal\cas\Service\CasHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class EventSubscriber.
+ * Class EcasEventSubscriber.
  *
- * @package Drupal\oe_authentication\Event
+ * The class subscribes to the events provided by the CAS module and makes
+ * the required modifications to work with ECAS.
  */
 class EcasEventSubscriber implements EventSubscriberInterface {
 
@@ -63,8 +63,8 @@ class EcasEventSubscriber implements EventSubscriberInterface {
     $dom->preserveWhiteSpace = FALSE;
     $dom->encoding = "utf-8";
 
-    // Suppress errors from this function, as we intend to throw our own
-    // exception.
+    // Suppress errors from this function, as we intend to allow other
+    // event subscribers to work on the data.
     if (@$dom->loadXML($data) === FALSE) {
       return;
     }
@@ -78,7 +78,6 @@ class EcasEventSubscriber implements EventSubscriberInterface {
     $success_element = $success_elements->item(0);
     // ECAS provides all atributes as children of the success_element.
     $property_bag->setAttributes($this->parseAttributes($success_element));
-
   }
 
   /**
