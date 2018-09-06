@@ -10,7 +10,7 @@ use Drupal\cas\Service\CasHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class EuLoginEventSubscriber.
+ * Event subscriptor for CAS module events.
  *
  * The class subscribes to the events provided by the CAS module and makes
  * the required modifications to work with EuLogin.
@@ -21,7 +21,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * Returns an array of event names this subscriber wants to listen to.
    *
    * @return array
-   *   The event names to listen to
+   *   The event names to listen to.
    */
   public static function getSubscribedEvents() {
     $events = [];

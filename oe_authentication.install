@@ -2,7 +2,7 @@
 
 /**
  * @file
- * OpenEUropa Authentication install file.
+ * OpenEuropa Authentication install file.
  */
 
 declare(strict_types = 1);
