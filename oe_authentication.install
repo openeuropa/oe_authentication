@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * OpenEuropa Authentication install file.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_install().
+ */
+function oe_authentication_install() {
+
+  // Set default settings for CAS.
+  \Drupal::configFactory()->getEditable('cas.settings')
+    ->set('server.protocol', 'http')
+    ->set('server.hostname', 'authentication')
+    ->set('server.port', '8001')
+    ->set('server.path', '/')
+    ->set('forced_login.enabled', TRUE)
+    ->set('forced_login.paths.pages', '/user/login')
+    ->set('user_accounts.prevent_normal_login', TRUE)
+    ->set('user_accounts.auto_register', TRUE)
+    ->set('login_link_enabled', TRUE)
+    ->set('user_accounts.restrict_password_management', TRUE)
+    ->set('user_accounts.restrict_email_management', TRUE)
+    ->save();
+}

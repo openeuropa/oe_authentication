@@ -1,1 +1,3 @@
-base_url: http://authentication:8001
+validation_path: ''
+assurance_level: LOW
+ticket_types: SERVICE

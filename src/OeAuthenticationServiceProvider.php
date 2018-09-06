@@ -2,13 +2,14 @@
 
 declare(strict_types = 1);
 
+
 namespace Drupal\oe_authentication;
 
-use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\DependencyInjection\ServiceProviderBase;
 
 /**
- * Discovery for the OE Authentication library settings.
+ * Custom service provider that allows the alteration of existing services.
  */
 class OeAuthenticationServiceProvider extends ServiceProviderBase {
 
@@ -16,9 +17,10 @@ class OeAuthenticationServiceProvider extends ServiceProviderBase {
    * {@inheritdoc}
    */
   public function alter(ContainerBuilder $container) {
-    parent::alter($container);
-    // Disable the cookie authentication provider (default login provider).
-    $container->removeDefinition('user.authentication.cookie');
+    // We provide a custom EuLogin validator.
+    // @todo remove this when OPENEUROPA-1206 gets in (patch gets created).
+    $definition = $container->getDefinition('cas.validator');
+    $definition->setClass('Drupal\oe_authentication\Service\EuLoginValidator');
   }
 
 }
