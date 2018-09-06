@@ -21,7 +21,7 @@ The recommended way of installing the OpenEuropa Authentication module is via a 
 composer require openeuropa/oe_authentication
 ```
 
-Before being able to use the module, you will need to specify the ECAS service parameters
+Before being able to use the module, you will need to specify the EuLogin service parameters
 in your Drupal installation's `./sites/default/settings.php` file as shown below:
 
 ```
@@ -31,13 +31,13 @@ $config['cas.settings']['server']['path'] = '/cas';
 $config['cas.settings']['server']['protocol'] = 'https';
 ```
 
-In addition, in order to use ECAS based servers you will need to you will need to define the following parameters:
+In addition, in order to use EuLogin based servers you will need to you will need to define the following parameters:
 ```
 $config['oe_authentication.settings']['validation_path'] = 'ticketValidation';
 $config['oe_authentication.settings']['assurance_level'] = 'LOW';
 $config['oe_authentication.settings']['ticket_types'] = 'SERVICE';
 ```
-Please refer to the ECAS documentation for more available options for those parameters.
+Please refer to the EuLogin documentation for more available options for those parameters.
 
 For more information about how to override service parameters in Drupal 8
 check the [related documentation page](https://www.drupal.org/docs/8/api/services-and-dependency-injection/services-and-dependency-injection-in-drupal-8)

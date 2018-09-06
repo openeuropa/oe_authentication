@@ -17,9 +17,9 @@ class OeAuthenticationServiceProvider extends ServiceProviderBase {
    * {@inheritdoc}
    */
   public function alter(ContainerBuilder $container) {
-    // We provide a custom ECAS validator.
+    // We provide a custom EuLogin validator.
     $definition = $container->getDefinition('cas.validator');
-    $definition->setClass('Drupal\oe_authentication\Service\ECasValidator');
+    $definition->setClass('Drupal\oe_authentication\Service\EuLoginValidator');
   }
 
 }

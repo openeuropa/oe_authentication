@@ -13,16 +13,16 @@ use GuzzleHttp\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Class ECasValidator.
+ * Class EuLoginValidator.
  */
-class ECasValidator extends CasValidator {
+class EuLoginValidator extends CasValidator {
 
   /**
-   * Stores ECAS settings object.
+   * Stores EuLogin settings object.
    *
    * @var \Drupal\Core\Config\Config
    */
-  protected $ecasSettings;
+  protected $euLoginSettings;
 
   /**
    * Constructor.
@@ -39,7 +39,7 @@ class ECasValidator extends CasValidator {
    *   The EventDispatcher service.
    */
   public function __construct(Client $http_client, CasHelper $cas_helper, ConfigFactoryInterface $config_factory, UrlGeneratorInterface $url_generator, EventDispatcherInterface $event_dispatcher) {
-    $this->ecasSettings = $config_factory->get('oe_authentication.settings');
+    $this->euLoginSettings = $config_factory->get('oe_authentication.settings');
     parent::__construct($http_client, $cas_helper, $config_factory, $url_generator, $event_dispatcher);
   }
 
@@ -50,7 +50,7 @@ class ECasValidator extends CasValidator {
     $validate_url = $this->casHelper->getServerBaseUrl();
 
     // We gather the potential custom validation path.
-    $path = $this->ecasSettings->get('validation_path');
+    $path = $this->euLoginSettings->get('validation_path');
 
     if (empty($path)) {
       switch ($this->settings->get('server.version')) {
@@ -63,7 +63,7 @@ class ECasValidator extends CasValidator {
             $path = 'proxyValidate';
           }
           else {
-            // Custom ECAS validation path.
+            // Custom EuLogin validation path.
             $path = 'serviceValidate';
           }
           break;
@@ -83,9 +83,9 @@ class ECasValidator extends CasValidator {
     $params = [];
     $params['service'] = $this->urlGenerator->generate('cas.service', $service_params, UrlGeneratorInterface::ABSOLUTE_URL);
     $params['ticket'] = $ticket;
-    // We add the necessary ECAS parameters.
-    $params['assuranceLevel'] = $this->ecasSettings->get('assurance_level');
-    $params['ticketTypes'] = $this->ecasSettings->get('ticket_types');
+    // We add the necessary EuLogin parameters.
+    $params['assuranceLevel'] = $this->euLoginSettings->get('assurance_level');
+    $params['ticketTypes'] = $this->euLoginSettings->get('ticket_types');
     if ($this->settings->get('proxy.initialize')) {
       $params['pgtUrl'] = $this->formatProxyCallbackUrl();
     }

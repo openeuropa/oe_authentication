@@ -10,12 +10,12 @@ use Drupal\cas\Service\CasHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class EcasEventSubscriber.
+ * Class EuLoginEventSubscriber.
  *
  * The class subscribes to the events provided by the CAS module and makes
- * the required modifications to work with ECAS.
+ * the required modifications to work with EuLogin.
  */
-class EcasEventSubscriber implements EventSubscriberInterface {
+class EuLoginEventSubscriber implements EventSubscriberInterface {
 
   /**
    * Returns an array of event names this subscriber wants to listen to.
@@ -31,7 +31,7 @@ class EcasEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Generates the user email based on the information taken from ECAS.
+   * Generates the user email based on the information taken from EuLogin.
    *
    * @param \Drupal\cas\Event\CasPreRegisterEvent $event
    *   The triggered event.
@@ -51,7 +51,7 @@ class EcasEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Parses the ECAS attributes from the validation response.
+   * Parses the EuLogin attributes from the validation response.
    *
    * @param \Drupal\cas\Event\CasAfterValidateEvent $event
    *   The triggered event.
@@ -76,15 +76,16 @@ class EcasEventSubscriber implements EventSubscriberInterface {
 
     // There should only be one success element, grab it and extract username.
     $success_element = $success_elements->item(0);
-    // Parse the attributes coming from ECAS and add them to the default ones.
-    $ecas_attributes = $this->parseAttributes($success_element);
-    foreach ($ecas_attributes as $key => $value) {
+    // Parse the attributes coming from Eu Login
+    // and add them to the default ones.
+    $eulogin_attributes = $this->parseAttributes($success_element);
+    foreach ($eulogin_attributes as $key => $value) {
       $property_bag->setAttribute($key, $value);
     }
   }
 
   /**
-   * Parse the attributes list from the ECAS Server into an array.
+   * Parse the attributes list from the EuLogin Server into an array.
    *
    * @param \DOMElement $node
    *   An XML element containing attributes.
