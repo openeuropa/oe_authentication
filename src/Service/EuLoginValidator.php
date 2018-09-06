@@ -13,7 +13,9 @@ use GuzzleHttp\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Class EuLoginValidator.
+ * A custom validator service to provide handling for EU Login.
+ *
+ * @todo remove this when OPENEUROPA-1206 gets in (patch gets created).
  */
 class EuLoginValidator extends CasValidator {
 
