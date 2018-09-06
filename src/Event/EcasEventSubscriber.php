@@ -76,8 +76,11 @@ class EcasEventSubscriber implements EventSubscriberInterface {
 
     // There should only be one success element, grab it and extract username.
     $success_element = $success_elements->item(0);
-    // ECAS provides all atributes as children of the success_element.
-    $property_bag->setAttributes($this->parseAttributes($success_element));
+    // Parse the attributes coming from ECAS and add them to the default ones.
+    $ecas_attributes = $this->parseAttributes($success_element);
+    foreach ($ecas_attributes as $key => $value) {
+      $property_bag->setAttribute($key, $value);
+    }
   }
 
   /**
