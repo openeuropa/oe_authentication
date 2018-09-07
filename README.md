@@ -73,7 +73,7 @@ This will:
 - Setup Drush and Drupal's settings using values from `./runner.yml.dist`. This includes adding parameters for EULogin
 - Setup PHPUnit and Behat configuration files using values from `./runner.yml.dist`
 
-Drupal's settings override the default EuLogin service parameters
+Drupal's settings overrides the default EuLogin service parameters
 in Drupal installation's `./sites/default/settings.php` file as shown below:
 
 ```
@@ -91,7 +91,7 @@ $config['oe_authentication.settings']['assurance_level'] = 'LOW';
 $config['oe_authentication.settings']['ticket_types'] = 'SERVICE';
 ```
 
-You can override later here all CAS and OpenEuropa Authentication settings.
+This way, it's possible to override here all CAS and OpenEuropa Authentication settings.
 
 After a successful setup install the site by running:
 
