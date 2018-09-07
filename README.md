@@ -2,7 +2,7 @@
 
 [![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe_authentication/status.svg?branch=master)](https://drone.fpfis.eu/openeuropa/oe_authentication)
 
-The OpenEuropa Authentication module allows to authenticate against the European Commission login service.
+The OpenEuropa Authentication module allows to authenticate against EU Login, the European Commission login service.
 
 **Table of contents:**
 
@@ -85,24 +85,19 @@ In the Drupal `settings.php` you can override CAS parameters such as the ones be
 `cas.settings` and `oe_authentication.settings` configuration objects.
 
 ```
+$config['cas.settings']['server']['protocol'] = 'http';
 $config['cas.settings']['server']['hostname'] = 'authentication';
 $config['cas.settings']['server']['port'] = '8001';
 $config['cas.settings']['server']['path'] = '/';
-$config['cas.settings']['server']['protocol'] = 'http';
-```
-
-```
 $config['oe_authentication.settings']['register_path'] = 'register';
-$config['oe_authentication.settings']['validation_path'] = 'ticketValidation';
-$config['oe_authentication.settings']['assurance_level'] = 'LOW';
-$config['oe_authentication.settings']['ticket_types'] = 'SERVICE';
+$config['oe_authentication.settings']['validation_path'] = 'serviceValidate';
 ```
 
 By default, the development setup is configured via te Task Runner to use the demo CAS server provided in the
 `docker-compose.yml.dist`, i.e. `http://authentication:8001`.
 
-If you want to test the module with the actual EU Login service, comment out the `$config['cas.settings']...` lines in
-your `settings.php` and clear the cache.
+If you want to test the module with the actual EU Login service, comment out all the lines above in your `settings.php`
+and clear the cache.
 
 ### Using Docker Compose
 

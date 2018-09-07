@@ -21,12 +21,6 @@ drupal:
         - "bower_components"
         - "vendor"
         - "${drupal.root}"
-      container_yamls:
-        - "${runner.working_dir}/build/site/default/services.yml"
-    config:
-     oe_authentication.settings:
-       register_path: "register"
-       validation_path: "serviceValidate"
 
 commands:
   drupal:site-setup:
@@ -36,7 +30,14 @@ commands:
     - { task: "run", command: "drupal:drush-setup" }
     - task: "append"
       file: "build/sites/default/default.settings.php"
-      text: "\n$config['cas.settings']['server']['protocol'] = 'http';\n$config['cas.settings']['server']['hostname'] = 'authentication';\n$config['cas.settings']['server']['port'] = '8001';\n$config['cas.settings']['server']['path'] = '/';\n"
+      text: |
+        $config['cas.settings']['server']['protocol'] = 'http';
+        $config['cas.settings']['server']['hostname'] = 'authentication';
+        $config['cas.settings']['server']['port'] = '8001';
+        $config['cas.settings']['server']['path'] = '/';
+        $config['oe_authentication.settings']['register_path'] = 'register';
+        $config['oe_authentication.settings']['validation_path'] = 'serviceValidate';
+
     - { task: "run", command: "drupal:settings-setup" }
     - { task: "run", command: "setup:phpunit" }
     - { task: "run", command: "setup:behat" }
