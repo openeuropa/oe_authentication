@@ -26,9 +26,7 @@ drupal:
     config:
      oe_authentication.settings:
        register_path: "register"
-       validation_path: "ticketValidation"
-       assurance_level: "LOW"
-       ticket_types: "SERVICE"
+       validation_path: "serviceValidate"
 
 commands:
   drupal:site-setup:
@@ -36,10 +34,10 @@ commands:
     - { task: "mkdir", dir: "${drupal.root}/themes" }
     - { task: "symlink", from: "../../..", to: "${drupal.root}/modules/custom/oe_authentication" }
     - { task: "run", command: "drupal:drush-setup" }
-    - { task: "run", command: "drupal:settings-setup" }
     - task: "append"
       file: "build/sites/default/default.settings.php"
       text: "\n$config['cas.settings']['server']['protocol'] = 'http';\n$config['cas.settings']['server']['hostname'] = 'authentication';\n$config['cas.settings']['server']['port'] = '8001';\n$config['cas.settings']['server']['path'] = '/';\n"
+    - { task: "run", command: "drupal:settings-setup" }
     - { task: "run", command: "setup:phpunit" }
     - { task: "run", command: "setup:behat" }
   setup:phpunit:
