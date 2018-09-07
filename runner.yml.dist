@@ -25,6 +25,7 @@ drupal:
         - "${runner.working_dir}/build/site/default/services.yml"
     config:
      oe_authentication.settings:
+       register_path: "register"
        validation_path: "ticketValidation"
        assurance_level: "LOW"
        ticket_types: "SERVICE"

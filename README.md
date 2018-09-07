@@ -85,6 +85,7 @@ $config['cas.settings']['server']['protocol'] = 'http';
 
 In addition, in order to use EuLogin based servers it overrides the following parameters:
 ```
+$config['oe_authentication.settings']['register_path'] = 'register';
 $config['oe_authentication.settings']['validation_path'] = 'ticketValidation';
 $config['oe_authentication.settings']['assurance_level'] = 'LOW';
 $config['oe_authentication.settings']['ticket_types'] = 'SERVICE';
