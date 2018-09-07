@@ -16,11 +16,18 @@ class RouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
+    // Replace the core register route.
+    if ($route = $collection->get('user.register')) {
+      $defaults = $route->getDefaults();
+      unset($defaults['_form']);
+      $defaults['_controller'] = '\Drupal\oe_authentication\Controller\AuthenticationController::register';
+      $route->setDefaults($defaults);
+    }
+
     // Remove these routes as to generate fatal errors wherever
     // functionality is missing.
     // @see user.routing.yml for original definition.
     $routes_to_remove = [
-      'user.register',
       'user.admin_create',
       'user.multiple_cancel_confirm',
       'user.pass',
