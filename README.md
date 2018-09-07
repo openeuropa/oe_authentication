@@ -15,32 +15,11 @@ The OpenEuropa Authentication module allows to authenticate against EU Login, th
 
 ## Installation
 
-The recommended way of installing the OpenEuropa Authentication module is via a [Composer][2].
+The recommended way of installing the OpenEuropa Authentication module is via [Composer][2].
 
 ```bash
 composer require openeuropa/oe_authentication
 ```
-
-Before being able to use the module, you will need to specify the EuLogin service parameters
-in your Drupal installation's `./sites/default/settings.php` file as shown below:
-
-```
-$config['cas.settings']['server']['hostname'] = 'ecas.ec.europa.eu';
-$config['cas.settings']['server']['port'] = NULL;
-$config['cas.settings']['server']['path'] = '/cas';
-$config['cas.settings']['server']['protocol'] = 'https';
-```
-
-In addition, in order to use EuLogin based servers you will need to you will need to define the following parameters:
-```
-$config['oe_authentication.settings']['validation_path'] = 'ticketValidation';
-$config['oe_authentication.settings']['assurance_level'] = 'LOW';
-$config['oe_authentication.settings']['ticket_types'] = 'SERVICE';
-```
-Please refer to the EuLogin documentation for more available options for those parameters.
-
-For more information about how to override service parameters in Drupal 8
-check the [related documentation page](https://www.drupal.org/docs/8/api/services-and-dependency-injection/services-and-dependency-injection-in-drupal-8)
 
 ### Enable the module
 
@@ -49,6 +28,9 @@ In order to enable the module in your project run:
 ```
 $ ./vendor/bin/drush en oe_authentication
 ```
+
+EU Login service parameters are already set by default when installing the module. Please refer to the EU Login documentation for the available options that can
+be specified. You can see Project setup section on how to override these parameters.
 
 ## Development
 
@@ -83,7 +65,7 @@ $ ./vendor/bin/run drupal:site-setup
 This will:
 
 - Symlink the theme in  `./build/modules/custom/oe_authentication` so that it's available for the test site
-- Setup Drush and Drupal's settings using values from `./runner.yml.dist`
+- Setup Drush and Drupal's settings using values from `./runner.yml.dist`. This includes adding parameters for EULogin
 - Setup PHPUnit and Behat configuration files using values from `./runner.yml.dist`
 
 After a successful setup install the site by running:
@@ -97,10 +79,30 @@ This will:
 - Install the test site
 - Enable the OpenEuropa Authentication module
 
-Then setup the mock servers dependencies by running:
+#### Settings overrides
+
+In the Drupal `settings.php` you can override CAS parameters such as the ones below, corresponding to the
+`cas.settings` and `oe_authentication.settings` configuration objects.
+
 ```
-$ ./vendor/bin/composer --no-ansi --working-dir=/var/www/html/vendor/openeuropa/pcas/demo-server/ install
+$config['cas.settings']['server']['hostname'] = 'authentication';
+$config['cas.settings']['server']['port'] = '8001';
+$config['cas.settings']['server']['path'] = '/';
+$config['cas.settings']['server']['protocol'] = 'http';
 ```
+
+```
+$config['oe_authentication.settings']['register_path'] = 'register';
+$config['oe_authentication.settings']['validation_path'] = 'ticketValidation';
+$config['oe_authentication.settings']['assurance_level'] = 'LOW';
+$config['oe_authentication.settings']['ticket_types'] = 'SERVICE';
+```
+
+By default, the development setup is configured via te Task Runner to use the demo CAS server provided in the
+`docker-compose.yml.dist`, i.e. `http://authentication:8001`.
+
+If you want to test the module with the actual EU Login service, comment out the `$config['cas.settings']...` lines in
+your `settings.php` and clear the cache.
 
 ### Using Docker Compose
 

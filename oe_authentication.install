@@ -14,16 +14,17 @@ function oe_authentication_install() {
 
   // Set default settings for CAS.
   \Drupal::configFactory()->getEditable('cas.settings')
-    ->set('server.protocol', 'http')
-    ->set('server.hostname', 'authentication')
-    ->set('server.port', '8001')
-    ->set('server.path', '/')
+    ->set('server.hostname', 'ecas.ec.europa.eu')
+    ->set('server.path', '/cas')
     ->set('forced_login.enabled', TRUE)
     ->set('forced_login.paths.pages', '/user/login')
+    ->set('logout.cas_logout', TRUE)
+    ->set('logout.logout_destination', '<front>')
     ->set('user_accounts.prevent_normal_login', TRUE)
     ->set('user_accounts.auto_register', TRUE)
-    ->set('login_link_enabled', TRUE)
     ->set('user_accounts.restrict_password_management', TRUE)
     ->set('user_accounts.restrict_email_management', TRUE)
+    ->set('user_accounts.email_hostname', 'disabled')
+    ->set('login_link_enabled', TRUE)
     ->save();
 }
