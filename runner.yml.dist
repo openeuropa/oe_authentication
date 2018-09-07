@@ -23,6 +23,10 @@ drupal:
         - "${drupal.root}"
       container_yamls:
         - "${runner.working_dir}/build/site/default/services.yml"
+    config:
+     oe_authentication.settings:
+       register_path: "register"
+       validation_path: "serviceValidate"
 
 commands:
   drupal:site-setup:
@@ -30,6 +34,9 @@ commands:
     - { task: "mkdir", dir: "${drupal.root}/themes" }
     - { task: "symlink", from: "../../..", to: "${drupal.root}/modules/custom/oe_authentication" }
     - { task: "run", command: "drupal:drush-setup" }
+    - task: "append"
+      file: "build/sites/default/default.settings.php"
+      text: "\n$config['cas.settings']['server']['protocol'] = 'http';\n$config['cas.settings']['server']['hostname'] = 'authentication';\n$config['cas.settings']['server']['port'] = '8001';\n$config['cas.settings']['server']['path'] = '/';\n"
     - { task: "run", command: "drupal:settings-setup" }
     - { task: "run", command: "setup:phpunit" }
     - { task: "run", command: "setup:behat" }

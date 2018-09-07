@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class EuLoginValidator extends CasValidator {
 
   /**
-   * Stores EuLogin settings object.
+   * Stores EU Login settings object.
    *
    * @var \Drupal\Core\Config\Config
    */
@@ -65,7 +65,7 @@ class EuLoginValidator extends CasValidator {
             $path = 'proxyValidate';
           }
           else {
-            // Custom EuLogin validation path.
+            // Custom EU Login validation path.
             $path = 'serviceValidate';
           }
           break;
@@ -85,7 +85,7 @@ class EuLoginValidator extends CasValidator {
     $params = [];
     $params['service'] = $this->urlGenerator->generate('cas.service', $service_params, UrlGeneratorInterface::ABSOLUTE_URL);
     $params['ticket'] = $ticket;
-    // We add the necessary EuLogin parameters.
+    // We add the necessary EU Login parameters.
     $params['assuranceLevel'] = $this->euLoginSettings->get('assurance_level');
     $params['ticketTypes'] = $this->euLoginSettings->get('ticket_types');
     if ($this->settings->get('proxy.initialize')) {

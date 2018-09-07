@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Event subscriber for CAS module events.
  *
  * The class subscribes to the events provided by the CAS module and makes
- * the required modifications to work with EuLogin.
+ * the required modifications to work with EU Login.
  */
 class EuLoginEventSubscriber implements EventSubscriberInterface {
 
@@ -31,7 +31,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Generates the user email based on the information taken from EuLogin.
+   * Generates the user email based on the information taken from EU Login.
    *
    * @param \Drupal\cas\Event\CasPreRegisterEvent $event
    *   The triggered event.
@@ -51,7 +51,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Parses the EuLogin attributes from the validation response.
+   * Parses the EU Login attributes from the validation response.
    *
    * @param \Drupal\cas\Event\CasAfterValidateEvent $event
    *   The triggered event.
@@ -85,7 +85,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Parse the attributes list from the EuLogin Server into an array.
+   * Parse the attributes list from the EU Login Server into an array.
    *
    * @param \DOMElement $node
    *   An XML element containing attributes.

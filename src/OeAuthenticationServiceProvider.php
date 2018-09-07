@@ -17,7 +17,7 @@ class OeAuthenticationServiceProvider extends ServiceProviderBase {
    * {@inheritdoc}
    */
   public function alter(ContainerBuilder $container) {
-    // We provide a custom EuLogin validator.
+    // We provide a custom EU Login validator.
     // @todo remove this when OPENEUROPA-1206 gets in (patch gets created).
     $definition = $container->getDefinition('cas.validator');
     $definition->setClass('Drupal\oe_authentication\Service\EuLoginValidator');
