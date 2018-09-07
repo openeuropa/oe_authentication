@@ -4,7 +4,10 @@ oe_authentication.settings:
   mapping:
     register_path:
       type: string
-      label: 'Path for new account request'
+      label: 'Application register path'
+    validation_path:
+      type: string
+      label: 'Application validation path'
     assurance_level:
       type: string
       label: 'Application assurance levels'

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Install module.
+ * OpenEuropa Authentication install file.
  */
 
 declare(strict_types = 1);
@@ -23,5 +23,7 @@ function oe_authentication_install() {
     ->set('user_accounts.prevent_normal_login', TRUE)
     ->set('user_accounts.auto_register', TRUE)
     ->set('login_link_enabled', TRUE)
+    ->set('user_accounts.restrict_password_management', TRUE)
+    ->set('user_accounts.restrict_email_management', TRUE)
     ->save();
 }

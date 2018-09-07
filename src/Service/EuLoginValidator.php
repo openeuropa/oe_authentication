@@ -13,19 +13,18 @@ use GuzzleHttp\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Class ECasValidator.
+ * A custom validator service to provide handling for EU Login.
  *
- * @todo: Replace this custom class whenever
- *  https://www.drupal.org/project/cas/issues/2997099 gets fixed
+ * @todo remove this when OPENEUROPA-1206 gets in (patch gets created).
  */
-class ECasValidator extends CasValidator {
+class EuLoginValidator extends CasValidator {
 
   /**
-   * Stores ECAS settings object.
+   * Stores EuLogin settings object.
    *
    * @var \Drupal\Core\Config\Config
    */
-  protected $ecasSettings;
+  protected $euLoginSettings;
 
   /**
    * Constructor.
@@ -42,7 +41,7 @@ class ECasValidator extends CasValidator {
    *   The EventDispatcher service.
    */
   public function __construct(Client $http_client, CasHelper $cas_helper, ConfigFactoryInterface $config_factory, UrlGeneratorInterface $url_generator, EventDispatcherInterface $event_dispatcher) {
-    $this->ecasSettings = $config_factory->get('oe_authentication.settings');
+    $this->euLoginSettings = $config_factory->get('oe_authentication.settings');
     parent::__construct($http_client, $cas_helper, $config_factory, $url_generator, $event_dispatcher);
   }
 
@@ -51,39 +50,44 @@ class ECasValidator extends CasValidator {
    */
   public function getServerValidateUrl($ticket, array $service_params = []) {
     $validate_url = $this->casHelper->getServerBaseUrl();
-    $path = '';
-    switch ($this->settings->get('server.version')) {
-      case "1.0":
-        $path = 'validate';
-        break;
 
-      case "2.0":
-        if ($this->settings->get('proxy.can_be_proxied')) {
-          $path = 'proxyValidate';
-        }
-        else {
-          // Custom ECAS validation path.
-          $path = 'TicketValidationService';
-        }
-        break;
+    // We gather the potential custom validation path.
+    $path = $this->euLoginSettings->get('validation_path');
 
-      case "3.0":
-        if ($this->settings->get('proxy.can_be_proxied')) {
-          $path = 'p3/proxyValidate';
-        }
-        else {
-          $path = 'p3/serviceValidate';
-        }
-        break;
+    if (empty($path)) {
+      switch ($this->settings->get('server.version')) {
+        case "1.0":
+          $path = 'validate';
+          break;
+
+        case "2.0":
+          if ($this->settings->get('proxy.can_be_proxied')) {
+            $path = 'proxyValidate';
+          }
+          else {
+            // Custom EuLogin validation path.
+            $path = 'serviceValidate';
+          }
+          break;
+
+        case "3.0":
+          if ($this->settings->get('proxy.can_be_proxied')) {
+            $path = 'p3/proxyValidate';
+          }
+          else {
+            $path = 'p3/serviceValidate';
+          }
+          break;
+      }
     }
     $validate_url .= $path;
 
     $params = [];
     $params['service'] = $this->urlGenerator->generate('cas.service', $service_params, UrlGeneratorInterface::ABSOLUTE_URL);
     $params['ticket'] = $ticket;
-    // We add the necessary ECAS parameters.
-    $params['assuranceLevel'] = $this->ecasSettings->get('assurance_level');
-    $params['ticketTypes'] = $this->ecasSettings->get('ticket_types');
+    // We add the necessary EuLogin parameters.
+    $params['assuranceLevel'] = $this->euLoginSettings->get('assurance_level');
+    $params['ticketTypes'] = $this->euLoginSettings->get('ticket_types');
     if ($this->settings->get('proxy.initialize')) {
       $params['pgtUrl'] = $this->formatProxyCallbackUrl();
     }

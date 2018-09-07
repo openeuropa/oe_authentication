@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-
 namespace Drupal\oe_authentication\Event;
 
 use Drupal\cas\Event\CasAfterValidateEvent;
@@ -11,17 +10,18 @@ use Drupal\cas\Service\CasHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class EventSubscriber.
+ * Event subscriber for CAS module events.
  *
- * @package Drupal\oe_authentication\Event
+ * The class subscribes to the events provided by the CAS module and makes
+ * the required modifications to work with EuLogin.
  */
-class EcasEventSubscriber implements EventSubscriberInterface {
+class EuLoginEventSubscriber implements EventSubscriberInterface {
 
   /**
    * Returns an array of event names this subscriber wants to listen to.
    *
    * @return array
-   *   The event names to listen to
+   *   The event names to listen to.
    */
   public static function getSubscribedEvents() {
     $events = [];
@@ -31,7 +31,7 @@ class EcasEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Generates the user email based on the information taken from ECAS.
+   * Generates the user email based on the information taken from EuLogin.
    *
    * @param \Drupal\cas\Event\CasPreRegisterEvent $event
    *   The triggered event.
@@ -51,7 +51,7 @@ class EcasEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Generates the user email based on the information taken from ECAS.
+   * Parses the EuLogin attributes from the validation response.
    *
    * @param \Drupal\cas\Event\CasAfterValidateEvent $event
    *   The triggered event.
@@ -63,8 +63,8 @@ class EcasEventSubscriber implements EventSubscriberInterface {
     $dom->preserveWhiteSpace = FALSE;
     $dom->encoding = "utf-8";
 
-    // Suppress errors from this function, as we intend to throw our own
-    // exception.
+    // Suppress errors from this function, as we intend to allow other
+    // event subscribers to work on the data.
     if (@$dom->loadXML($data) === FALSE) {
       return;
     }
@@ -76,13 +76,16 @@ class EcasEventSubscriber implements EventSubscriberInterface {
 
     // There should only be one success element, grab it and extract username.
     $success_element = $success_elements->item(0);
-    // ECAS provides all atributes as children of the success_element.
-    $property_bag->setAttributes($this->parseAttributes($success_element));
-
+    // Parse the attributes coming from Eu Login
+    // and add them to the default ones.
+    $eulogin_attributes = $this->parseAttributes($success_element);
+    foreach ($eulogin_attributes as $key => $value) {
+      $property_bag->setAttribute($key, $value);
+    }
   }
 
   /**
-   * Parse the attributes list from the CAS Server into an array.
+   * Parse the attributes list from the EuLogin Server into an array.
    *
    * @param \DOMElement $node
    *   An XML element containing attributes.
