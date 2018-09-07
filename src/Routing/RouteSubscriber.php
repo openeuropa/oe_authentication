@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\oe_authentication\Routing;
 
 use Drupal\Core\Routing\RouteSubscriberBase;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -16,14 +17,6 @@ class RouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-    // Replace the core register route.
-    if ($route = $collection->get('user.register')) {
-      $defaults = $route->getDefaults();
-      unset($defaults['_form']);
-      $defaults['_controller'] = '\Drupal\oe_authentication\Controller\AuthenticationController::register';
-      $route->setDefaults($defaults);
-    }
-
     // Remove these routes as to generate fatal errors wherever
     // functionality is missing.
     // @see user.routing.yml for original definition.
@@ -40,6 +33,15 @@ class RouteSubscriber extends RouteSubscriberBase {
       if ($route = $collection->get($route_to_remove)) {
         $route->setRequirement('_access', 'FALSE');
       }
+    }
+
+    // Replace the core register route controller.
+    $route = $collection->get('user.register');
+    if ($route instanceof Route) {
+      $defaults = $route->getDefaults();
+      unset($defaults['_form']);
+      $defaults['_controller'] = '\Drupal\oe_authentication\Controller\RegisterController::register';
+      $route->setDefaults($defaults);
     }
   }
 
