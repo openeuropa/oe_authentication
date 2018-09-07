@@ -21,22 +21,9 @@ The recommended way of installing the OpenEuropa Authentication module is via a 
 composer require openeuropa/oe_authentication
 ```
 
-Before being able to use the module, you will need to specify the EuLogin service parameters
-in your Drupal installation's `./sites/default/settings.php` file as shown below:
+EuLogin service parameters are already set by default.
 
-```
-$config['cas.settings']['server']['hostname'] = 'ecas.ec.europa.eu';
-$config['cas.settings']['server']['port'] = NULL;
-$config['cas.settings']['server']['path'] = '/cas';
-$config['cas.settings']['server']['protocol'] = 'https';
-```
-
-In addition, in order to use EuLogin based servers you will need to you will need to define the following parameters:
-```
-$config['oe_authentication.settings']['validation_path'] = 'ticketValidation';
-$config['oe_authentication.settings']['assurance_level'] = 'LOW';
-$config['oe_authentication.settings']['ticket_types'] = 'SERVICE';
-```
+You can see Project setup section how to oeveride these parameters.
 Please refer to the EuLogin documentation for more available options for those parameters.
 
 For more information about how to override service parameters in Drupal 8
@@ -83,8 +70,27 @@ $ ./vendor/bin/run drupal:site-setup
 This will:
 
 - Symlink the theme in  `./build/modules/custom/oe_authentication` so that it's available for the test site
-- Setup Drush and Drupal's settings using values from `./runner.yml.dist`
+- Setup Drush and Drupal's settings using values from `./runner.yml.dist`. This includes adding parameters for EULogin
 - Setup PHPUnit and Behat configuration files using values from `./runner.yml.dist`
+
+Drupal's settings override the default EuLogin service parameters
+in Drupal installation's `./sites/default/settings.php` file as shown below:
+
+```
+$config['cas.settings']['server']['hostname'] = 'authentication';
+$config['cas.settings']['server']['port'] = '8001';
+$config['cas.settings']['server']['path'] = '/';
+$config['cas.settings']['server']['protocol'] = 'http';
+```
+
+In addition, in order to use EuLogin based servers it overrides the following parameters:
+```
+$config['oe_authentication.settings']['validation_path'] = 'ticketValidation';
+$config['oe_authentication.settings']['assurance_level'] = 'LOW';
+$config['oe_authentication.settings']['ticket_types'] = 'SERVICE';
+```
+
+You can override later here all CAS and OpenEuropa Authentication settings.
 
 After a successful setup install the site by running:
 
