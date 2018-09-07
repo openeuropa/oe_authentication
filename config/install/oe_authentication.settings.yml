@@ -1,3 +1,3 @@
-register_path: /eim/external/register.cgi
+register_path: eim/external/register.cgi
 assurance_level: LOW
 ticket_types: SERVICE

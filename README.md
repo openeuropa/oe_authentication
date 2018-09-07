@@ -2,7 +2,7 @@
 
 [![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe_authentication/status.svg?branch=master)](https://drone.fpfis.eu/openeuropa/oe_authentication)
 
-The OpenEuropa Authentication module allows to authenticate against the European Commission login service.
+The OpenEuropa Authentication module allows to authenticate against EU Login, the European Commission login service.
 
 **Table of contents:**
 
@@ -21,7 +21,7 @@ The recommended way of installing the OpenEuropa Authentication module is via a 
 composer require openeuropa/oe_authentication
 ```
 
-Before being able to use the module, you will need to specify the ECAS service parameters
+Before being able to use the module, you will need to specify the EU Login service parameters
 in your Drupal installation's `./sites/default/settings.php` file as shown below:
 
 ```

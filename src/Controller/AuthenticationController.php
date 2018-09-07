@@ -6,8 +6,9 @@ namespace Drupal\oe_authentication\Controller;
 
 use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Routing\TrustedRedirectResponse;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Returns responses for OE Authentication routes.
@@ -26,12 +27,18 @@ class AuthenticationController extends ControllerBase {
    *
    * @param \Drupal\cas\Service\CasHelper $cas_helper
    *   The CAS Helper service.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
-   *   The current user.
    */
-  public function __construct(CasHelper $cas_helper = NULL, AccountProxyInterface $current_user = NULL) {
+  public function __construct(CasHelper $cas_helper) {
     $this->casHelper = $cas_helper;
-    $this->currentUser = $current_user;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('cas.helper')
+    );
   }
 
   /**
@@ -44,21 +51,30 @@ class AuthenticationController extends ControllerBase {
       throw new AccessDeniedHttpException();
     }
 
-    $query = [
-      'service' => \Drupal::url('<front>', [], ['absolute' => TRUE]),
-    ];
+    $url = $this->getRegisterUrl();
 
-    $config = \Drupal::configFactory();
-
-    $auth_config = $config->get('oe_authentication.settings');
-
-    $url = $auth_config->get('register_path');
-
-    if ($response = new RedirectResponse($url)) {
+    if ($response = new TrustedRedirectResponse($url)) {
       return $response;
     }
 
     throw new AccessDeniedHttpException();
+  }
+
+  /**
+   * Get the register URL.
+   *
+   * @return string
+   *   The register URL.
+   */
+  public function getRegisterUrl() {
+
+    $config = \Drupal::configFactory()->get('oe_authentication.settings');
+
+    $url = $this->casHelper->getServerBaseUrl()
+      . $config->get('register_path')
+      . '?service=' . \Drupal::url('<front>', [], ['absolute' => TRUE]);
+
+    return $url;
   }
 
 }
