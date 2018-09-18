@@ -1,4 +1,4 @@
 register_path: 'eim/external/register.cgi'
-validation_path: 'ticketValidation'
+validation_path: 'TicketValidationService'
 assurance_level: TOP
 ticket_types: SERVICE,PROXY
