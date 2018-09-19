@@ -1,10 +1,48 @@
 # Change Log
 
+## [1.0.0-alpha1](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha1) (2018-09-19)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.5.0...1.0.0-alpha1)
+
+**Merged pull requests:**
+
+- OPENEUROPA-1227: EULogin validation service path is wrong [\#23](https://github.com/openeuropa/oe_authentication/pull/23) ([upchuk](https://github.com/upchuk))
+- OPENEUROPA-1209: Change settings for CAS and module [\#22](https://github.com/openeuropa/oe_authentication/pull/22) ([dxvargas](https://github.com/dxvargas))
+- OPENEUROPA-168: Custom Register link [\#21](https://github.com/openeuropa/oe_authentication/pull/21) ([dxvargas](https://github.com/dxvargas))
+- OPENEUROPA-1192: Replace PCas with Cas module. [\#19](https://github.com/openeuropa/oe_authentication/pull/19) ([dxvargas](https://github.com/dxvargas))
+
+## [0.5.0](https://github.com/openeuropa/oe_authentication/tree/0.5.0) (2018-08-29)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.4.0...0.5.0)
+
+**Merged pull requests:**
+
+- OPENEUROPA-1177: Consolidate oe\_authentication [\#18](https://github.com/openeuropa/oe_authentication/pull/18) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-164: Authentication: fix login error on ECAS redirect [\#17](https://github.com/openeuropa/oe_authentication/pull/17) ([upchuk](https://github.com/upchuk))
+- OPENEUROPA-166: Added Login/Logout Block. [\#16](https://github.com/openeuropa/oe_authentication/pull/16) ([hernani](https://github.com/hernani))
+- OPENEUROPA-1146: Move pcas settings into drupal configuration [\#15](https://github.com/openeuropa/oe_authentication/pull/15) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1119: Create a docker-compose.yml.dist file [\#13](https://github.com/openeuropa/oe_authentication/pull/13) ([netlooker](https://github.com/netlooker))
+
+## [0.4.0](https://github.com/openeuropa/oe_authentication/tree/0.4.0) (2018-08-20)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.3.0...0.4.0)
+
+**Merged pull requests:**
+
+- OPENEUROPA-1159: Rename Auth to Authentification [\#12](https://github.com/openeuropa/oe_authentication/pull/12) ([Medi4tor](https://github.com/Medi4tor))
+
+## [0.3.0](https://github.com/openeuropa/oe_authentication/tree/0.3.0) (2018-08-13)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.2.0...0.3.0)
+
+**Merged pull requests:**
+
+- OPENEUROPA-758: Use single entry point object instead of requiring service file [\#11](https://github.com/openeuropa/oe_authentication/pull/11) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-632: Add minimum stability to drupal core. [\#10](https://github.com/openeuropa/oe_authentication/pull/10) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-582: Update images on docker-compose and drone file. [\#9](https://github.com/openeuropa/oe_authentication/pull/9) ([voidtek](https://github.com/voidtek))
+
 ## [0.2.0](https://github.com/openeuropa/oe_authentication/tree/0.2.0) (2018-06-25)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.1.0...0.2.0)
 
 **Merged pull requests:**
 
+- Update CHANGELOG.md for 0.2.0 release. [\#7](https://github.com/openeuropa/oe_authentication/pull/7) ([ademarco](https://github.com/ademarco))
 - OPENEUROPA-679: Make authentication service endpoint configurable [\#6](https://github.com/openeuropa/oe_authentication/pull/6) ([voidtek](https://github.com/voidtek))
 
 ## [0.1.0](https://github.com/openeuropa/oe_authentication/tree/0.1.0) (2018-06-19)
