@@ -23,7 +23,8 @@ pipeline:
     commands:
     # @todo remove "composer install" step once the following issue is fixed.
     # @link https://webgate.ec.europa.eu/CITnet/jira/browse/OPENEUROPA-1234
-    - composer install --ansi --no-suggest --no-progress
+    # @note COMPOSER_ROOT_VERSION , see https://getcomposer.org/doc/articles/troubleshooting.md#package-not-found-on-travis-ci-org
+    - COMPOSER_ROOT_VERSION=dev-${DRONE_BRANCH} composer install --ansi --no-suggest --no-progress
     - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
     when:
       matrix:
@@ -35,7 +36,7 @@ pipeline:
     volumes:
     - /cache:/cache
     commands:
-    - composer install --ansi --no-suggest --no-progress
+    - COMPOSER_ROOT_VERSION=dev-${DRONE_BRANCH} composer install --ansi --no-suggest --no-progress
     when:
       matrix:
         COMPOSER_BOUNDARY: highest
