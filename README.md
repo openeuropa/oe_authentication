@@ -1,6 +1,7 @@
 # OpenEuropa Authentication
 
 [![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe_authentication/status.svg?branch=master)](https://drone.fpfis.eu/openeuropa/oe_authentication)
+[![Packagist](https://img.shields.io/packagist/v/openeuropa/oe_authentication.svg)](https://packagist.org/packages/openeuropa/oe_authentication)
 
 The OpenEuropa Authentication module allows to authenticate against EU Login, the European Commission login service.
 
