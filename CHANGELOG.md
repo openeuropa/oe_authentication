@@ -1,10 +1,18 @@
 # Change Log
 
+## [1.0.0-alpha2](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha2) (2018-09-27)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha1...1.0.0-alpha2)
+
+**Merged pull requests:**
+
+- OPENEUROPA-784: Make sure component dependencies are as relaxed as possible. [\#20](https://github.com/openeuropa/oe_authentication/pull/20) ([aritomelo](https://github.com/aritomelo))
+
 ## [1.0.0-alpha1](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha1) (2018-09-19)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.5.0...1.0.0-alpha1)
 
 **Merged pull requests:**
 
+- Update CHANGELOG.md for 1.0.0-alpha1 [\#24](https://github.com/openeuropa/oe_authentication/pull/24) ([ademarco](https://github.com/ademarco))
 - OPENEUROPA-1227: EULogin validation service path is wrong [\#23](https://github.com/openeuropa/oe_authentication/pull/23) ([upchuk](https://github.com/upchuk))
 - OPENEUROPA-1209: Change settings for CAS and module [\#22](https://github.com/openeuropa/oe_authentication/pull/22) ([dxvargas](https://github.com/dxvargas))
 - OPENEUROPA-168: Custom Register link [\#21](https://github.com/openeuropa/oe_authentication/pull/21) ([dxvargas](https://github.com/dxvargas))
