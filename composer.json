@@ -8,20 +8,21 @@
     "require": {
         "php": "^7.1",
         "drupal/cas": "^1.0",
-        "drupal/core": "~8.6@alpha"
+        "drupal/core": "^8.6"
     },
     "require-dev": {
-        "composer/installers": "^1.2",
-        "cweagans/composer-patches": "~1.0",
-        "drupal-composer/drupal-scaffold": "^2.2",
+        "composer/installers": "~1.5",
+        "drupal-composer/drupal-scaffold": "~2.2",
         "drupal/config_devel": "~1.2",
-        "drupal/console": "^1.6",
-        "drupal/drupal-extension": "^4.0.0@alpha",
-        "drush/drush": "^9",
-        "nikic/php-parser": "~3",
-        "openeuropa/code-review": "~0.2",
-        "openeuropa/drupal-core-require-dev": "~8.6",
-        "openeuropa/task-runner": "~0.7"
+        "drupal/console": "~1.0",
+        "drupal/drupal-extension": "^4.0.0@beta",
+        "drush/drush": "~9.0@stable",
+        "nikic/php-parser": "~3.0",
+        "openeuropa/code-review": "^1.0.0-alpha4",
+        "openeuropa/drupal-core-require-dev": "^8.6",
+        "openeuropa/task-runner": "~1.0",
+        "phpunit/phpunit": "~6.0",
+        "symfony/browser-kit": "~3.0||~4.0"
     },
     "scripts": {
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
@@ -54,11 +55,11 @@
             "build/themes/contrib/{$name}": ["type:drupal-theme"]
         },
         "patches": {
-          "drupal/cas": {
-            "Add support for http CAS servers": "https://www.drupal.org/files/issues/2018-09-03/2996924-4.patch",
-            "Provide custom mail handlers": "https://www.drupal.org/files/issues/2018-09-04/2996955-2.patch",
-            "Provide after validation event": "https://www.drupal.org/files/issues/2018-09-05/2997099-4.patch"
-          }
+            "drupal/cas": {
+                "Add support for http CAS servers": "https://www.drupal.org/files/issues/2018-09-03/2996924-4.patch",
+                "Provide custom mail handlers": "https://www.drupal.org/files/issues/2018-09-04/2996955-2.patch",
+                "Provide after validation event": "https://www.drupal.org/files/issues/2018-09-05/2997099-4.patch"
+            }
         }
     },
     "config": {
