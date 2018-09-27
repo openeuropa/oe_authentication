@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_authentication\Event;
 
-use Drupal\cas\Event\CasAfterValidateEvent;
+use Drupal\cas\Event\CasPostValidateEvent;
 use Drupal\cas\Event\CasPreRegisterEvent;
+use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -26,7 +27,8 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     $events = [];
     $events[CasHelper::EVENT_PRE_REGISTER] = 'generateEmail';
-    $events[CasHelper::EVENT_AFTER_VALIDATE] = 'processAttributes';
+    $events[CasHelper::EVENT_POST_VALIDATE] = 'processAttributes';
+    $events[CasHelper::EVENT_PRE_VALIDATE] = 'alterValidationPath';
     return $events;
   }
 
@@ -53,10 +55,10 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   /**
    * Parses the EU Login attributes from the validation response.
    *
-   * @param \Drupal\cas\Event\CasAfterValidateEvent $event
+   * @param \Drupal\cas\Event\CasPostValidateEvent $event
    *   The triggered event.
    */
-  public function processAttributes(CasAfterValidateEvent $event) {
+  public function processAttributes(CasPostValidateEvent $event) {
     $data = $event->getResponseData();
     $property_bag = $event->getCasPropertyBag();
     $dom = new \DOMDocument();
@@ -107,6 +109,21 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       $attributes[$name] = $value;
     }
     return $attributes;
+  }
+
+  /**
+   * Parses the EU Login attributes from the validation response.
+   *
+   * @param \Drupal\cas\Event\CasPreValidateEvent $event
+   *   The triggered event.
+   */
+  public function alterValidationPath(CasPreValidateEvent $event) {
+    $euLoginSettings = \Drupal::config('oe_authentication.settings');
+    $params = [
+      'assuranceLevel' => $euLoginSettings->get('assurance_level'),
+      'ticketTypes' => $euLoginSettings->get('ticket_types'),
+    ];
+    $event->setParameters($params);
   }
 
 }
