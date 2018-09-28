@@ -8,6 +8,8 @@ use Drupal\cas\Event\CasPostValidateEvent;
 use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -17,6 +19,32 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * the required modifications to work with EU Login.
  */
 class EuLoginEventSubscriber implements EventSubscriberInterface {
+
+  /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Constructors the EuLoginEventSubscriber.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory.
+   */
+  public function __construct(ConfigFactoryInterface $configFactory) {
+    $this->configFactory = $configFactory;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory')
+    );
+  }
 
   /**
    * Returns an array of event names this subscriber wants to listen to.
@@ -118,13 +146,13 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    *   The triggered event.
    */
   public function alterValidationPath(CasPreValidateEvent $event) {
-    $euLoginSettings = \Drupal::config('oe_authentication.settings');
-    $event->setValidationUrl($euLoginSettings->get('validation_path'));
+    $config = $this->configFactory->get('oe_authentication.settings');
+    $event->setValidationPath($config->get('validation_path'));
     $params = [
-      'assuranceLevel' => $euLoginSettings->get('assurance_level'),
-      'ticketTypes' => $euLoginSettings->get('ticket_types'),
+      'assuranceLevel' => $config->get('assurance_level'),
+      'ticketTypes' => $config->get('ticket_types'),
     ];
-    $event->setParameters($params);
+    $event->addParameters($params);
   }
 
 }
