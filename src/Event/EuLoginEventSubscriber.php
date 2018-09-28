@@ -119,6 +119,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   public function alterValidationPath(CasPreValidateEvent $event) {
     $euLoginSettings = \Drupal::config('oe_authentication.settings');
+    $event->setValidationUrl($euLoginSettings->get('validation_path'));
     $params = [
       'assuranceLevel' => $euLoginSettings->get('assurance_level'),
       'ticketTypes' => $euLoginSettings->get('ticket_types'),

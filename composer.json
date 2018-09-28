@@ -58,7 +58,7 @@
             "drupal/cas": {
                 "Add support for http CAS servers": "https://www.drupal.org/files/issues/2018-09-03/2996924-4.patch",
                 "Provide custom mail handlers": "https://www.drupal.org/files/issues/2018-09-04/2996955-2.patch",
-                "Provide pre validation event": "https://www.drupal.org/files/issues/2018-09-27/3001882-4.patch"
+                "Provide pre validation event": "https://www.drupal.org/files/issues/2018-09-28/3001882-8.patch"
             }
         }
     },
