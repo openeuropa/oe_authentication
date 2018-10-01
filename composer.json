@@ -7,7 +7,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1",
-        "drupal/cas": "^1.0",
+        "drupal/cas": "dev-1.x",
         "drupal/core": "^8.6"
     },
     "require-dev": {
@@ -53,13 +53,6 @@
             "build/profiles/contrib/{$name}": ["type:drupal-profile"],
             "build/modules/contrib/{$name}": ["type:drupal-module"],
             "build/themes/contrib/{$name}": ["type:drupal-theme"]
-        },
-        "patches": {
-            "drupal/cas": {
-                "Add support for http CAS servers": "https://www.drupal.org/files/issues/2018-09-03/2996924-4.patch",
-                "Provide custom mail handlers": "https://www.drupal.org/files/issues/2018-09-04/2996955-2.patch",
-                "Provide after validation event": "https://www.drupal.org/files/issues/2018-09-05/2997099-4.patch"
-            }
         }
     },
     "config": {
