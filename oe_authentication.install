@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\cas\Service\CasUserManager;
+
 /**
  * Implements hook_install().
  */
@@ -24,7 +26,10 @@ function oe_authentication_install() {
     ->set('user_accounts.auto_register', TRUE)
     ->set('user_accounts.restrict_password_management', TRUE)
     ->set('user_accounts.restrict_email_management', TRUE)
-    ->set('user_accounts.email_hostname', 'disabled')
+    // We need to add a default email domain so that we can trigger
+    // the appropriate event to handle emails.
+    ->set('user_accounts.email_assignment_strategy', CasUserManager::EMAIL_ASSIGNMENT_STANDARD)
+    ->set('user_accounts.email_hostname', 'localhost')
     ->set('login_link_enabled', TRUE)
     ->save();
 }
