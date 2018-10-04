@@ -18,6 +18,7 @@ function oe_authentication_install() {
   \Drupal::configFactory()->getEditable('cas.settings')
     ->set('server.hostname', 'ecas.ec.europa.eu')
     ->set('server.path', '/cas')
+    ->set('server.version', '3')
     ->set('forced_login.enabled', TRUE)
     ->set('forced_login.paths.pages', '/user/login')
     ->set('logout.cas_logout', TRUE)
