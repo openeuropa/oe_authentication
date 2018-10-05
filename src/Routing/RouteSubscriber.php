@@ -22,7 +22,7 @@ class RouteSubscriber extends RouteSubscriberBase {
     $admin_routes = [
       'user.admin_create',
       'user.multiple_cancel_confirm',
-      'user.cancel_confirm'
+      'user.cancel_confirm',
     ];
     foreach ($admin_routes as $admin_route) {
       if ($route = $collection->get($admin_route)) {
@@ -35,7 +35,7 @@ class RouteSubscriber extends RouteSubscriberBase {
       'user.pass',
       'user.pass.http',
       'user.login.http',
-      'user.logout.http'
+      'user.logout.http',
     ];
     foreach ($internal_routes as $internal_route) {
       if ($route = $collection->get($internal_route)) {
