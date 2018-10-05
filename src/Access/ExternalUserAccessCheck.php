@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\oe_authentication\Access;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\externalauth\Authmap;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\externalauth\AuthMapInterface;
 
 /**
  * Checks whether a user is external or not.
@@ -25,20 +25,11 @@ class ExternalUserAccessCheck implements AccessInterface {
   /**
    * Constructors the ExternalUserAccessCheck.
    *
-   * @param \Drupal\externalauth\Authmap $authMap
+   * @param \Drupal\externalauth\AuthMapInterface $authMap
    *   The external authentication map.
    */
-  public function __construct(Authmap $authMap) {
+  public function __construct(AuthMapInterface $authMap) {
     $this->authMap = $authMap;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('config.factory')
-    );
   }
 
   /**
@@ -50,7 +41,7 @@ class ExternalUserAccessCheck implements AccessInterface {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(AccountInterface $account) {
+  public function access(AccountInterface $account):AccessResultInterface {
     $uid = $account->id();
     $userMapping = $this->authMap->getAll($uid);
     if (empty($userMapping)) {

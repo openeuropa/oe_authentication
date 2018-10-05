@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\oe_authentication\Access;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
 
@@ -22,7 +23,7 @@ class SuperUserAccessCheck implements AccessInterface {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(AccountInterface $account) {
+  public function access(AccountInterface $account):AccessResultInterface {
     $uid = $account->id();
     if ($uid == 1) {
       return AccessResult::allowed();
