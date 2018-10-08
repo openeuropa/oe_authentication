@@ -9,3 +9,4 @@ Feature: Login through Drupal
     Then I should see the link "Log out"
     When I click "Log out"
     Then I should not see the link "Log out"
+    And I should see the link "Log in"

@@ -7,7 +7,7 @@ namespace Drupal\Tests\oe_authentication\Behat;
 use Drupal\DrupalExtension\Context\ConfigContext;
 
 /**
- * Defines step definitions specifically for testing the RDF entities.
+ * Defines step definitions specifically for testing the CAS options.
  *
  * We are extending ConfigContext to override the setConfig() method until
  * issue https://github.com/jhedstrom/drupalextension/issues/498 is fixed.
