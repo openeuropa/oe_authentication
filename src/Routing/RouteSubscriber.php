@@ -16,7 +16,7 @@ class RouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  protected function alterRoutes(RouteCollection $collection) {
+  protected function alterRoutes(RouteCollection $collection): void {
 
     // Only the user 1 has access to user creation and deletion on Drupal.
     $admin_routes = [

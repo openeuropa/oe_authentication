@@ -41,7 +41,7 @@ class ExternalUserAccessCheck implements AccessInterface {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(AccountInterface $account):AccessResultInterface {
+  public function access(AccountInterface $account): AccessResultInterface {
     $uid = $account->id();
     $userMapping = $this->authMap->getAll($uid);
     if (empty($userMapping)) {

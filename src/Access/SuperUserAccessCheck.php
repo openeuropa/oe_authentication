@@ -23,7 +23,7 @@ class SuperUserAccessCheck implements AccessInterface {
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(AccountInterface $account):AccessResultInterface {
+  public function access(AccountInterface $account): AccessResultInterface {
     $uid = $account->id();
     if ($uid == 1) {
       return AccessResult::allowed();

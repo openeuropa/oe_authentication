@@ -52,7 +52,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * @return array
    *   The event names to listen to.
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events = [];
     $events[CasHelper::EVENT_PRE_REGISTER] = 'generateEmail';
     $events[CasHelper::EVENT_POST_VALIDATE] = 'processAttributes';
@@ -66,7 +66,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * @param \Drupal\cas\Event\CasPreRegisterEvent $event
    *   The triggered event.
    */
-  public function generateEmail(CasPreRegisterEvent $event) {
+  public function generateEmail(CasPreRegisterEvent $event): void {
     $attributes = $event->getCasPropertyBag()->getAttributes();
     if (!empty($attributes['mail'])) {
       $event->setPropertyValue('mail', $attributes['mail']);
@@ -86,7 +86,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * @param \Drupal\cas\Event\CasPostValidateEvent $event
    *   The triggered event.
    */
-  public function processAttributes(CasPostValidateEvent $event) {
+  public function processAttributes(CasPostValidateEvent $event): void {
     $data = $event->getResponseData();
     $property_bag = $event->getCasPropertyBag();
     $dom = new \DOMDocument();
@@ -123,7 +123,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * @return array
    *   An associative array of attributes.
    */
-  private function parseAttributes(\DOMElement $node) {
+  private function parseAttributes(\DOMElement $node): array {
     $attributes = [];
     // @var \DOMElement $child
     foreach ($node->childNodes as $child) {
@@ -145,7 +145,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * @param \Drupal\cas\Event\CasPreValidateEvent $event
    *   The triggered event.
    */
-  public function alterValidationPath(CasPreValidateEvent $event) {
+  public function alterValidationPath(CasPreValidateEvent $event): void {
     $config = $this->configFactory->get('oe_authentication.settings');
     $event->setValidationPath($config->get('validation_path'));
     $params = [
