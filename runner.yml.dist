@@ -35,6 +35,7 @@ commands:
         $config['cas.settings']['server']['hostname'] = 'authentication';
         $config['cas.settings']['server']['port'] = '8001';
         $config['cas.settings']['server']['path'] = '/';
+        $config['cas.settings']['server']['version'] = '3.0';
         $config['oe_authentication.settings']['register_path'] = 'register';
         $config['oe_authentication.settings']['validation_path'] = 'serviceValidate';
 
