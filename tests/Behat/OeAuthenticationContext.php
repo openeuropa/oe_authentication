@@ -15,7 +15,7 @@ use Drupal\DrupalExtension\Context\ConfigContext;
  * @todo Extend DrupalRawContext and gather the config context when the above
  * issue is fixed.
  */
-class OeAuthenticationContext extends ConfigContext {
+class AuthenticationContext extends ConfigContext {
 
   /**
    * Configures the CAS module to use Drupal login.

@@ -6,7 +6,7 @@ default:
       contexts:
         - Drupal\DrupalExtension\Context\MinkContext
         - Drupal\DrupalExtension\Context\DrupalContext
-        - Drupal\Tests\oe_authentication\Behat\OeAuthenticationContext
+        - Drupal\Tests\oe_authentication\Behat\AuthenticationContext
   extensions:
     Behat\MinkExtension:
       goutte: ~
