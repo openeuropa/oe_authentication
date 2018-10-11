@@ -51,7 +51,7 @@ class LoginBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     if ($this->currentUser->isAnonymous()) {
       return [
         '#type' => 'link',
@@ -70,7 +70,7 @@ class LoginBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return Cache::mergeContexts(parent::getCacheContexts(), ['user.roles:anonymous']);
   }
 
