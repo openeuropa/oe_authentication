@@ -25,9 +25,10 @@ class RouteSubscriber extends RouteSubscriberBase {
       'user.cancel_confirm',
     ];
     foreach ($admin_routes as $admin_route) {
-      if ($route = $collection->get($admin_route)) {
-        $route->setRequirement('_superuser_access_check', 'TRUE');
+      if (($route = $collection->get($admin_route)) === NULL) {
+        continue;
       }
+      $route->setRequirement('_superuser_access_check', 'TRUE');
     }
 
     // Restrict Drupal login to Drupal only users.
@@ -38,9 +39,11 @@ class RouteSubscriber extends RouteSubscriberBase {
       'user.logout.http',
     ];
     foreach ($internal_routes as $internal_route) {
-      if ($route = $collection->get($internal_route)) {
-        $route->setRequirement('_external_user_access_check', 'TRUE');
+      if (($route = $collection->get($internal_route)) === NULL) {
+        continue;
       }
+      $route->setRequirement('_external_user_access_check', 'TRUE');
+
     }
 
     // Replace the core register route controller.

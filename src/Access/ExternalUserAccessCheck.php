@@ -42,9 +42,7 @@ class ExternalUserAccessCheck implements AccessInterface {
    *   The access result.
    */
   public function access(AccountInterface $account): AccessResultInterface {
-    $uid = $account->id();
-    $userMapping = $this->authMap->getAll($uid);
-    if (empty($userMapping)) {
+    if ($this->authMap->getAll($account->id()) === []) {
       return AccessResult::allowed();
     }
     return AccessResult::forbidden();

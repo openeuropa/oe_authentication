@@ -24,8 +24,7 @@ class SuperUserAccessCheck implements AccessInterface {
    *   The access result.
    */
   public function access(AccountInterface $account): AccessResultInterface {
-    $uid = $account->id();
-    if ($uid == 1) {
+    if ($account->id() == 1) {
       return AccessResult::allowed();
     }
     return AccessResult::forbidden();
