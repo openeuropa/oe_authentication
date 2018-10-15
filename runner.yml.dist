@@ -28,8 +28,9 @@ commands:
     - { task: "mkdir", dir: "${drupal.root}/themes" }
     - { task: "symlink", from: "../../..", to: "${drupal.root}/modules/custom/oe_authentication" }
     - { task: "run", command: "drupal:drush-setup" }
+    - { task: "run", command: "drupal:settings-setup" }
     - task: "append"
-      file: "build/sites/default/default.settings.php"
+      file: "build/sites/default/settings.override.php"
       text: |
         $config['cas.settings']['server']['protocol'] = 'http';
         $config['cas.settings']['server']['hostname'] = 'authentication';
@@ -38,8 +39,6 @@ commands:
         $config['cas.settings']['server']['version'] = '3.0';
         $config['oe_authentication.settings']['register_path'] = 'register';
         $config['oe_authentication.settings']['validation_path'] = 'serviceValidate';
-
-    - { task: "run", command: "drupal:settings-setup" }
     - { task: "run", command: "setup:phpunit" }
     - { task: "run", command: "setup:behat" }
   setup:phpunit:
