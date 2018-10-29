@@ -14,23 +14,27 @@ use Drupal\cas\Service\CasUserManager;
  */
 function oe_authentication_install() {
 
-  // Set default settings for CAS.
-  \Drupal::configFactory()->getEditable('cas.settings')
-    ->set('server.hostname', 'ecas.ec.europa.eu')
-    ->set('server.path', '/cas')
-    ->set('server.version', '3.0')
-    ->set('forced_login.enabled', TRUE)
-    ->set('forced_login.paths.pages', '/user/login')
-    ->set('logout.cas_logout', TRUE)
-    ->set('logout.logout_destination', '<front>')
-    ->set('user_accounts.prevent_normal_login', TRUE)
-    ->set('user_accounts.auto_register', TRUE)
-    ->set('user_accounts.restrict_password_management', TRUE)
-    ->set('user_accounts.restrict_email_management', TRUE)
-    // We need to add a default email domain so that we can trigger
-    // the appropriate event to handle emails.
-    ->set('user_accounts.email_assignment_strategy', CasUserManager::EMAIL_ASSIGNMENT_STANDARD)
-    ->set('user_accounts.email_hostname', 'localhost')
-    ->set('login_link_enabled', TRUE)
-    ->save();
+  if (\Drupal::isConfigSyncing() === FALSE) {
+    // Set default settings for CAS.
+    \Drupal::configFactory()->getEditable('cas.settings')
+      ->set('server.hostname', 'ecas.ec.europa.eu')
+      ->set('server.path', '/cas')
+      ->set('server.version', '3.0')
+      ->set('forced_login.enabled', TRUE)
+      ->set('forced_login.paths.pages', '/user/login')
+      ->set('logout.cas_logout', TRUE)
+      ->set('logout.logout_destination', '<front>')
+      ->set('user_accounts.prevent_normal_login', TRUE)
+      ->set('user_accounts.auto_register', TRUE)
+      ->set('user_accounts.restrict_password_management', TRUE)
+      ->set('user_accounts.restrict_email_management', TRUE)
+      // We need to add a default email domain so that we can trigger
+      // the appropriate event to handle emails.
+      ->set('user_accounts.email_assignment_strategy', CasUserManager::EMAIL_ASSIGNMENT_STANDARD)
+      ->set('user_accounts.email_hostname', 'localhost')
+      ->set('login_link_enabled', TRUE)
+      ->save();
+
+    \Drupal::messenger()->addMessage('Please be aware that oe_authentication makes changes to the following configuration: CAS settings.');
+  }
 }
