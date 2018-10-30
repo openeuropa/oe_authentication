@@ -21,9 +21,15 @@ services:
 #    ports:
 #      - 3306:3306
   authentication:
-    image: openeuropa/pcas-server:latest
+    # For local access, run this command in the terminal
+    # echo "127.0.1.1       authentication" >> /etc/hosts
+    image: registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0
+    volumes:
+      - ./tests/fixtures/ecas-mockup-config:/data/ecas-mock-server-shared
     ports:
-      - 8001:8001
+      - 7001:7001
+      - 7002:7002
+      - 7003:7003
 
 #### Mac users: uncomment the "volumes" key to enable the NFS file sharing. You can find more information about Docker for Mac here: https://github.com/openeuropa/openeuropa/blob/master/docs/starting/tooling.md#using-docker-on-macos
 

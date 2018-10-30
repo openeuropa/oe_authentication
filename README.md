@@ -86,16 +86,16 @@ In the Drupal `settings.php` you can override CAS parameters such as the ones be
 `cas.settings` and `oe_authentication.settings` configuration objects.
 
 ```
-$config['cas.settings']['server']['protocol'] = 'http';
+$config['cas.settings']['server']['protocol'] = 'https';
 $config['cas.settings']['server']['hostname'] = 'authentication';
-$config['cas.settings']['server']['port'] = '8001';
-$config['cas.settings']['server']['path'] = '/';
+$config['cas.settings']['server']['port'] = '7002';
+$config['cas.settings']['server']['path'] = '/cas';
 $config['oe_authentication.settings']['register_path'] = 'register';
-$config['oe_authentication.settings']['validation_path'] = 'serviceValidate';
+$config['oe_authentication.settings']['validation_path'] = 'TicketValidationService';
 ```
 
 By default, the development setup is configured via te Task Runner to use the demo CAS server provided in the
-`docker-compose.yml.dist`, i.e. `http://authentication:8001`.
+`docker-compose.yml.dist`, i.e. `https://authentication:7002`.
 
 If you want to test the module with the actual EU Login service, comment out all the lines above in your `settings.php`
 and clear the cache.
@@ -123,12 +123,19 @@ Then:
 
 ```
 $ docker-compose exec web composer install
+$ docker-compose exec web ./vendor/bin/run setup:ecas-mockup
 $ docker-compose exec web ./vendor/bin/run drupal:site-install
 ```
 
 To be able to interact with the OpenEuropa Authentication mock container you need to add the internal container hostname to the hosts file _of your host OS_.
 ```
 $ echo "127.0.1.1       authentication" >> /etc/hosts
+```
+
+Before the installation use the following command to setup the web container to use the ecas-mockup server:
+
+```
+$ ./vendor/bin/run setup:ecas-mockup
 ```
 
 Your test site will be available at [http://localhost:8080/build](http://localhost:8080/build).
