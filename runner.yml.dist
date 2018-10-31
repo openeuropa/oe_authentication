@@ -2,6 +2,7 @@ drupal:
   root: "build"
   base_url: "http://web:8080/build"
   site:
+    profile: "standard"
     name: "OpenEuropa"
   database:
     host: "mysql"
@@ -21,6 +22,9 @@ drupal:
         - "bower_components"
         - "vendor"
         - "${drupal.root}"
+selenium:
+  host: "http://selenium"
+  port: "4444"
 
 commands:
   drupal:site-setup:

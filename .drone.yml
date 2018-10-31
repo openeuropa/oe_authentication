@@ -12,7 +12,12 @@ services:
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
   authentication:
-    image: openeuropa/pcas-server:latest
+    image: registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0
+  selenium:
+    image: selenium/standalone-chrome:3.11
+    environment:
+      - DISPLAY=:99
+      - SE_OPTS=-debug
 
 pipeline:
   composer-install-lowest:
@@ -43,6 +48,8 @@ pipeline:
   site-install:
     image: fpfis/httpd-php-dev:7.1
     commands:
+      # Setup to use eCAS-mockup server.
+      - ./vendor/bin/run setup:ecas-mockup
       - ./vendor/bin/run drupal:site-install
 
   grumphp:

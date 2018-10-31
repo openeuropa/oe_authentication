@@ -1,3 +1,4 @@
+@javascript
 Feature: Register through OE Authentication
   In order to be able to have new users
   As an anonymous user of the system
@@ -6,7 +7,7 @@ Feature: Register through OE Authentication
   Scenario: Register
     Given I am an anonymous user
     And I visit "/user/register"
-    # We are redirected to the mock OE Authentication server at this point.
-    Then print last response
-    Then I should see "This is an empty registration page."
 
+    # Redirected to the Ecas mockup server.
+    # @TODO: create scenarios according bussiness cases.
+    Then I should see the heading "Unauthorised Access"
