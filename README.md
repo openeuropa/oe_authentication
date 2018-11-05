@@ -90,6 +90,8 @@ $config['cas.settings']['server']['protocol'] = 'https';
 $config['cas.settings']['server']['hostname'] = 'authentication';
 $config['cas.settings']['server']['port'] = '7002';
 $config['cas.settings']['server']['path'] = '/cas';
+// SSL Configuration to not verify CAS server. DO NOT USE IN PRODUCTION!
+$config['cas.settings']['server']['verify'] = '2';
 $config['oe_authentication.settings']['register_path'] = 'register';
 $config['oe_authentication.settings']['validation_path'] = 'TicketValidationService';
 ```
@@ -99,6 +101,11 @@ By default, the development setup is configured via te Task Runner to use the de
 
 If you want to test the module with the actual EU Login service, comment out all the lines above in your `settings.php`
 and clear the cache.
+
+#### ECAS Mockup CA Certificates
+
+`./tests/fixtures/certs/ecas-mockup-ca.cer` is the certificate to be imported as trusted certificates for using the
+docker container `registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0`.
 
 ### Using Docker Compose
 
@@ -123,19 +130,12 @@ Then:
 
 ```
 $ docker-compose exec web composer install
-$ docker-compose exec web ./vendor/bin/run setup:ecas-mockup
 $ docker-compose exec web ./vendor/bin/run drupal:site-install
 ```
 
 To be able to interact with the OpenEuropa Authentication mock container you need to add the internal container hostname to the hosts file _of your host OS_.
 ```
 $ echo "127.0.1.1       authentication" >> /etc/hosts
-```
-
-Before the installation use the following command to setup the web container to use the ecas-mockup server:
-
-```
-$ ./vendor/bin/run setup:ecas-mockup
 ```
 
 Your test site will be available at [http://localhost:8080/build](http://localhost:8080/build).
