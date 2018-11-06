@@ -96,7 +96,7 @@ $config['oe_authentication.settings']['register_path'] = 'register';
 $config['oe_authentication.settings']['validation_path'] = 'TicketValidationService';
 ```
 
-By default, the development setup is configured via te Task Runner to use the demo CAS server provided in the
+By default, the development setup is configured via Task Runner to use the demo CAS server provided in the
 `docker-compose.yml.dist`, i.e. `https://authentication:7002`.
 
 If you want to test the module with the actual EU Login service, comment out all the lines above in your `settings.php`

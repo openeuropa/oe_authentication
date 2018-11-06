@@ -36,15 +36,11 @@ commands:
     - task: "append"
       file: "build/sites/default/settings.override.php"
       text: |
-        $config['cas.settings']['server']['protocol'] = 'https';
         $config['cas.settings']['server']['hostname'] = 'authentication';
         $config['cas.settings']['server']['port'] = '7002';
-        $config['cas.settings']['server']['path'] = '/cas';
-        $config['cas.settings']['server']['version'] = '3.0';
         // SSL Configuration to not verify CAS server. DO NOT USE IN PRODUCTION!
         $config['cas.settings']['server']['verify'] = '2';
         $config['oe_authentication.settings']['register_path'] = 'register';
-        $config['oe_authentication.settings']['validation_path'] = 'TicketValidationService';
     - { task: "run", command: "setup:phpunit" }
     - { task: "run", command: "setup:behat" }
   setup:phpunit:
