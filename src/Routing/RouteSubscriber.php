@@ -17,7 +17,6 @@ class RouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection): void {
-
     // Only the user 1 has access to user creation and deletion on Drupal.
     $admin_routes = [
       'user.admin_create',
@@ -53,6 +52,13 @@ class RouteSubscriber extends RouteSubscriberBase {
       unset($defaults['_form']);
       $defaults['_controller'] = '\Drupal\oe_authentication\Controller\RegisterController::register';
       $route->setDefaults($defaults);
+    }
+
+    // Replace the cas callback route controller.
+    if ($route = $collection->get('cas.proxyCallback')) {
+      $route->setDefaults([
+        '_controller' => '\Drupal\oe_authentication\Controller\ProxyCallbackController::callback',
+      ]);
     }
   }
 
