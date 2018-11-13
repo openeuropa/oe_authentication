@@ -65,6 +65,7 @@ class RegisterController extends ControllerBase {
     $cache = new CacheableMetadata();
     $cache->addCacheContexts(['user.roles:anonymous']);
     $response->addCacheableDependency($cache);
+
     return $response;
   }
 
@@ -85,6 +86,7 @@ class RegisterController extends ControllerBase {
     // bubble up to the render context or we get a Logic exception later
     // when we return a Cacheable response.
     $service = $service->toString(TRUE);
+
     return Url::fromUri($base_url . $path, ['query' => ['service' => $service->getGeneratedUrl()]]);
   }
 
