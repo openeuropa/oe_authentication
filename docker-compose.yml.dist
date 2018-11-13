@@ -25,18 +25,18 @@ services:
   selenium:
     image: selenium/standalone-chrome-debug:3.11
     environment:
-    - DISPLAY=:99
-    - SE_OPTS=-debug
+      - DISPLAY=:99
+      - SE_OPTS=-debug
     ports:
-    - '5900:5900'
+      - 5900:5900
     expose:
-    - '4444'
+      - 4444
   authentication:
     # For local access, run this command in the terminal
     # echo "127.0.1.1       authentication" >> /etc/hosts
     image: registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0
     volumes:
-      - ./tests/fixtures/ecas-mockup-config:/data/ecas-mock-server-shared
+      - ./tests/fixtures/mock-server-config:/data/ecas-mock-server-shared
     ports:
       - 7001:7001
       - 7002:7002

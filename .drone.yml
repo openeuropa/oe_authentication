@@ -23,7 +23,7 @@ pipeline:
     image: registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0
     detach: true
     entrypoint: [ /bin/bash ]
-    command: [ -c, "cp /test/oe_authentication/tests/fixtures/ecas-mockup-config/*.xml  /data/ecas-mock-server-shared; echo 'eCAS Mockup Server shared configuration is done.'; /u01/oracle/user_projects/domains/base_domain/startWebLogic.sh"]
+    command: [ -c, "cp /test/oe_authentication/tests/fixtures/mock-server-config/*.xml  /data/ecas-mock-server-shared; echo 'eCAS Mockup Server shared configuration is done.'; /u01/oracle/user_projects/domains/base_domain/startWebLogic.sh"]
   composer-install:
     group: prepare
     image: fpfis/httpd-php-dev:7.1
