@@ -102,11 +102,6 @@ By default, the development setup is configured via Task Runner to use the demo 
 If you want to test the module with the actual EU Login service, comment out all the lines above in your `settings.php`
 and clear the cache.
 
-#### ECAS Mockup CA Certificates
-
-`./tests/fixtures/certs/ecas-mockup-ca.cer` is the certificate to be imported as trusted certificates for using the
-docker container `registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0`.
-
 ### Using Docker Compose
 
 The setup procedure described above can be sensitively simplified by using Docker Compose.
