@@ -25,7 +25,8 @@ class ProxyCallbackController extends CASProxyCallbackController {
 
     // @TODO: Check that request is coming from configured CAS server to avoid
     // filling up the table with bogus pgt values.
-    // $authentication_server = $this->casHelper->getServerBaseUrl();
+    $authentication_server = $this->casHelper->getServerBaseUrl();
+
     $pgt_id = $current_request->request->get('pgtId');
     $pgt_iou = $current_request->request->get('pgtIou');
 

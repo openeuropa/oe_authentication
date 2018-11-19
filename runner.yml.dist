@@ -2,8 +2,8 @@ drupal:
   root: "build"
   base_url: "http://web:8080/build"
   site:
-    profile: "standard"
     name: "OpenEuropa"
+    profile: "standard"
   database:
     host: "mysql"
     port: "3306"
@@ -12,7 +12,9 @@ drupal:
     password: ""
   post_install:
     # Prepare the instance.
+    - "./vendor/bin/drush en toolbar -y"
     - "./vendor/bin/drush en config_devel -y"
+    # Enable the modules.
     - "./vendor/bin/drush en oe_authentication -y"
     - "./vendor/bin/drush cr"
   settings:
@@ -38,9 +40,13 @@ commands:
       text: |
         $config['cas.settings']['server']['hostname'] = 'authentication';
         $config['cas.settings']['server']['port'] = '7002';
+        $config['cas.settings']['proxy']['initialize'] = TRUE;
         // SSL Configuration to not verify CAS server. DO NOT USE IN PRODUCTION!
         $config['cas.settings']['server']['verify'] = '2';
+        // DEBUG
+        $config['cas.settings']['forced_login']['enabled'] = FALSE;
         $config['oe_authentication.settings']['register_path'] = 'register';
+        $config['oe_authentication.settings']['validation_path'] = 'TicketValidationService';
     - { task: "run", command: "setup:phpunit" }
     - { task: "run", command: "setup:behat" }
   setup:phpunit:
