@@ -9,5 +9,4 @@ Feature: Register through OE Authentication
     And I visit "/user/register"
 
     # Redirected to the Ecas mockup server.
-    # @TODO: create scenarios according bussiness cases.
-    Then I should see the heading "Unauthorised Access"
+    Then I should see "Service Create an account"

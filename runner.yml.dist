@@ -44,7 +44,7 @@ commands:
         // $config['cas.settings']['proxy']['initialize'] = TRUE;
         // SSL Configuration to not verify CAS server. DO NOT USE IN PRODUCTION!
         $config['cas.settings']['server']['verify'] = '2';
-        $config['oe_authentication.settings']['register_path'] = 'register';
+        $config['oe_authentication.settings']['protocol'] = 'eulogin';
         $config['oe_authentication.settings']['validation_path'] = 'TicketValidationService';
     - { task: "run", command: "setup:phpunit" }
     - { task: "run", command: "setup:behat" }
