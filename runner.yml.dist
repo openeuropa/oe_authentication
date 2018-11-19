@@ -40,11 +40,10 @@ commands:
       text: |
         $config['cas.settings']['server']['hostname'] = 'authentication';
         $config['cas.settings']['server']['port'] = '7002';
-        $config['cas.settings']['proxy']['initialize'] = TRUE;
+        // Enable the option 'Initialize this client as a proxy'
+        // $config['cas.settings']['proxy']['initialize'] = TRUE;
         // SSL Configuration to not verify CAS server. DO NOT USE IN PRODUCTION!
         $config['cas.settings']['server']['verify'] = '2';
-        // DEBUG
-        $config['cas.settings']['forced_login']['enabled'] = FALSE;
         $config['oe_authentication.settings']['register_path'] = 'register';
         $config['oe_authentication.settings']['validation_path'] = 'TicketValidationService';
     - { task: "run", command: "setup:phpunit" }
