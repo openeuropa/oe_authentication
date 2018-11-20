@@ -22,6 +22,7 @@
         "openeuropa/code-review": "~1.0.0-alpha4",
         "openeuropa/drupal-core-require-dev": "^8.6",
         "openeuropa/task-runner": "~1.0-beta3",
+        "symfony/browser-kit": "~3.0||~4.0",
         "phpunit/phpunit": "~6.0"
     },
     "scripts": {

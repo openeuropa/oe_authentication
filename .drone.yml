@@ -69,7 +69,7 @@ pipeline:
       # Reset permission since installation runs as root. @todo Fix this on drone.
       - ./vendor/bin/drush -y config-set system.performance css.preprocess 0
       - ./vendor/bin/drush -y config-set system.performance js.preprocess 0
-      - chmod -R 777 /test/oe_authentication/build
+      - chmod -R 777 build
       # Run behat tests.
       - ./vendor/bin/behat
 
