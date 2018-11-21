@@ -3,18 +3,17 @@
 [![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe_authentication/status.svg?branch=master)](https://drone.fpfis.eu/openeuropa/oe_authentication)
 [![Packagist](https://img.shields.io/packagist/v/openeuropa/oe_authentication.svg)](https://packagist.org/packages/openeuropa/oe_authentication)
 
-The OpenEuropa Authentication module allows to authenticate against EU Login, the European Commission login service.
+The OpenEuropa Authentication module allows authentication against EU Login, the European Commission login service.
 
 **Table of contents:**
 
-- [Requirement](#requirement)
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Enable the module](#enable-the-module)
 - [Development](#development)
 - [Troubleshooting](#troubleshooting)
   
-## Requirement
+## Requirements
 
 This module requires the following modules: 
  - [Cas](https://www.drupal.org/project/cas) 
@@ -54,23 +53,22 @@ and clear the cache.
 
 ### Account Handling & Auto Registration
 
-The module enables the option that a user attempts to login with an account that is not already
-registered, they will automatically be created.
+The module enables the option that if a user attempts to login with an account that is not already
+registered, the account will automatically be created.
 
-See [Cas module](https://www.drupal.org/project/cas) for more information.
+See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ### Forced Login
 
 The module enables the Forced Login feature to force anonymous users to
 authenticate via CAS when they hit all or some of the pages on your site.
 
-See [Cas module](https://www.drupal.org/project/cas) for more information.
+See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ### SSL Verification Setting
 
-The EULogin Authentication server must be accessed over HTTPS, so be sure that the drupal site
-needs to know how to verify the SSL/TLS certificate of the Authentication server to be
-sure it is authentic.
+The EU Login Authentication server must be accessed over HTTPS and the drupal site will verify the SSL/TLS certificate 
+of the server to be sure it is authentic.
 
 For development, you can configure the module to disable this verification:
 ```php
@@ -78,30 +76,22 @@ $config['cas.settings']['server']['verify'] = '2';
 ```
 _NOTE: DO NOT USE IN PRODUCTION!_
 
-See [Cas module](https://www.drupal.org/project/cas) for more information.
+See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ### Proxy
 
-You can configure the module to "Initialize this client as a proxy" allows 
-to make authenticated requests to 3rd services (e.g. ePOETRY). 
+You can configure the module to "Initialize this client as a proxy" which allows 
+authentication requests to 3rd party services (e.g. ePOETRY). 
 
 ```php
 $config['cas.settings']['proxy']['initialize'] = TRUE;
 ```
 
-This option is not enable by default, if you want to use itm please refer you to 
+This option is not enabled by default, if you want to use it please refer to 
 [Enable HTTPS PROXY for the drupal site for development.](#enable-https-proxy-for-the-drupal-site-for-development)
-to be sure that your site are available over HTTPS and have good certificates.
+to be sure that your site is available over HTTPS and has good certificates.
 
-See [Cas module](https://www.drupal.org/project/cas) for more information.
-
-## Enable the module
-
-In order to enable the module in your project run:
-
-```bash
-./vendor/bin/drush en oe_authentication
-```
+See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ## Development
 
@@ -199,8 +189,9 @@ echo "127.0.1.1       authentication" >> /etc/hosts
 To configure the container with User's structures and with some examples of User, you can use files present on the
 folder `tests/fixtures/mock-server-config/`. 
 
-The container docker that provides the EULogin Mock Service `ecas-mock-server:4.6.0` are available on a private repo
-`registry.fpfis.tech.ec.europa.eu`, please contact [DEVOPS team](DIGIT-NEXTEUROPA-DEVOPS@ec.europa.eu) to have credential.
+The container docker that provides the EULogin Mock Service `ecas-mock-server:4.6.0` is available on a private repo
+`registry.fpfis.tech.ec.europa.eu`, please contact [DEVOPS team](DIGIT-NEXTEUROPA-DEVOPS@ec.europa.eu) to request 
+access.
 
 See [Docker login](https://docs.docker.com/engine/reference/commandline/login/) to connect to the repository.
 
