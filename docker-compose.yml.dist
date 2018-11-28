@@ -43,7 +43,7 @@ services:
       - 7003:7003
 
 #### Secure container: provide a https proxy to access to website with https.
-#### @see: README.md#using-docker-on-macos
+#### @see: README.md#development
 #
 #  secureweb:
 #    image: aheimsbakk/https-proxy:4
@@ -65,8 +65,9 @@ services:
 #
 #### End Secure container.
 
-#### Mac users: uncomment the "volumes" key to enable the NFS file sharing. You can find more information about Docker for Mac here: https://github.com/openeuropa/openeuropa/blob/master/docs/starting/tooling.md#using-docker-on-macos
-
+#### Mac users: uncomment the "volumes" key to enable the NFS file sharing.
+#### You can find more information about Docker for Mac here:
+#### https://github.com/openeuropa/openeuropa/blob/master/docs/starting/tooling.md#using-docker-on-macos
 #volumes:
 #  nfsmount:
 #    driver: local
@@ -74,5 +75,4 @@ services:
 #      type: nfs
 #      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
 #      device: ":${PWD}/"
-
 #### End Mac users.

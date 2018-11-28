@@ -72,7 +72,7 @@ class ProxyCallbackTest extends KernelTestBase {
     $test_request->request->set('pgtIou', 'bar');
     $response = $kernel->handle($test_request);
     $this->assertEquals(400, $response->getStatusCode(), $response->getContent());
-    $this->assertEquals('Parameters already use', $response->getContent());
+    $this->assertEquals('Parameters already in use', $response->getContent());
   }
 
 }

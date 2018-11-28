@@ -61,7 +61,7 @@ class ProxyCallbackController extends CASProxyCallbackController {
    */
   public function callback() {
     $config = $this->configFactory->get('oe_authentication.settings');
-    if ($config->get('protocol') === 'cas') {
+    if ($config->get('protocol') !== 'eulogin') {
       parent::callback();
     }
 
@@ -82,7 +82,7 @@ class ProxyCallbackController extends CASProxyCallbackController {
     }
 
     if ($this->checkPgtMapping($pgt_iou, $pgt_id)) {
-      return new Response(t('Parameters already use'), 400);
+      return new Response(t('Parameters already in use'), 400);
     }
 
     // Store the pgtIou and pgtId in the database for later use.
@@ -118,7 +118,7 @@ class ProxyCallbackController extends CASProxyCallbackController {
       ->condition('pgt', $pgt_id)
       ->execute()->fetchAll();
 
-    return count($result) > 0 ? TRUE : FALSE;
+    return count($result) > 0;
   }
 
 }

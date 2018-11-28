@@ -162,8 +162,6 @@ Run:
 docker-compose up -d
 # Download all dependencies of the module.
 docker-compose exec web composer install
-# Setup the project before the installation. 
-docker-compose exec web ./vendor/bin/run drupal:site-setup
 # Install the site
 docker-compose exec web ./vendor/bin/run drupal:site-install
 ```
