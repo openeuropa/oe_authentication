@@ -3,16 +3,22 @@
 [![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe_authentication/status.svg?branch=master)](https://drone.fpfis.eu/openeuropa/oe_authentication)
 [![Packagist](https://img.shields.io/packagist/v/openeuropa/oe_authentication.svg)](https://packagist.org/packages/openeuropa/oe_authentication)
 
-The OpenEuropa Authentication module allows to authenticate against EU Login, the European Commission login service.
+The OpenEuropa Authentication module allows authentication against EU Login, the European Commission login service.
 
 **Table of contents:**
 
+- [Requirements](#requirements)
 - [Installation](#installation)
+- [Configuration](#configuration)
 - [Development](#development)
-  - [Project setup](#project-setup)
-  - [Using Docker Compose](#using-docker-compose)
-  - [Disable Drupal 8 caching](#disable-drupal-8-caching)
-- [Demo module](#demo-module)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contribution)
+- [Versioning](#versioning)
+  
+## Requirements
+
+This module requires the following modules: 
+ - [Cas](https://www.drupal.org/project/cas) 
 
 ## Installation
 
@@ -32,6 +38,73 @@ In order to enable the module in your project run:
 
 EU Login service parameters are already set by default when installing the module. Please refer to the EU Login documentation for the available options that can
 be specified. You can see Project setup section on how to override these parameters.
+
+## Configuration
+
+EU Login service parameters are already set by default when installing the module. Please refer to the EU Login
+documentation for the available options that can be specified. You can see Project setup section on how to override 
+these parameters.
+
+### Settings overrides
+
+In the Drupal `settings.php` you can override CAS parameters such as the ones below, corresponding to the
+`cas.settings` and `oe_authentication.settings` configuration objects.
+
+```php
+$config['cas.settings']['server']['hostname'] = 'authentication';
+$config['cas.settings']['server']['port'] = '7002';
+$config['cas.settings']['server']['path'] = '/cas';
+$config['oe_authentication.settings']['register_path'] = 'register';
+$config['oe_authentication.settings']['validation_path'] = 'TicketValidationService';
+```
+
+By default, the development setup is configured via Task Runner to use the demo CAS server provided in the
+`docker-compose.yml.dist`, i.e. `https://authentication:7002`.
+
+If you want to test the module with the actual EU Login service, comment out all the lines above in your `settings.php`
+and clear the cache.
+
+### Account Handling & Auto Registration
+
+The module enables the option that if a user attempts to login with an account that is not already
+registered, the account will automatically be created.
+
+See the [Cas module](https://www.drupal.org/project/cas) for more information.
+
+### Forced Login
+
+The module enables the Forced Login feature to force anonymous users to
+authenticate via CAS when they hit all or some of the pages on your site.
+
+See the [Cas module](https://www.drupal.org/project/cas) for more information.
+
+### SSL Verification Setting
+
+The EU Login Authentication server must be accessed over HTTPS and the drupal site will verify the SSL/TLS certificate 
+of the server to be sure it is authentic.
+
+For development, you can configure the module to disable this verification:
+```php
+$config['cas.settings']['server']['verify'] = '2';
+```
+_NOTE: DO NOT USE IN PRODUCTION!_
+
+See the [Cas module](https://www.drupal.org/project/cas) for more information.
+
+### Proxy
+
+You can configure the module to "Initialize this client as a proxy" which allows 
+authentication requests to 3rd party services (e.g. ePOETRY). 
+
+```php
+$config['cas.settings']['proxy']['initialize'] = TRUE;
+```
+
+This option is not enabled by default, if you want to use it please refer to 
+[Enable HTTPS PROXY for the drupal site for development.](#enable-https-proxy-for-the-drupal-site-for-development)
+to be sure that your site is available over HTTPS and has good certificates.
+
+See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ## Development
 
@@ -73,39 +146,6 @@ This will:
 
 - Install the test site
 - Enable the OpenEuropa Authentication module
-
-#### Settings overrides
-
-In the Drupal `settings.php` you can override CAS parameters such as the ones below, corresponding to the
-`cas.settings` and `oe_authentication.settings` configuration objects.
-
-```php
-$config['cas.settings']['server']['protocol'] = 'http';
-$config['cas.settings']['server']['hostname'] = 'authentication';
-$config['cas.settings']['server']['port'] = '8001';
-$config['cas.settings']['server']['path'] = '/';
-$config['oe_authentication.settings']['register_path'] = 'register';
-$config['oe_authentication.settings']['validation_path'] = 'serviceValidate';
-```
-
-By default, the development setup is configured via te Task Runner to use the demo CAS server provided in the
-`docker-compose.yml.dist`, i.e. `http://authentication:8001`.
-
-If you want to test the module with the actual EU Login service, comment out all the lines above in your `settings.php`
-and clear the cache.
-
-### Using Docker Compose
-
-Alternatively, you can build a development site using [Docker](https://www.docker.com/get-docker) and 
-[Docker Compose](https://docs.docker.com/compose/) with the provided configuration.
-
-Docker provides the necessary services and tools such as a web server and a database server to get the site running, 
-regardless of your local host configuration.
-
-#### Requirements:
-
-- [Docker](https://www.docker.com/get-docker)
-- [Docker Compose](https://docs.docker.com/compose/)
 
 #### Configuration
 
@@ -167,7 +207,61 @@ To run the behat tests:
 docker-compose exec web ./vendor/bin/behat
 ```
 
-### Disable Drupal 8 caching
+#### Access to OpenEuropa Authentication mock server - EULogin
+
+To be able to interact with the OpenEuropa Authentication mock container you need to add the internal container
+hostname to the hosts file _of your host OS_.
+
+```bash
+echo "127.0.1.1       authentication" >> /etc/hosts
+```
+
+To configure the container with User's structures and with some examples of User, you can use files present on the
+folder `tests/fixtures/mock-server-config/`. 
+
+The container docker that provides the EULogin Mock Service `ecas-mock-server:4.6.0` is available on a private repo
+`registry.fpfis.tech.ec.europa.eu`, please contact [DEVOPS team](DIGIT-NEXTEUROPA-DEVOPS@ec.europa.eu) to request 
+access.
+
+See [Docker login](https://docs.docker.com/engine/reference/commandline/login/) to connect to the repository.
+
+#### Enable HTTPS PROXY for the drupal site for development.
+
+To enable the https proxy, you should add the service `secureweb` to `docker-compose.yml`
+
+```dockerfile
+services:
+  secureweb:
+    image: aheimsbakk/https-proxy:4
+    ports:
+      - 80:80
+      - 443:443
+    links:
+      - <name of web container>:http
+    restart: always
+    volumes:
+      - ./tests/fixtures/certs/secureweb:/etc/ssl/private
+    environment:
+      - SERVER_NAME=secureweb
+      - SERVER_ADMIN=webmaster@mydomain.com
+      - PORT_REDIRECT=8080
+      - SSL_CERT_FILE=/etc/ssl/private/MyKeystore.crt
+      - SSL_PRIVKEY_FILE=/etc/ssl/private/MyKeystore.key
+      - SSL_CHAIN_FILE=/etc/ssl/private/MyKeystore.p12
+```
+
+To be able to interact with the https proxy container you need to add the internal container hostname to the hosts
+file _of your host OS_.
+
+```bash
+echo "127.0.1.1       secureweb" >> /etc/hosts
+```
+
+Your test site will be available at [https://secureweb/build](https://secureweb/build).
+
+### Troubleshooting
+
+#### Disable Drupal 8 caching
 
 Manually disabling Drupal 8 caching is a laborious process that is well described [here][10].
 
@@ -193,11 +287,11 @@ parameters:
 
 This is due to the following [Drupal Console issue][11].
 
-## Contributing
+### Contributing
 
 Please read [the full documentation](https://github.com/openeuropa/openeuropa) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
+### Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the available versions, see the [tags on this repository](https://github.com/openeuropa/oe_authentication/tags).
 

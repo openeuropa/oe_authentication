@@ -7,6 +7,7 @@ services:
       - 8080:8080
     volumes:
       - .:/var/www/html # Non Mac users.
+      # - ~/.cache/composer:/root/.composer/cache # use a local cache.
       # - nfsmount:/var/www/html # Mac Users with the nfsmount volume.
     environment:
       XDEBUG_CONFIG: "remote_enable=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=1"
@@ -18,15 +19,55 @@ services:
     image: percona/percona-server:5.6
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-#    ports:
-#      - 3306:3306
-  authentication:
-    image: openeuropa/pcas-server:latest
+    # ports:
+      # - 3306:3306
+  # Spawn a Selenium server which also includes a VNC server on localhost:5900 (the password is "secret")
+  selenium:
+    image: selenium/standalone-chrome-debug:3.11
+    environment:
+      - DISPLAY=:99
+      - SE_OPTS=-debug
     ports:
-      - 8001:8001
+      - 5900:5900
+    expose:
+      - 4444
+  authentication:
+    # For local access, run this command in the terminal
+    # echo "127.0.1.1       authentication" >> /etc/hosts
+    image: registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0
+    volumes:
+      - ./tests/fixtures/mock-server-config:/data/ecas-mock-server-shared
+    ports:
+      - 7001:7001
+      - 7002:7002
+      - 7003:7003
 
-#### Mac users: uncomment the "volumes" key to enable the NFS file sharing. You can find more information about Docker for Mac here: https://github.com/openeuropa/openeuropa/blob/master/docs/starting/tooling.md#using-docker-on-macos
+#### Secure container: provide a https proxy to access to website with https.
+#### @see: README.md#development
+#
+#  secureweb:
+#    image: aheimsbakk/https-proxy:4
+#    ports:
+#    - 80:80
+#    - 443:443
+#    links:
+#    - web:http
+#    restart: always
+#    volumes:
+#    - ./tests/fixtures/certs/secureweb:/etc/ssl/private
+#    environment:
+#    - SERVER_NAME=secureweb
+#    - SERVER_ADMIN=webmaster@mydomain.com
+#    - PORT_REDIRECT=8080
+#    - SSL_CERT_FILE=/etc/ssl/private/MyKeystore.crt
+#    - SSL_PRIVKEY_FILE=/etc/ssl/private/MyKeystore.key
+#    - SSL_CHAIN_FILE=/etc/ssl/private/MyKeystore.p12
+#
+#### End Secure container.
 
+#### Mac users: uncomment the "volumes" key to enable the NFS file sharing.
+#### You can find more information about Docker for Mac here:
+#### https://github.com/openeuropa/openeuropa/blob/master/docs/starting/tooling.md#using-docker-on-macos
 #volumes:
 #  nfsmount:
 #    driver: local
@@ -34,5 +75,4 @@ services:
 #      type: nfs
 #      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
 #      device: ":${PWD}/"
-
 #### End Mac users.

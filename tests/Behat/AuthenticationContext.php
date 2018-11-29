@@ -26,4 +26,13 @@ class AuthenticationContext extends ConfigContext {
     $this->setConfig('cas.settings', 'forced_login.enabled', FALSE);
   }
 
+  /**
+   * Configures the CAS module to initialize this client as a proxy.
+   *
+   * @Given the site is configured to initialize this client as a proxy
+   */
+  public function setConfigProxyInitialize(): void {
+    $this->setConfig('cas.settings', 'proxy.initialize', TRUE);
+  }
+
 }
