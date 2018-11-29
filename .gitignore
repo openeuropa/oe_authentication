@@ -12,4 +12,4 @@ services.yml
 vendor
 yarn.lock
 phpunit.xml
-docker-compose.yml
+docker-compose.*.yml
