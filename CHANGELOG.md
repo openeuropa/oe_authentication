@@ -1,10 +1,29 @@
 # Change Log
 
-## [1.0.0-alpha2](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha2) (2018-09-27)
+## [1.0.0-alpha3](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha3) (2018-12-04)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha2...1.0.0-alpha3)
+
+**Closed issues:**
+
+- Avoid touching default.settings.php [\#31](https://github.com/openeuropa/oe_authentication/issues/31)
+
+**Merged pull requests:**
+
+- OPENEUROPA-1322: Use the proper Docker way of overriding docker-composer.yml file. [\#36](https://github.com/openeuropa/oe_authentication/pull/36) ([drupol](https://github.com/drupol))
+- OPENEUROPA-1299: Override proxyCallback for ECAS. [\#35](https://github.com/openeuropa/oe_authentication/pull/35) ([voidtek](https://github.com/voidtek))
+- OPENEUROPA-1300: Ensure config changes in hook\_install don't happen if the config is being synced and show disclaimer [\#33](https://github.com/openeuropa/oe_authentication/pull/33) ([nagyad](https://github.com/nagyad))
+- OPENEUROPA-627: Avoid touching default.settings.php \#31. [\#32](https://github.com/openeuropa/oe_authentication/pull/32) ([dxvargas](https://github.com/dxvargas))
+- OPENEUROPA-1249: Allow access for Drupal users on oe\_authentication [\#30](https://github.com/openeuropa/oe_authentication/pull/30) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1260: Fix authentication logout redirect for the demo server. [\#29](https://github.com/openeuropa/oe_authentication/pull/29) ([drupol](https://github.com/drupol))
+- OPENEUROPA-1197: Add missing configuration for emails. [\#28](https://github.com/openeuropa/oe_authentication/pull/28) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1206: Removed custom service in favor of new event. [\#25](https://github.com/openeuropa/oe_authentication/pull/25) ([imanoleguskiza](https://github.com/imanoleguskiza))
+
+## [1.0.0-alpha2](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha2) (2018-09-28)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha1...1.0.0-alpha2)
 
 **Merged pull requests:**
 
+- OPENEUROPA-1241: Update CHANGELOG.md. [\#26](https://github.com/openeuropa/oe_authentication/pull/26) ([voidtek](https://github.com/voidtek))
 - OPENEUROPA-784: Make sure component dependencies are as relaxed as possible. [\#20](https://github.com/openeuropa/oe_authentication/pull/20) ([aritomelo](https://github.com/aritomelo))
 
 ## [1.0.0-alpha1](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha1) (2018-09-19)
