@@ -6,3 +6,18 @@
  */
 
 declare(strict_types = 1);
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_access() for entity type "user".
+ *
+ * Prevent users from being deleted.
+ */
+function oe_authentication_user_access(UserInterface $entity, $op, AccountInterface $account) {
+  if ($op == 'delete') {
+    return AccessResult::forbidden();
+  }
+}
