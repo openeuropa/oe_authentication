@@ -5,8 +5,8 @@ default:
         - %paths.base%/tests/features
       contexts:
         - Drupal\DrupalExtension\Context\MinkContext
-        - Drupal\DrupalExtension\Context\DrupalContext
         - Drupal\Tests\oe_authentication\Behat\AuthenticationContext
+        - Drupal\Tests\oe_authentication\Behat\DrupalContext
   extensions:
     Behat\MinkExtension:
       goutte: ~
