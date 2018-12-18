@@ -35,4 +35,29 @@ class AuthenticationContext extends ConfigContext {
     $this->setConfig('cas.settings', 'proxy.initialize', TRUE);
   }
 
+  /**
+   * Blocks a user given its username.
+   *
+   * @var string $username
+   *   The name of the user to be blocked.
+   *
+   * @When the user :username is blocked
+   *
+   * @throws \Exception
+   *   Thrown when the user with the given name does not exist.
+   */
+  public function blockUser(string $username): void {
+    $users = \Drupal::entityTypeManager()
+      ->getStorage('user')
+      ->loadByProperties([
+        'name' => $username,
+      ]);
+    /** @var \Drupal\user\Entity\User $user */
+    $user = $users ? reset($users) : FALSE;
+    if ($user) {
+      $user->block();
+      $user->save();
+    }
+  }
+
 }
