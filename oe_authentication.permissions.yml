@@ -1,3 +1,7 @@
 administer authentication configuration:
   title: 'Administer Authentication configuration'
   restrict access: false
+
+delete user:
+  title: 'Delete users'
+  description: 'Delete users from the site.'
