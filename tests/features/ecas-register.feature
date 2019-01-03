@@ -9,4 +9,4 @@ Feature: Register through OE Authentication
     And I visit "/user/register"
 
     # Redirected to the Ecas mockup server.
-    Then I should see "Service Create an account"
+    Then I should see "Create an account"
