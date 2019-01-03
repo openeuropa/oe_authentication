@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\oe_authentication\Behat;
 
+use Drupal\DrupalExtension\Context\ConfigContext;
+use Drupal\user\Entity\User;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 
@@ -101,6 +103,20 @@ class AuthenticationContext extends RawDrupalContext {
     foreach ($configs as $key => $value) {
       $this->configContext->setConfig($name, $key, $value);
     }
+  }
+
+  /**
+   * Navigates to the current user's page.
+   *
+   * @Given I visit my user page
+   */
+  public function visitOwnUserPage(): void {
+    $current_user = $this->getUserManager()->getCurrentUser();
+    /** @var \Drupal\user\Entity\User $user */
+    $user = User::load($current_user->uid);
+    /** @var \Drupal\Core\Url $url */
+    $url = $user->toUrl();
+    $this->visitPath($url->getInternalPath());
   }
 
 }
