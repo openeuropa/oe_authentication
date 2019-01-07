@@ -1,0 +1,3 @@
+administer authentication configuration:
+  title: 'Administer Authentication configuration'
+  restrict access: false

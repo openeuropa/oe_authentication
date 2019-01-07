@@ -1,0 +1,5 @@
+oe_authentication.settings:
+  title: Authentication settings
+  description: 'Configure Authentication settings.'
+  route_name: oe_authentication.settings
+  parent: system.admin_config_system
