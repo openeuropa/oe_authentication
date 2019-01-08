@@ -20,10 +20,19 @@ class AuthenticationContext extends ConfigContext {
   /**
    * Configures the CAS module to use Drupal login.
    *
-   * @Given the site is configured to use Drupal login
+   * @BeforeScenario @DrupalLogin
    */
   public function setConfigDrupalLogin(): void {
     $this->setConfig('cas.settings', 'forced_login.enabled', FALSE);
+  }
+
+  /**
+   * Configures the CAS module to use CAS login.
+   *
+   * @AfterScenario @DrupalLogin
+   */
+  public function setConfigCasLogin(): void {
+    $this->setConfig('cas.settings', 'forced_login.enabled', TRUE);
   }
 
   /**

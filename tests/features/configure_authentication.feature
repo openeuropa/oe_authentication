@@ -4,9 +4,9 @@ Feature: Authentication
   I need to be able to configure the settings
 
   Background:
-    Given the site is configured to use Drupal login
-    And I am logged in as a user with the "administer authentication configuration" permission
+    Given I am logged in as a user with the "administer authentication configuration" permission
 
+  @DrupalLogin
   Scenario: Configure Authentication settings
     Given I am on "admin/config/system/oe_authentication"
     Then I should see "Authentication settings"
