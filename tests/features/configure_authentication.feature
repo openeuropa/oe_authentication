@@ -6,7 +6,7 @@ Feature: Authentication
   Background:
     Given I am logged in as a user with the "administer authentication configuration" permission
 
-  @DrupalLogin @BackupCasConfigs
+  @DrupalLogin @BackupAuthConfigs
   Scenario: Configure Authentication settings
     Given I am on "admin/config/system/oe_authentication"
     Then I should see "Authentication settings"
@@ -23,6 +23,7 @@ Feature: Authentication
     And I fill in "Application assurance levels" with "assurance"
     And I fill in "Application available ticket types" with "ticket.test"
     And I press "Save configuration"
+    Then I should see the message "The configuration options have been saved."
     And the "Application authentication protocol" field should contain "something"
     And the "Application register path" field should contain "test/something"
     And the "Application validation path" field should contain "validation/path"

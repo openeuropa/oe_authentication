@@ -72,7 +72,7 @@ class AuthenticationContext extends ConfigContext {
   /**
    * Backup configs that need to be reverted in AfterScenario by ConfigContext.
    *
-   * @BeforeScenario @BackupCasConfigs
+   * @BeforeScenario @BackupAuthConfigs
    */
   public function backupCasConfigs(): void {
     $name = 'oe_authentication.settings';

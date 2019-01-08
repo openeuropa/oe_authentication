@@ -6,6 +6,7 @@ default:
       contexts:
         - Drupal\DrupalExtension\Context\MinkContext
         - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\Tests\oe_authentication\Behat\AuthenticationContext
   extensions:
     Behat\MinkExtension:
@@ -20,5 +21,7 @@ default:
       api_driver: "drupal"
       drupal:
         drupal_root: "${drupal.root}"
+      selectors:
+        message_selector: ".messages"
   formatters:
     progress: ~
