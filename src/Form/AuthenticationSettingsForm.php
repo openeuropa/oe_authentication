@@ -27,13 +27,6 @@ class AuthenticationSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {
-    return ['oe_authentication.settings'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['protocol'] = [
       '#type' => 'textfield',
@@ -75,6 +68,13 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       ->set('ticket_types', $form_state->getValues()['ticket_types'])
       ->save();
     parent::submitForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEditableConfigNames() {
+    return ['oe_authentication.settings'];
   }
 
 }

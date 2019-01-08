@@ -6,7 +6,7 @@ Feature: Authentication
   Background:
     Given I am logged in as a user with the "administer authentication configuration" permission
 
-  @DrupalLogin
+  @DrupalLogin @BackupCasConfigs
   Scenario: Configure Authentication settings
     Given I am on "admin/config/system/oe_authentication"
     Then I should see "Authentication settings"

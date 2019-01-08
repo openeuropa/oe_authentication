@@ -69,4 +69,18 @@ class AuthenticationContext extends ConfigContext {
     }
   }
 
+  /**
+   * Backup configs that need to be reverted in AfterScenario by ConfigContext.
+   *
+   * @BeforeScenario @BackupCasConfigs
+   */
+  public function backupCasConfigs(): void {
+    $name = 'oe_authentication.settings';
+
+    $configs = $this->getDriver()->getCore()->configGet($name);
+    foreach ($configs as $key => $backup) {
+      $this->config[$name][$key] = $backup;
+    }
+  }
+
 }
