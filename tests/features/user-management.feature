@@ -1,4 +1,4 @@
-@api @javascript
+@api
 Feature: Manage users
   In order to manage the users of the site
   As an administrator with the appropriate rights
