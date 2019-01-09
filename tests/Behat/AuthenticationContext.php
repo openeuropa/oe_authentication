@@ -27,15 +27,6 @@ class AuthenticationContext extends ConfigContext {
   }
 
   /**
-   * Configures the CAS module to use CAS login.
-   *
-   * @AfterScenario @DrupalLogin
-   */
-  public function setConfigCasLogin(): void {
-    $this->setConfig('cas.settings', 'forced_login.enabled', TRUE);
-  }
-
-  /**
    * Configures the CAS module to initialize this client as a proxy.
    *
    * @Given the site is configured to initialize this client as a proxy
