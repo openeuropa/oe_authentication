@@ -61,11 +61,11 @@ class AuthenticationSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config(static::CONFIGNAME)
-      ->set('protocol', $form_state->getValues()['protocol'])
-      ->set('register_path', $form_state->getValues()['register_path'])
-      ->set('validation_path', $form_state->getValues()['validation_path'])
-      ->set('assurance_level', $form_state->getValues()['assurance_level'])
-      ->set('ticket_types', $form_state->getValues()['ticket_types'])
+      ->set('protocol', $form_state->getValue('protocol'))
+      ->set('register_path', $form_state->getValue('register_path'))
+      ->set('validation_path', $form_state->getValue('validation_path'))
+      ->set('assurance_level', $form_state->getValue('assurance_level'))
+      ->set('ticket_types', $form_state->getValue('ticket_types'))
       ->save();
     parent::submitForm($form, $form_state);
   }

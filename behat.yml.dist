@@ -5,6 +5,7 @@ default:
         - %paths.base%/tests/features
       contexts:
         - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\ConfigContext
         - Drupal\DrupalExtension\Context\DrupalContext
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\Tests\oe_authentication\Behat\AuthenticationContext
