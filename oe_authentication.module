@@ -7,14 +7,12 @@
 
 declare(strict_types = 1);
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
- * Implements hook_form__FORM_ID_alter().
+ * Implements hook_user_cancel_methods_alter().
  *
  * Remove the option to delete users while keeping the option to block them.
  */
-function oe_authentication_form_user_cancel_form_alter(&$form, FormStateInterface $form_state) {
+function oe_authentication_user_cancel_methods_alter(&$methods) {
   $user = \Drupal::currentUser();
   if (!$user->hasPermission('delete user')) {
     $restricted_options = [
@@ -22,7 +20,7 @@ function oe_authentication_form_user_cancel_form_alter(&$form, FormStateInterfac
       'user_cancel_delete',
     ];
     foreach ($restricted_options as $restricted_option) {
-      unset($form['user_cancel_method']['#options'][$restricted_option]);
+      unset($methods[$restricted_option]);
     }
   }
 }
