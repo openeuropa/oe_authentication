@@ -15,7 +15,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
   /**
    * Name of the config being edited.
    */
-  const CONFIGNAME = 'oe_authentication.settings';
+  const CONFIG_NAME = 'oe_authentication.settings';
 
   /**
    * {@inheritdoc}
@@ -31,27 +31,27 @@ class AuthenticationSettingsForm extends ConfigFormBase {
     $form['protocol'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Application authentication protocol'),
-      '#default_value' => $this->config(static::CONFIGNAME)->get('protocol'),
+      '#default_value' => $this->config(static::CONFIG_NAME)->get('protocol'),
     ];
     $form['register_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Application register path'),
-      '#default_value' => $this->config(static::CONFIGNAME)->get('register_path'),
+      '#default_value' => $this->config(static::CONFIG_NAME)->get('register_path'),
     ];
     $form['validation_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Application validation path'),
-      '#default_value' => $this->config(static::CONFIGNAME)->get('validation_path'),
+      '#default_value' => $this->config(static::CONFIG_NAME)->get('validation_path'),
     ];
     $form['assurance_level'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Application assurance levels'),
-      '#default_value' => $this->config(static::CONFIGNAME)->get('assurance_level'),
+      '#default_value' => $this->config(static::CONFIG_NAME)->get('assurance_level'),
     ];
     $form['ticket_types'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Application available ticket types'),
-      '#default_value' => $this->config(static::CONFIGNAME)->get('ticket_types'),
+      '#default_value' => $this->config(static::CONFIG_NAME)->get('ticket_types'),
     ];
     return parent::buildForm($form, $form_state);
   }
@@ -60,7 +60,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->config(static::CONFIGNAME)
+    $this->config(static::CONFIG_NAME)
       ->set('protocol', $form_state->getValue('protocol'))
       ->set('register_path', $form_state->getValue('register_path'))
       ->set('validation_path', $form_state->getValue('validation_path'))

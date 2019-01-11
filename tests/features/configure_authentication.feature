@@ -8,7 +8,7 @@ Feature: Authentication
 
   @DrupalLogin @BackupAuthConfigs
   Scenario: Configure Authentication settings
-    Given I am on "admin/config/system/oe_authentication"
+    Given I am on "the Authentication configuration page"
     Then I should see "Authentication settings"
     # Check for the default config is there.
     And the "Application authentication protocol" field should contain "eulogin"
