@@ -4,9 +4,14 @@ default:
       paths:
         - %paths.base%/tests/features
       contexts:
-        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\ConfigContext
         - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\MinkContext
         - Drupal\Tests\oe_authentication\Behat\AuthenticationContext
+        - OpenEuropa\Behat\TransformationContext:
+            pages:
+              Authentication configuration: 'admin/config/system/oe_authentication'
   extensions:
     Behat\MinkExtension:
       goutte: ~
@@ -20,5 +25,7 @@ default:
       api_driver: "drupal"
       drupal:
         drupal_root: "${drupal.root}"
+      selectors:
+        message_selector: ".messages"
   formatters:
     progress: ~
