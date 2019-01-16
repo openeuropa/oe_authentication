@@ -17,11 +17,9 @@ class RouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection): void {
-    // Only the user 1 has access to user creation and deletion on Drupal.
+    // Only the user 1 has access to user creation.
     $admin_routes = [
       'user.admin_create',
-      'user.multiple_cancel_confirm',
-      'user.cancel_confirm',
     ];
     foreach ($admin_routes as $admin_route) {
       if (($route = $collection->get($admin_route)) === NULL) {
