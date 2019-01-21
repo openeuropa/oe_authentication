@@ -12,7 +12,7 @@ default:
         - OpenEuropa\Behat\TransformationContext:
             pages:
               Authentication configuration: 'admin/config/system/oe_authentication'
-              Register: '/user/register'
+              user registration: '/user/register'
   extensions:
     Behat\MinkExtension:
       goutte: ~
