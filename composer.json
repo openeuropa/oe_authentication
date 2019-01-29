@@ -7,7 +7,7 @@
     "prefer-stable": true,
     "require": {
         "drupal/cas": "dev-1.x",
-        "openeuropa/drupal-core-require": "^8.6",
+        "drupal/core": "^8.6",
         "php": "^7.1"
     },
     "require-dev": {
