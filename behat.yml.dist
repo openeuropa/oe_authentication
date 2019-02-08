@@ -14,7 +14,7 @@ default:
               Authentication configuration: 'admin/config/system/oe_authentication'
               user registration: '/user/register'
   extensions:
-    Behat\MinkExtension:
+    Drupal\MinkExtension:
       goutte: ~
       selenium2: ~
       browser_name: 'chrome'
