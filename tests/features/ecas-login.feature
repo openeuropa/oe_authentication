@@ -28,9 +28,9 @@ Feature: Login through OE Authentication
     # Profile contains extra fields.
     When I click "Edit"
     Then the "First Name" field should contain "Chuck"
-    Then the "Last Name" field should contain "NORRIS"
-    Then the "Department" field should contain "DIGIT.A.3.001"
-    Then the "Organisation" field should contain "eu.europa.ec"
+    And the "Last Name" field should contain "NORRIS"
+    And the "Department" field should contain "DIGIT.A.3.001"
+    And the "Organisation" field should contain "eu.europa.ec"
 
     When I click "Log out"
     # Redirected to the Ecas mockup server.

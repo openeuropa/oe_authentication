@@ -46,8 +46,6 @@ function oe_authentication_install(): void {
 }
 
 /**
- * Implements hook_update_N().
- *
  * Add custom eu login fields.
  */
 function oe_authentication_update_8001(): void {
