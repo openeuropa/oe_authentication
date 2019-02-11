@@ -68,16 +68,22 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   public function generateEmail(CasPreRegisterEvent $event): void {
     $attributes = $event->getCasPropertyBag()->getAttributes();
-    if (!empty($attributes['mail'])) {
-      $event->setPropertyValue('mail', $attributes['mail']);
+    if (!empty($attributes['email'])) {
+      $event->setPropertyValue('mail', $attributes['email']);
+    }
+    if (!empty($attributes['firstName'])) {
+      $event->setPropertyValue('field_oe_firstname', $attributes['firstName']);
+    }
+    if (!empty($attributes['lastName'])) {
+      $event->setPropertyValue('field_oe_lastname', $attributes['lastName']);
+    }
+    if (!empty($attributes['departmentNumber'])) {
+      $event->setPropertyValue('field_oe_department', $attributes['departmentNumber']);
+    }
+    if (!empty($attributes['domain'])) {
+      $event->setPropertyValue('field_oe_organisation', $attributes['domain']);
     }
 
-    if (!empty($attributes['authenticationFactors'])) {
-      $authFactors = $attributes['authenticationFactors'];
-      if (isset($authFactors['moniker'])) {
-        $event->setPropertyValue('mail', $authFactors['moniker']);
-      }
-    }
   }
 
   /**
@@ -151,6 +157,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     $params = [
       'assuranceLevel' => $config->get('assurance_level'),
       'ticketTypes' => $config->get('ticket_types'),
+      'userDetails' => 'true',
     ];
     $event->addParameters($params);
   }
