@@ -31,39 +31,40 @@ function oe_authentication_user_cancel_methods_alter(&$methods) {
  * Add custom EULogin fields.
  */
 function oe_authentication_entity_base_field_info(EntityTypeInterface $entity_type) {
-  if ($entity_type->id() == 'user') {
-    $custom_fields = [
-      '7' => [
-        'machine_name' => 'field_oe_firstname',
-        'name' => t('First Name'),
-      ],
-      '8' => [
-        'machine_name' => 'field_oe_lastname',
-        'name' => t('Last Name'),
-      ],
-      '9' => [
-        'machine_name' => 'field_oe_department',
-        'name' => t('Department'),
-      ],
-      '10' => [
-        'machine_name' => 'field_oe_organisation',
-        'name' => t('Organisation'),
-      ],
-    ];
-
-    $fields = [];
-    foreach ($custom_fields as $weight => $field) {
-      $fields[$field['machine_name']] = BaseFieldDefinition::create('string')
-        ->setLabel($field['name'])
-        ->setSettings([
-          'default_value' => '',
-          'max_length' => 255,
-        ])
-        ->setDisplayOptions('form', [
-          'weight' => $weight,
-          'region' => 'content',
-        ]);
-    }
-    return $fields;
+  if ($entity_type->id() != 'user') {
+    return [];
   }
+  $custom_fields = [
+    '7' => [
+      'machine_name' => 'field_oe_firstname',
+      'name' => t('First Name'),
+    ],
+    '8' => [
+      'machine_name' => 'field_oe_lastname',
+      'name' => t('Last Name'),
+    ],
+    '9' => [
+      'machine_name' => 'field_oe_department',
+      'name' => t('Department'),
+    ],
+    '10' => [
+      'machine_name' => 'field_oe_organisation',
+      'name' => t('Organisation'),
+    ],
+  ];
+
+  $fields = [];
+  foreach ($custom_fields as $weight => $field) {
+    $fields[$field['machine_name']] = BaseFieldDefinition::create('string')
+      ->setLabel($field['name'])
+      ->setSettings([
+        'default_value' => '',
+        'max_length' => 255,
+      ])
+      ->setDisplayOptions('form', [
+        'weight' => $weight,
+        'region' => 'content',
+      ]);
+  }
+  return $fields;
 }
