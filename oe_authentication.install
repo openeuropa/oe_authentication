@@ -8,9 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\cas\Service\CasUserManager;
-use Drupal\Core\Config\FileStorage;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Implements hook_install().
@@ -42,61 +40,43 @@ function oe_authentication_install(): void {
     \Drupal::messenger()->addMessage('Please be aware that oe_authentication makes changes to the following configuration: CAS settings.');
   }
 
-  _oe_update_eulogin_fields();
 }
 
 /**
  * Add custom eu login fields.
  */
 function oe_authentication_update_8001(): void {
-  // Start the sync for new configurations.
-  $storage = new FileStorage(drupal_get_path('module', 'oe_authentication') . '/config/install');
-
-  // New fields storage.
-  $field_storages = $storage->listAll('field.storage.user');
-  foreach ($field_storages as $field_storage) {
-    $values = $storage->read($field_storage);
-    $field_storage_config = FieldStorageConfig::create($values);
-    $field_storage_config->save();
-  }
-
-  // New fields.
-  $fields = $storage->listAll('field.field.user.user');
-  foreach ($fields as $field) {
-    $values = $storage->read($field);
-    $field_config = FieldConfig::create($values);
-    $field_config->save();
-  }
-
-  _oe_update_eulogin_fields();
-}
-
-/**
- * Update form display for EULogin fields.
- */
-function _oe_update_eulogin_fields(): void {
-  // Add custom fields to the user form.
-  $properties = [
-    'targetEntityType' => 'user',
-    'bundle' => 'user',
-  ];
   $custom_fields = [
-    '7' => 'field_oe_firstname',
-    '8' => 'field_oe_lastname',
-    '9' => 'field_oe_department',
-    '10' => 'field_oe_organisation',
+    '7' => [
+      'machine_name' => 'field_oe_firstname',
+      'name' => t('First Name'),
+    ],
+    '8' => [
+      'machine_name' => 'field_oe_lastname',
+      'name' => t('Last Name'),
+    ],
+    '9' => [
+      'machine_name' => 'field_oe_department',
+      'name' => t('Department'),
+    ],
+    '10' => [
+      'machine_name' => 'field_oe_organisation',
+      'name' => t('Organisation'),
+    ],
   ];
-  if ($form_display = reset(\Drupal::entityTypeManager()->getStorage('entity_form_display')->loadByProperties($properties))) {
-    foreach ($custom_fields as $weight => $custom_field) {
-      $form_display->setComponent($custom_field, [
-        'type' => 'string_textfield',
-        'region' => 'content',
+
+  foreach ($custom_fields as $weight => $field) {
+    $storage_definition = BaseFieldDefinition::create('string')
+      ->setLabel($field['name'])
+      ->setSettings([
+        'default_value' => '',
+        'max_length' => 255,
+      ])
+      ->setDisplayOptions('form', [
         'weight' => $weight,
-        'settings' => [
-          'size' => '60',
-          'placeholder' => '',
-        ],
-      ])->save();
-    }
+        'region' => 'content',
+      ]);
+    \Drupal::entityDefinitionUpdateManager()
+      ->installFieldStorageDefinition($field['name'], 'user', 'oe_authentication', $storage_definition);
   }
 }
