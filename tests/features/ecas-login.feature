@@ -25,6 +25,13 @@ Feature: Login through OE Authentication
     When I click "My account"
     Then I should see the heading "chucknorris"
 
+    # Profile contains extra fields.
+    When I click "Edit"
+    Then the "First Name" field should contain "Chuck"
+    And the "Last Name" field should contain "NORRIS"
+    And the "Department" field should contain "DIGIT.A.3.001"
+    And the "Organisation" field should contain "eu.europa.ec"
+
     When I click "Log out"
     # Redirected to the Ecas mockup server.
     And I press the "Log me out" button

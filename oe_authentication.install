@@ -8,11 +8,12 @@
 declare(strict_types = 1);
 
 use Drupal\cas\Service\CasUserManager;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Implements hook_install().
  */
-function oe_authentication_install() {
+function oe_authentication_install(): void {
 
   if (\Drupal::isConfigSyncing() === FALSE) {
     // Set default settings for CAS.
@@ -37,5 +38,50 @@ function oe_authentication_install() {
       ->save();
 
     \Drupal::messenger()->addMessage('Please be aware that oe_authentication makes changes to the following configuration: CAS settings.');
+  }
+
+}
+
+/**
+ * Add custom eu login fields.
+ */
+function oe_authentication_update_8001(): void {
+  $custom_fields = [
+    '7' => [
+      'machine_name' => 'field_oe_firstname',
+      'name' => t('First Name'),
+      'description' => t("User's first name."),
+    ],
+    '8' => [
+      'machine_name' => 'field_oe_lastname',
+      'name' => t('Last Name'),
+      'description' => t("User's last name."),
+    ],
+    '9' => [
+      'machine_name' => 'field_oe_department',
+      'name' => t('Department'),
+      'description' => t("User's department."),
+    ],
+    '10' => [
+      'machine_name' => 'field_oe_organisation',
+      'name' => t('Organisation'),
+      'description' => t("User's organisation."),
+    ],
+  ];
+
+  foreach ($custom_fields as $weight => $field) {
+    $storage_definition = BaseFieldDefinition::create('string')
+      ->setLabel($field['name'])
+      ->setDescription($field['description'])
+      ->setSettings([
+        'default_value' => '',
+        'max_length' => 255,
+      ])
+      ->setDisplayOptions('form', [
+        'weight' => $weight,
+        'region' => 'content',
+      ]);
+    \Drupal::entityDefinitionUpdateManager()
+      ->installFieldStorageDefinition($field['name'], 'user', 'oe_authentication', $storage_definition);
   }
 }
