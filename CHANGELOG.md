@@ -1,6 +1,21 @@
 # Change Log
 
-## [1.0.0-alpha3](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha3) (2018-12-04)
+## [1.0.0-alpha4](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha4) (2019-02-19)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha3...1.0.0-alpha4)
+
+**Merged pull requests:**
+
+- OPENEUROPA-1609: Add ajax\_timeout setting for behat. [\#48](https://github.com/openeuropa/oe_authentication/pull/48) ([nagyad](https://github.com/nagyad))
+- OPENEUROPA-1586: Add extra EULogin fields. [\#47](https://github.com/openeuropa/oe_authentication/pull/47) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1609 Fix behat.yml.dist to use drupal-extension properly. [\#46](https://github.com/openeuropa/oe_authentication/pull/46) ([nagyad](https://github.com/nagyad))
+- OPENEUROPA-1520: Use drupal core. [\#45](https://github.com/openeuropa/oe_authentication/pull/45) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1533: Add --strict flag for Behat tests execution. [\#44](https://github.com/openeuropa/oe_authentication/pull/44) ([sergepavle](https://github.com/sergepavle))
+- OPENEUROPA-1522: Make sure we don't use Drupal paths in Behat scenarios. [\#43](https://github.com/openeuropa/oe_authentication/pull/43) ([sergepavle](https://github.com/sergepavle))
+- OPENEUROPA-1501: Implement configuration UI for Authentication. [\#42](https://github.com/openeuropa/oe_authentication/pull/42) ([nagyad](https://github.com/nagyad))
+- OPENEUROPA-1485: Prevent blocked users from logging in through cas [\#40](https://github.com/openeuropa/oe_authentication/pull/40) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1486: Remove access to user delete. [\#39](https://github.com/openeuropa/oe_authentication/pull/39) ([imanoleguskiza](https://github.com/imanoleguskiza))
+
+## [1.0.0-alpha3](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha3) (2018-12-05)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha2...1.0.0-alpha3)
 
 **Closed issues:**
@@ -9,6 +24,7 @@
 
 **Merged pull requests:**
 
+- OPENEUROPA-1385: Prepare the release 1.0.0-alpha3. [\#37](https://github.com/openeuropa/oe_authentication/pull/37) ([voidtek](https://github.com/voidtek))
 - OPENEUROPA-1322: Use the proper Docker way of overriding docker-composer.yml file. [\#36](https://github.com/openeuropa/oe_authentication/pull/36) ([drupol](https://github.com/drupol))
 - OPENEUROPA-1299: Override proxyCallback for ECAS. [\#35](https://github.com/openeuropa/oe_authentication/pull/35) ([voidtek](https://github.com/voidtek))
 - OPENEUROPA-1300: Ensure config changes in hook\_install don't happen if the config is being synced and show disclaimer [\#33](https://github.com/openeuropa/oe_authentication/pull/33) ([nagyad](https://github.com/nagyad))
