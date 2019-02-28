@@ -42,16 +42,47 @@ Feature: Login through OE Authentication
     And I should not see the link "Log out"
     And I should see the link "Log in"
 
+  Scenario: A user's information should update every login
+    # Login with an EULogin user.
+    Given I am on the homepage
+    And I click "Log in"
+    And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
+    And I fill in "Password" with "dragon_tattoo"
+    And I press the "Login!" button
+    And I click "Edit"
+    Then the "First Name" field should contain "Lisbeth"
+
+    # Edit the details.
+    When I fill in "First Name" with "New name"
+    And I press "Save"
+    Then I should see "The changes have been saved."
+
+    When I click "Edit"
+    Then the "First Name" field should contain "New name"
+
+    # Logout
+    When I click "Log out"
+    And I press the "Log me out" button
+    Then I should be on the homepage
+
+    # Login again and check the changed details.
+    When I click "Log in"
+    And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
+    And I fill in "Password" with "dragon_tattoo"
+    And I press the "Login!" button
+    And I click "Edit"
+    Then the "First Name" field should contain "Lisbeth"
+
+    #Logout to continue scenarios
+    When I click "Log out"
+    And I press the "Log me out" button
+    Then I should be on the homepage
+
   Scenario: A blocked user should not be able to log in
-    Given users:
-      | name      |
-      | lsalander |
-    And the user "lsalander" is blocked
-    When I am on the homepage
-    Then I should see the link "Log in"
-    And I should not see the link "Log out"
+    Given the user "lsalander" is blocked
 
     # When I try to log in again I will be denied access.
+    When I am on the homepage
     When I click "Log in"
     And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
     And I fill in "Password" with "dragon_tattoo"
