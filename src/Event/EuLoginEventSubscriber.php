@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_authentication\Event;
 
+use Drupal\cas\Event\CasPostLoginEvent;
 use Drupal\cas\Event\CasPostValidateEvent;
 use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
@@ -54,36 +55,69 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [];
-    $events[CasHelper::EVENT_PRE_REGISTER] = 'generateEmail';
+    $events[CasHelper::EVENT_POST_LOGIN] = 'updateUserData';
+    $events[CasHelper::EVENT_PRE_REGISTER] = 'generateUserData';
     $events[CasHelper::EVENT_POST_VALIDATE] = 'processAttributes';
     $events[CasHelper::EVENT_PRE_VALIDATE] = 'alterValidationPath';
     return $events;
   }
 
   /**
-   * Generates the user email based on the information taken from EU Login.
+   * Generates the user data based on the information taken from EU Login.
+   *
+   * @param \Drupal\cas\Event\CasPostLoginEvent $event
+   *   The triggered event.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   In case of failures an exception is thrown.
+   */
+  public function updateUserData(CasPostLoginEvent $event): void {
+    $properties = $this->generateUserDataArray($event->getCasPropertyBag()->getAttributes());
+    $account = $event->getAccount();
+    foreach ($properties as $name => $value) {
+      $account->set($name, $value);
+    }
+    $account->save();
+  }
+
+  /**
+   * Generates the user data based on the information taken from EU Login.
    *
    * @param \Drupal\cas\Event\CasPreRegisterEvent $event
    *   The triggered event.
    */
-  public function generateEmail(CasPreRegisterEvent $event): void {
+  public function generateUserData(CasPreRegisterEvent $event): void {
     $attributes = $event->getCasPropertyBag()->getAttributes();
+    $event->setPropertyValues($this->generateUserDataArray($attributes));
+  }
+
+  /**
+   * Generates an array of user fields and values based on the CAS attributes.
+   *
+   * @param array $attributes
+   *   An array of attributes retrieved from CAS.
+   *
+   * @return array
+   *   An array of field names and values.
+   */
+  private function generateUserDataArray(array $attributes) {
+    $properties = [];
     if (!empty($attributes['email'])) {
-      $event->setPropertyValue('mail', $attributes['email']);
+      $properties['mail'] = $attributes['email'];
     }
     if (!empty($attributes['firstName'])) {
-      $event->setPropertyValue('field_oe_firstname', $attributes['firstName']);
+      $properties['field_oe_firstname'] = $attributes['firstName'];
     }
     if (!empty($attributes['lastName'])) {
-      $event->setPropertyValue('field_oe_lastname', $attributes['lastName']);
+      $properties['field_oe_lastname'] = $attributes['lastName'];
     }
     if (!empty($attributes['departmentNumber'])) {
-      $event->setPropertyValue('field_oe_department', $attributes['departmentNumber']);
+      $properties['field_oe_department'] = $attributes['departmentNumber'];
     }
     if (!empty($attributes['domain'])) {
-      $event->setPropertyValue('field_oe_organisation', $attributes['domain']);
+      $properties['field_oe_organisation'] = $attributes['domain'];
     }
-
+    return $properties;
   }
 
   /**
