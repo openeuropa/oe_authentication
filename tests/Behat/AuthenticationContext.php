@@ -120,7 +120,7 @@ class AuthenticationContext extends RawDrupalContext {
   }
 
   /**
-   * Configures the CAS module to initialize this client as a proxy.
+   * Configures the the Drupal site so that users are active on creation.
    *
    * @Given the site is configured to make users active on creation
    */
@@ -129,7 +129,7 @@ class AuthenticationContext extends RawDrupalContext {
   }
 
   /**
-   * Configures the CAS module to initialize this client as a proxy.
+   * Configures the the Drupal site so that users are blocked on creation.
    *
    * @Given the site is configured to make users blocked on creation
    */
