@@ -119,4 +119,22 @@ class AuthenticationContext extends RawDrupalContext {
     $this->visitPath($url->getInternalPath());
   }
 
+  /**
+   * Configures the CAS module to initialize this client as a proxy.
+   *
+   * @Given the site is configured to make users active on creation
+   */
+  public function setNewUsersActive(): void {
+    $this->configContext->setConfig('user.settings', 'register', USER_REGISTER_VISITORS);
+  }
+
+  /**
+   * Configures the CAS module to initialize this client as a proxy.
+   *
+   * @Given the site is configured to make users blocked on creation
+   */
+  public function setNewUsersBlocked(): void {
+    $this->configContext->setConfig('user.settings', 'register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
+  }
+
 }
