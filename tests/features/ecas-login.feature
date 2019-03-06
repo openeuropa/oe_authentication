@@ -6,7 +6,7 @@ Feature: Login through OE Authentication
   I need to be redirect back to the site
 
   Scenario: Login/Logout with eCAS mockup server
-    When I am on the homepage
+    Given I am on the homepage
     And I click "Log in"
     And I click "European Commission"
 
@@ -60,7 +60,7 @@ Feature: Login through OE Authentication
     When I click "Edit"
     Then the "First Name" field should contain "New name"
 
-    # Logout
+    # Logout.
     When I click "Log out"
     And I press the "Log me out" button
     Then I should be on the homepage
@@ -73,16 +73,28 @@ Feature: Login through OE Authentication
     And I click "Edit"
     Then the "First Name" field should contain "Lisbeth"
 
-    #Logout to continue scenarios
+    #Logout to continue scenarios.
     When I click "Log out"
     And I press the "Log me out" button
     Then I should be on the homepage
 
   Scenario: A blocked user should not be able to log in
-    Given the user "lsalander" is blocked
+    # Login with an EULogin user.
+    Given I am on the homepage
+    And I click "Log in"
+    And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
+    And I fill in "Password" with "dragon_tattoo"
+    And I press the "Login!" button
+    Then I should see "You have been logged in."
 
-    # When I try to log in again I will be denied access.
-    When I am on the homepage
+    # Logout.
+    When I click "Log out"
+    And I press the "Log me out" button
+    Then I should be on the homepage
+
+    # Block the user and make sure that they can't log in.
+    Given the user "lsalander" is blocked
+    And I am on the homepage
     When I click "Log in"
     And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
     And I fill in "Password" with "dragon_tattoo"
