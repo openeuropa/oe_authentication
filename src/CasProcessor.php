@@ -9,6 +9,9 @@ namespace Drupal\oe_authentication;
  */
 class CasProcessor {
 
+  /**
+   * Array mapping CAS attributes with oe_authentication fields.
+   */
   const USER_CAS_ATTRIBUTE_MAPPING = [
     'mail' => 'email',
     'field_oe_firstname' => 'firstName',
@@ -46,20 +49,15 @@ class CasProcessor {
    *   An array containing the parsed attributes.
    */
   public static function processValidationResponseAttributes(string $source): array {
+    if (CasProcessor::isValidationResponse($source)) {
+      throw new \InvalidArgumentException();
+    }
+    // Load cas attributes.
     $dom = new \DOMDocument();
     $dom->preserveWhiteSpace = FALSE;
     $dom->encoding = "utf-8";
-
-    // Suppress errors from this function, as we intend to allow other
-    // event subscribers to work on the data.
-    if (@$dom->loadXML($source) === FALSE) {
-      return [];
-    }
-
+    @$dom->loadXML($source);
     $success_elements = $dom->getElementsByTagName("authenticationSuccess");
-    if ($success_elements->length === 0) {
-      return [];
-    }
 
     // There should only be one success element, grab it and extract username.
     $success_element = $success_elements->item(0);
@@ -92,6 +90,33 @@ class CasProcessor {
       $attributes[$name] = $value;
     }
     return $attributes;
+  }
+
+  /**
+   * Check whether the validation response is valid or not.
+   *
+   * @param string $response
+   *   The response to be validated.
+   *
+   * @return bool
+   *   Whether the validation response is valid or not.
+   */
+  public static function isValidationResponse(string $response) {
+    $dom = new \DOMDocument();
+    $dom->preserveWhiteSpace = FALSE;
+    $dom->encoding = "utf-8";
+
+    // Suppress errors from this function, as we intend to allow other
+    // event subscribers to work on the data.
+    if (@$dom->loadXML($response) === FALSE) {
+      return FALSE;
+    }
+
+    $success_elements = $dom->getElementsByTagName("authenticationSuccess");
+    if ($success_elements->length === 0) {
+      return FALSE;
+    }
+    return TRUE;
   }
 
 }
