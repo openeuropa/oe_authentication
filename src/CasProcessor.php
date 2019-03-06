@@ -49,7 +49,7 @@ class CasProcessor {
    *   An array containing the parsed attributes.
    */
   public static function processValidationResponseAttributes(string $source): array {
-    if (CasProcessor::isValidationResponse($source)) {
+    if (!CasProcessor::isValidationResponse($source)) {
       throw new \InvalidArgumentException();
     }
     // Load cas attributes.
