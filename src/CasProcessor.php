@@ -49,7 +49,7 @@ class CasProcessor {
    *   An array containing the parsed attributes.
    */
   public static function processValidationResponseAttributes(string $source): array {
-    if (!CasProcessor::isValidationResponse($source)) {
+    if (!CasProcessor::isValidResponse($source)) {
       throw new \InvalidArgumentException();
     }
     // Load cas attributes.
@@ -101,7 +101,7 @@ class CasProcessor {
    * @return bool
    *   Whether the validation response is valid or not.
    */
-  public static function isValidationResponse(string $response) {
+  public static function isValidResponse(string $response) {
     $dom = new \DOMDocument();
     $dom->preserveWhiteSpace = FALSE;
     $dom->encoding = "utf-8";
@@ -113,10 +113,7 @@ class CasProcessor {
     }
 
     $success_elements = $dom->getElementsByTagName("authenticationSuccess");
-    if ($success_elements->length === 0) {
-      return FALSE;
-    }
-    return TRUE;
+    return $success_elements->length !== 0;
   }
 
 }

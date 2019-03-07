@@ -79,7 +79,7 @@ Feature: Login through OE Authentication
     Then I should be on the homepage
 
   Scenario: A blocked user should not be able to log in
-    # Login with an EULogin user.
+    # Check that an active user can log normally.
     Given I am on the homepage
     And I click "Log in"
     And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"

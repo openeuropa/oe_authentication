@@ -101,7 +101,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   public function processAttributes(CasPostValidateEvent $event): void {
     $property_bag = $event->getCasPropertyBag();
     $response = $event->getResponseData();
-    if (CasProcessor::isValidationResponse($response)) {
+    if (CasProcessor::isValidResponse($response)) {
       $eulogin_attributes = CasProcessor::processValidationResponseAttributes($response);
       foreach ($eulogin_attributes as $key => $value) {
         $property_bag->setAttribute($key, $value);
