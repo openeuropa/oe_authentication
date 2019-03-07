@@ -43,7 +43,7 @@ Feature: Login through OE Authentication
     And I should not see the link "Log out"
     And I should see the link "Log in"
 
-  Scenario: A blocked user should not be able to log in
+  Scenario: A site that requires administration validation on users should block them by default
     Given the site is configured to make users blocked on creation
 
     # When I try to log in again I will be denied access.
@@ -54,3 +54,4 @@ Feature: Login through OE Authentication
     And I press the "Login!" button
     Then I should see "There was a problem logging in, please contact a site administrator."
     And I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
+    And I should see the link "Log in"

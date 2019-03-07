@@ -21,6 +21,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * the required modifications to work with EU Login.
  */
 class EuLoginEventSubscriber implements EventSubscriberInterface {
+
   use StringTranslationTrait;
 
   /**
@@ -67,19 +68,19 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [];
-    $events[CasHelper::EVENT_PRE_REGISTER] = 'generateEmail';
-    $events[CasHelper::EVENT_POST_VALIDATE] = 'processAttributes';
+    $events[CasHelper::EVENT_PRE_REGISTER] = 'processUserProperties';
+    $events[CasHelper::EVENT_POST_VALIDATE] = 'processCasAttributes';
     $events[CasHelper::EVENT_PRE_VALIDATE] = 'alterValidationPath';
     return $events;
   }
 
   /**
-   * Generates the user email based on the information taken from EU Login.
+   * Adds user properties based on the information taken from EU Login.
    *
    * @param \Drupal\cas\Event\CasPreRegisterEvent $event
    *   The triggered event.
    */
-  public function generateEmail(CasPreRegisterEvent $event): void {
+  public function processUserProperties(CasPreRegisterEvent $event): void {
     $attributes = $event->getCasPropertyBag()->getAttributes();
     $user_settings = $this->configFactory->get('user.settings');
 
@@ -113,7 +114,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * @param \Drupal\cas\Event\CasPostValidateEvent $event
    *   The triggered event.
    */
-  public function processAttributes(CasPostValidateEvent $event): void {
+  public function processCasAttributes(CasPostValidateEvent $event): void {
     $data = $event->getResponseData();
     $property_bag = $event->getCasPropertyBag();
     $dom = new \DOMDocument();
