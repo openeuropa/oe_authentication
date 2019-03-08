@@ -12,7 +12,7 @@ Feature: Login through OE Authentication
     And I click "European Commission"
 
     # Redirected to the mock server.
-    And I fill in "Username or e-mail address" with "texasranger@chuck_norris.com.eu"
+    And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
 
