@@ -10,6 +10,8 @@ use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\oe_authentication\CasProcessor;
@@ -22,6 +24,8 @@ use Drupal\oe_authentication\CasProcessor;
  */
 class EuLoginEventSubscriber implements EventSubscriberInterface {
 
+  use StringTranslationTrait;
+
   /**
    * The config factory.
    *
@@ -30,13 +34,23 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
+   * Stores a Messenger object.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * Constructors the EuLoginEventSubscriber.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger.
    */
-  public function __construct(ConfigFactoryInterface $configFactory) {
+  public function __construct(ConfigFactoryInterface $configFactory, MessengerInterface $messenger) {
     $this->configFactory = $configFactory;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -57,14 +71,14 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents(): array {
     $events = [];
     $events[CasHelper::EVENT_POST_LOGIN] = 'updateUserData';
-    $events[CasHelper::EVENT_PRE_REGISTER] = 'generateUserData';
-    $events[CasHelper::EVENT_POST_VALIDATE] = 'processAttributes';
+    $events[CasHelper::EVENT_PRE_REGISTER] = 'processUserProperties';
+    $events[CasHelper::EVENT_POST_VALIDATE] = 'processCasAttributes';
     $events[CasHelper::EVENT_PRE_VALIDATE] = 'alterValidationPath';
     return $events;
   }
 
   /**
-   * Generates the user data based on the information taken from EU Login.
+   * Updates the user data based on the information taken from EU Login.
    *
    * @param \Drupal\cas\Event\CasPostLoginEvent $event
    *   The triggered event.
@@ -82,14 +96,23 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Generates the user data based on the information taken from EU Login.
+   * Adds user properties based on the information taken from EU Login.
    *
    * @param \Drupal\cas\Event\CasPreRegisterEvent $event
    *   The triggered event.
    */
-  public function generateUserData(CasPreRegisterEvent $event): void {
+  public function processUserProperties(CasPreRegisterEvent $event): void {
+
     $attributes = $event->getCasPropertyBag()->getAttributes();
     $event->setPropertyValues(CasProcessor::convertCasAttributesToFieldValues($attributes));
+
+    // If the site is configured to need administrator approval,
+    // change the status of the account to blocked.
+    $user_settings = $this->configFactory->get('user.settings');
+    if ($user_settings->get('register') === USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL) {
+      $event->setPropertyValue('status', 0);
+      $this->messenger->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.'));
+    }
   }
 
   /**
@@ -98,7 +121,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * @param \Drupal\cas\Event\CasPostValidateEvent $event
    *   The triggered event.
    */
-  public function processAttributes(CasPostValidateEvent $event): void {
+  public function processCasAttributes(CasPostValidateEvent $event): void {
     $property_bag = $event->getCasPropertyBag();
     $response = $event->getResponseData();
     if (CasProcessor::isValidResponse($response)) {
@@ -110,7 +133,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Parses the EU Login attributes from the validation response.
+   * Alters the default CAS validation path to point to the EULogin one.
    *
    * @param \Drupal\cas\Event\CasPreValidateEvent $event
    *   The triggered event.

@@ -6,12 +6,13 @@ Feature: Login through OE Authentication
   I need to be redirect back to the site
 
   Scenario: Login/Logout with eCAS mockup server
-    Given I am on the homepage
+    Given the site is configured to make users active on creation
+    When I am on the homepage
     And I click "Log in"
     And I click "European Commission"
 
     # Redirected to the mock server.
-    And I fill in "Username or e-mail address" with "texasranger@chuck_norris.com.eu"
+    And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
 
@@ -44,13 +45,14 @@ Feature: Login through OE Authentication
 
   Scenario: A user's information should update every login
     # Login with an EULogin user.
-    Given I am on the homepage
+    Given the site is configured to make users active on creation
+    When I am on the homepage
     And I click "Log in"
-    And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
-    And I fill in "Password" with "dragon_tattoo"
+    And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
+    And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
     And I click "Edit"
-    Then the "First Name" field should contain "Lisbeth"
+    Then the "First Name" field should contain "Chuck"
 
     # Edit the details.
     When I fill in "First Name" with "New name"
@@ -67,36 +69,26 @@ Feature: Login through OE Authentication
 
     # Login again and check the changed details.
     When I click "Log in"
-    And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
-    And I fill in "Password" with "dragon_tattoo"
+    And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
+    And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
     And I click "Edit"
-    Then the "First Name" field should contain "Lisbeth"
+    Then the "First Name" field should contain "Chuck"
 
     #Logout to continue scenarios.
     When I click "Log out"
     And I press the "Log me out" button
     Then I should be on the homepage
 
-  Scenario: A blocked user should not be able to log in
-    # Check that an active user can log normally.
-    Given I am on the homepage
+  Scenario: A site that requires administration validation on users should block them by default
+    Given the site is configured to make users blocked on creation
+
+    # When I try to log in again I will be denied access.
+    When I am on the homepage
     And I click "Log in"
     And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
     And I fill in "Password" with "dragon_tattoo"
     And I press the "Login!" button
-    Then I should see "You have been logged in."
-
-    # Logout.
-    When I click "Log out"
-    And I press the "Log me out" button
-    Then I should be on the homepage
-
-    # Block the user and make sure that they can't log in.
-    Given the user "lsalander" is blocked
-    And I am on the homepage
-    When I click "Log in"
-    And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
-    And I fill in "Password" with "dragon_tattoo"
-    And I press the "Login!" button
     Then I should see "There was a problem logging in, please contact a site administrator."
+    And I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
+    And I should see the link "Log in"

@@ -4,10 +4,6 @@ services:
       arguments: ['@externalauth.authmap']
       tags:
         - { name: access_check, applies_to: _external_user_access_check }
-  oe_authentication.superuser_access_checker:
-        class: Drupal\oe_authentication\Access\SuperUserAccessCheck
-        tags:
-          - { name: access_check, applies_to: _superuser_access_check }
   oe_authentication.route_subscriber:
     class: \Drupal\oe_authentication\Routing\RouteSubscriber
     tags:
@@ -16,4 +12,4 @@ services:
     class: \Drupal\oe_authentication\Event\EuLoginEventSubscriber
     tags:
       - { name: event_subscriber }
-    arguments: ['@config.factory']
+    arguments: ['@config.factory', '@messenger']

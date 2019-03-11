@@ -17,17 +17,6 @@ class RouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection): void {
-    // Only the user 1 has access to user creation.
-    $admin_routes = [
-      'user.admin_create',
-    ];
-    foreach ($admin_routes as $admin_route) {
-      if (($route = $collection->get($admin_route)) === NULL) {
-        continue;
-      }
-      $route->setRequirement('_superuser_access_check', 'TRUE');
-    }
-
     // Restrict Drupal login to Drupal only users.
     $internal_routes = [
       'user.pass',
