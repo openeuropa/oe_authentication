@@ -6,12 +6,13 @@ Feature: Login through OE Authentication
   I need to be redirect back to the site
 
   Scenario: Login/Logout with eCAS mockup server
+    Given the site is configured to make users active on creation
     When I am on the homepage
     And I click "Log in"
     And I click "European Commission"
 
     # Redirected to the mock server.
-    And I fill in "Username or e-mail address" with "texasranger@chuck_norris.com.eu"
+    And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
 
@@ -42,18 +43,15 @@ Feature: Login through OE Authentication
     And I should not see the link "Log out"
     And I should see the link "Log in"
 
-  Scenario: A blocked user should not be able to log in
-    Given users:
-      | name      |
-      | lsalander |
-    And the user "lsalander" is blocked
-    When I am on the homepage
-    Then I should see the link "Log in"
-    And I should not see the link "Log out"
+  Scenario: A site that requires administration validation on users should block them by default
+    Given the site is configured to make users blocked on creation
 
     # When I try to log in again I will be denied access.
-    When I click "Log in"
+    When I am on the homepage
+    And I click "Log in"
     And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
     And I fill in "Password" with "dragon_tattoo"
     And I press the "Login!" button
     Then I should see "There was a problem logging in, please contact a site administrator."
+    And I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
+    And I should see the link "Log in"

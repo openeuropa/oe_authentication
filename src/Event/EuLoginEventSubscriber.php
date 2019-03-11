@@ -9,6 +9,8 @@ use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -20,6 +22,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class EuLoginEventSubscriber implements EventSubscriberInterface {
 
+  use StringTranslationTrait;
+
   /**
    * The config factory.
    *
@@ -28,13 +32,23 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
+   * Stores a Messenger object.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * Constructors the EuLoginEventSubscriber.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger.
    */
-  public function __construct(ConfigFactoryInterface $configFactory) {
+  public function __construct(ConfigFactoryInterface $configFactory, MessengerInterface $messenger) {
     $this->configFactory = $configFactory;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -54,20 +68,28 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [];
-    $events[CasHelper::EVENT_PRE_REGISTER] = 'generateEmail';
-    $events[CasHelper::EVENT_POST_VALIDATE] = 'processAttributes';
+    $events[CasHelper::EVENT_PRE_REGISTER] = 'processUserProperties';
+    $events[CasHelper::EVENT_POST_VALIDATE] = 'processCasAttributes';
     $events[CasHelper::EVENT_PRE_VALIDATE] = 'alterValidationPath';
     return $events;
   }
 
   /**
-   * Generates the user email based on the information taken from EU Login.
+   * Adds user properties based on the information taken from EU Login.
    *
    * @param \Drupal\cas\Event\CasPreRegisterEvent $event
    *   The triggered event.
    */
-  public function generateEmail(CasPreRegisterEvent $event): void {
+  public function processUserProperties(CasPreRegisterEvent $event): void {
     $attributes = $event->getCasPropertyBag()->getAttributes();
+    $user_settings = $this->configFactory->get('user.settings');
+
+    // If the site is configured to need administrator approval,
+    // change the status of the account to blocked.
+    if ($user_settings->get('register') === USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL) {
+      $event->setPropertyValue('status', 0);
+      $this->messenger->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.'));
+    }
     if (!empty($attributes['email'])) {
       $event->setPropertyValue('mail', $attributes['email']);
     }
@@ -92,7 +114,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * @param \Drupal\cas\Event\CasPostValidateEvent $event
    *   The triggered event.
    */
-  public function processAttributes(CasPostValidateEvent $event): void {
+  public function processCasAttributes(CasPostValidateEvent $event): void {
     $data = $event->getResponseData();
     $property_bag = $event->getCasPropertyBag();
     $dom = new \DOMDocument();
