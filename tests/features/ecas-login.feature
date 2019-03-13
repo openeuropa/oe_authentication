@@ -43,6 +43,43 @@ Feature: Login through OE Authentication
     And I should not see the link "Log out"
     And I should see the link "Log in"
 
+  Scenario: A user's information should update every login
+    # Login with an EULogin user.
+    Given the site is configured to make users active on creation
+    When I am on the homepage
+    And I click "Log in"
+    And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
+    And I fill in "Password" with "Qwerty098"
+    And I press the "Login!" button
+    And I click "Edit"
+    Then the "First Name" field should contain "Chuck"
+
+    # Edit the details.
+    When I fill in "First Name" with "New name"
+    And I press "Save"
+    Then I should see "The changes have been saved."
+
+    When I click "Edit"
+    Then the "First Name" field should contain "New name"
+
+    # Logout.
+    When I click "Log out"
+    And I press the "Log me out" button
+    Then I should be on the homepage
+
+    # Login again and check the changed details.
+    When I click "Log in"
+    And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
+    And I fill in "Password" with "Qwerty098"
+    And I press the "Login!" button
+    And I click "Edit"
+    Then the "First Name" field should contain "Chuck"
+
+    #Logout to continue scenarios.
+    When I click "Log out"
+    And I press the "Log me out" button
+    Then I should be on the homepage
+
   Scenario: A site that requires administration validation on users should block them by default
     Given the site is configured to make users blocked on creation
 

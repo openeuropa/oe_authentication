@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_authentication\Event;
 
+use Drupal\cas\Event\CasPostLoginEvent;
 use Drupal\cas\Event\CasPostValidateEvent;
 use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
@@ -13,6 +14,7 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\oe_authentication\CasProcessor;
 
 /**
  * Event subscriber for CAS module events.
@@ -68,10 +70,29 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [];
+    $events[CasHelper::EVENT_POST_LOGIN] = 'updateUserData';
     $events[CasHelper::EVENT_PRE_REGISTER] = 'processUserProperties';
     $events[CasHelper::EVENT_POST_VALIDATE] = 'processCasAttributes';
     $events[CasHelper::EVENT_PRE_VALIDATE] = 'alterValidationPath';
     return $events;
+  }
+
+  /**
+   * Updates the user data based on the information taken from EU Login.
+   *
+   * @param \Drupal\cas\Event\CasPostLoginEvent $event
+   *   The triggered event.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   In case of failures an exception is thrown.
+   */
+  public function updateUserData(CasPostLoginEvent $event): void {
+    $properties = CasProcessor::convertCasAttributesToFieldValues($event->getCasPropertyBag()->getAttributes());
+    $account = $event->getAccount();
+    foreach ($properties as $name => $value) {
+      $account->set($name, $value);
+    }
+    $account->save();
   }
 
   /**
@@ -81,31 +102,17 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    *   The triggered event.
    */
   public function processUserProperties(CasPreRegisterEvent $event): void {
+
     $attributes = $event->getCasPropertyBag()->getAttributes();
-    $user_settings = $this->configFactory->get('user.settings');
+    $event->setPropertyValues(CasProcessor::convertCasAttributesToFieldValues($attributes));
 
     // If the site is configured to need administrator approval,
     // change the status of the account to blocked.
+    $user_settings = $this->configFactory->get('user.settings');
     if ($user_settings->get('register') === USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL) {
       $event->setPropertyValue('status', 0);
       $this->messenger->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.'));
     }
-    if (!empty($attributes['email'])) {
-      $event->setPropertyValue('mail', $attributes['email']);
-    }
-    if (!empty($attributes['firstName'])) {
-      $event->setPropertyValue('field_oe_firstname', $attributes['firstName']);
-    }
-    if (!empty($attributes['lastName'])) {
-      $event->setPropertyValue('field_oe_lastname', $attributes['lastName']);
-    }
-    if (!empty($attributes['departmentNumber'])) {
-      $event->setPropertyValue('field_oe_department', $attributes['departmentNumber']);
-    }
-    if (!empty($attributes['domain'])) {
-      $event->setPropertyValue('field_oe_organisation', $attributes['domain']);
-    }
-
   }
 
   /**
@@ -115,60 +122,18 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    *   The triggered event.
    */
   public function processCasAttributes(CasPostValidateEvent $event): void {
-    $data = $event->getResponseData();
     $property_bag = $event->getCasPropertyBag();
-    $dom = new \DOMDocument();
-    $dom->preserveWhiteSpace = FALSE;
-    $dom->encoding = "utf-8";
-
-    // Suppress errors from this function, as we intend to allow other
-    // event subscribers to work on the data.
-    if (@$dom->loadXML($data) === FALSE) {
-      return;
-    }
-
-    $success_elements = $dom->getElementsByTagName("authenticationSuccess");
-    if ($success_elements->length === 0) {
-      return;
-    }
-
-    // There should only be one success element, grab it and extract username.
-    $success_element = $success_elements->item(0);
-    // Parse the attributes coming from Eu Login
-    // and add them to the default ones.
-    $eulogin_attributes = $this->parseAttributes($success_element);
-    foreach ($eulogin_attributes as $key => $value) {
-      $property_bag->setAttribute($key, $value);
+    $response = $event->getResponseData();
+    if (CasProcessor::isValidResponse($response)) {
+      $eulogin_attributes = CasProcessor::processValidationResponseAttributes($response);
+      foreach ($eulogin_attributes as $key => $value) {
+        $property_bag->setAttribute($key, $value);
+      }
     }
   }
 
   /**
-   * Parse the attributes list from the EU Login Server into an array.
-   *
-   * @param \DOMElement $node
-   *   An XML element containing attributes.
-   *
-   * @return array
-   *   An associative array of attributes.
-   */
-  private function parseAttributes(\DOMElement $node): array {
-    $attributes = [];
-    // @var \DOMElement $child
-    foreach ($node->childNodes as $child) {
-      $name = $child->localName;
-      if ($child->hasAttribute('number')) {
-        $value = $this->parseAttributes($child);
-      }
-      else {
-        $value = $child->nodeValue;
-      }
-      $attributes[$name] = $value;
-    }
-    return $attributes;
-  }
-
-  /**
-   * Parses the EU Login attributes from the validation response.
+   * Alters the default CAS validation path to point to the EULogin one.
    *
    * @param \Drupal\cas\Event\CasPreValidateEvent $event
    *   The triggered event.
