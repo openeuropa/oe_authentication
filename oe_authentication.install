@@ -35,6 +35,7 @@ function oe_authentication_install(): void {
       ->set('user_accounts.email_hostname', 'localhost')
       ->set('login_link_enabled', TRUE)
       ->set('login_link_label', 'EU Login')
+      ->set('error_handling.login_failure_page', '/')
       ->save();
 
     \Drupal::messenger()->addMessage('Please be aware that oe_authentication makes changes to the following configuration: CAS settings.');
