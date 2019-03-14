@@ -91,4 +91,5 @@ Feature: Login through OE Authentication
     And I press the "Login!" button
     Then I should see "There was a problem logging in, please contact a site administrator."
     And I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
+    And I should be on the homepage
     And I should see the link "Log in"
