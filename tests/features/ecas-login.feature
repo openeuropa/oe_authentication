@@ -89,7 +89,7 @@ Feature: Login through OE Authentication
     And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
     And I fill in "Password" with "dragon_tattoo"
     And I press the "Login!" button
-    Then I should see "There was a problem logging in, please contact a site administrator."
+    Then I should see "Your account is blocked or has not been activated. Please contact a site administrator."
     And I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
     And I should be on the homepage
     And I should see the link "Log in"
