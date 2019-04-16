@@ -53,7 +53,7 @@ pipeline:
   fix-permission:
     image: fpfis/httpd-php-ci:7.1
     commands:
-      # Reset permission since installation runs as root. @todo Fix this on drone.
+      # Workaround to fix the user permission issue. @todo Fix this on drone.
       - ./vendor/bin/drush -y config-set system.performance css.preprocess 0
       - ./vendor/bin/drush -y config-set system.performance js.preprocess 0
 
