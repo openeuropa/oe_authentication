@@ -6,7 +6,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "drupal/cas": "dev-1.x#7c40fc180d462311c2cb5af5c0f43a9043356e64",
+        "drupal/cas": "^1.5",
         "drupal/core": "^8.6",
         "php": "^7.1"
     },
