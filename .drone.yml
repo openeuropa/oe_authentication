@@ -4,7 +4,7 @@ workspace:
 
 services:
   web:
-    image: fpfis/httpd-php-dev:7.1
+    image: fpfis/httpd-php-ci:7.1
     environment:
       - DOCUMENT_ROOT=/test/oe_authentication
   mysql:
@@ -24,9 +24,10 @@ pipeline:
     detach: true
     entrypoint: [ /bin/bash ]
     command: [ -c, "cp /test/oe_authentication/tests/fixtures/mock-server-config/*.xml  /data/ecas-mock-server-shared; echo 'eCAS Mockup Server shared configuration is done.'; /u01/oracle/user_projects/domains/base_domain/startWebLogic.sh"]
+
   composer-install:
     group: prepare
-    image: fpfis/httpd-php-dev:7.1
+    image: fpfis/httpd-php-ci:7.1
     volumes:
       - /cache:/cache
     commands:
@@ -34,7 +35,7 @@ pipeline:
 
   composer-update-lowest:
     group: prepare-lowest
-    image: fpfis/httpd-php-dev:7.1
+    image: fpfis/httpd-php-ci:7.1
     volumes:
       - /cache:/cache
     commands:
@@ -52,19 +53,19 @@ pipeline:
 
   test-grumphp:
     group: test
-    image: fpfis/httpd-php-dev:7.1
+    image: fpfis/httpd-php-ci:7.1
     commands:
       - ./vendor/bin/grumphp run
 
   test-phpunit:
     group: test
-    image: fpfis/httpd-php-dev:7.1
+    image: fpfis/httpd-php-ci:7.1
     commands:
       - ./vendor/bin/phpunit
 
   test-behat:
     group: test
-    image: fpfis/httpd-php-dev:7.1
+    image: fpfis/httpd-php-ci:7.1
     commands:
       # Reset permission since installation runs as root. @todo Fix this on drone.
       - ./vendor/bin/drush -y config-set system.performance css.preprocess 0
@@ -74,7 +75,7 @@ pipeline:
       - ./vendor/bin/behat --strict
 
   debug:
-    image: fpfis/httpd-php-dev:7.1
+    image: fpfis/httpd-php-ci:7.1
     commands:
       - ./vendor/bin/drush ws --count 500
     when:
