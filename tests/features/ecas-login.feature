@@ -85,10 +85,7 @@ Feature: Login through OE Authentication
     And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
     And I fill in "Password" with "dragon_tattoo"
     And I press the "Login!" button
-    # Issue: oe_authentication should redirect to home on failed login.
-    # https://webgate.ec.europa.eu/CITnet/jira/browse/OPENEUROPA-1759
-    # Then I should be on the homepage
-    Then I should be on "/user/login"
+    Then I should be on the homepage
     And I should see "Your account is blocked or has not been activated. Please contact a site administrator."
     And I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
     And I should see the link "Log in"
