@@ -8,7 +8,7 @@ Feature: Authentication
 
   @DrupalLogin @BackupAuthConfigs
   Scenario: Configure Authentication settings
-    Given I am on "the Authentication configuration page"
+    When I am on "the Authentication configuration page"
     Then I should see "Authentication settings"
     # Check for the default config is there.
     And the "Application authentication protocol" field should contain "eulogin"
@@ -16,6 +16,7 @@ Feature: Authentication
     And the "Application validation path" field should contain "TicketValidationService"
     And the "Application assurance levels" field should contain "TOP"
     And the "Application available ticket types" field should contain "SERVICE,PROXY"
+
     # Change the configuration values.
     When I fill in "Application authentication protocol" with "something"
     And I fill in "Application register path" with "test/something"

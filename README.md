@@ -11,6 +11,8 @@ The OpenEuropa Authentication module allows authentication against EU Login, the
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Development](#development)
+  - [Project setup](#project-setup)
+  - [Using Docker Compose](#using-docker-compose)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contribution)
 - [Versioning](#versioning)
@@ -147,6 +149,19 @@ This will:
 - Install the test site
 - Enable the OpenEuropa Authentication module
 
+### Using Docker Compose
+
+Alternatively, you can build a development site using [Docker](https://www.docker.com/get-docker) and 
+[Docker Compose](https://docs.docker.com/compose/) with the provided configuration.
+
+Docker provides the necessary services and tools such as a web server and a database server to get the site running, 
+regardless of your local host configuration.
+
+#### Requirements:
+
+- [Docker](https://www.docker.com/get-docker)
+- [Docker Compose](https://docs.docker.com/compose/)
+
 #### Configuration
 
 By default, Docker Compose reads two files, a `docker-compose.yml` and an optional `docker-compose.override.yml` file.
@@ -179,7 +194,7 @@ docker-compose exec web composer install
 docker-compose exec web ./vendor/bin/run drupal:site-install
 ```
 
-To be able to interact with the OpenEuropa Authentication mock container you need to add the internal container hostname to the hosts file _of your host OS_.
+To be able to interact with the EULogin Mock Service container you need to add the internal container hostname to the hosts file in your _OS_.
 
 ```bash
 echo "127.0.1.1       authentication" >> /etc/hosts
@@ -207,10 +222,12 @@ To run the behat tests:
 docker-compose exec web ./vendor/bin/behat
 ```
 
-#### Access to OpenEuropa Authentication mock server - EULogin
+#### Authenticating using the EULogin Mock Service
 
-To be able to interact with the OpenEuropa Authentication mock container you need to add the internal container
-hostname to the hosts file _of your host OS_.
+EULogin Mock Service container replicates the [EU Login](https://ecas.ec.europa.eu/cas/about.html) service.
+
+To be able to interact with the EULogin Mock Service container you need to add the internal container
+hostname to the hosts file in your _OS_.
 
 ```bash
 echo "127.0.1.1       authentication" >> /etc/hosts
@@ -225,9 +242,9 @@ access.
 
 See [Docker login](https://docs.docker.com/engine/reference/commandline/login/) to connect to the repository.
 
-#### Enable HTTPS PROXY for the drupal site for development.
+##### Authenticating with HTTPS PROXY Ticket
 
-To enable the https proxy, you should add the service `secureweb` to `docker-compose.yml`
+To enable the https proxy you can uncomment and use the service `secureweb` in `docker-compose.yml`
 
 ```dockerfile
 services:
@@ -251,7 +268,7 @@ services:
 ```
 
 To be able to interact with the https proxy container you need to add the internal container hostname to the hosts
-file _of your host OS_.
+file in your _OS_.
 
 ```bash
 echo "127.0.1.1       secureweb" >> /etc/hosts

@@ -6,7 +6,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "drupal/cas": "dev-1.x#7c40fc180d462311c2cb5af5c0f43a9043356e64",
+        "drupal/cas": "^1.5",
         "drupal/core": "^8.6",
         "php": "^7.1"
     },
@@ -26,8 +26,7 @@
         "openeuropa/task-runner": "~1.0-beta4",
         "symfony/browser-kit": "~3.0||~4.0",
         "phpunit/phpunit": "~6.0",
-        "symfony/dom-crawler": "~3.4",
-        "twig/twig": "1.37.1"
+        "symfony/dom-crawler": "~3.4"
     },
     "scripts": {
         "post-install-cmd": "./vendor/bin/run drupal:site-setup",
@@ -52,6 +51,11 @@
     "extra": {
         "composer-exit-on-patch-failure": true,
         "enable-patching": true,
+        "patches": {
+            "drupal/cas": {
+                "https://www.drupal.org/project/cas/issues/3047390": "https://www.drupal.org/files/issues/2019-04-12/3047390_2.patch"
+            }
+        },
         "installer-paths": {
             "build/core": ["type:drupal-core"],
             "build/profiles/contrib/{$name}": ["type:drupal-profile"],

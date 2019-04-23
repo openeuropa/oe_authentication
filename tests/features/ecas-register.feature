@@ -6,7 +6,6 @@ Feature: Register through OE Authentication
 
   Scenario: Register
     Given I am an anonymous user
-    And I visit "the user registration page"
-
+    When I visit "the user registration page"
     # Redirected to the Ecas mockup server.
     Then I should see "Create an account"

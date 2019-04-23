@@ -10,12 +10,10 @@ Feature: Login through OE Authentication
     When I am on the homepage
     And I click "Log in"
     And I click "European Commission"
-
     # Redirected to the mock server.
     And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
-
     # Redirected back to Drupal.
     Then I should see "You have been logged in."
     And I should see the link "My account"
@@ -36,7 +34,6 @@ Feature: Login through OE Authentication
     When I click "Log out"
     # Redirected to the Ecas mockup server.
     And I press the "Log me out" button
-
     # Redirected back to Drupal.
     Then I should be on the homepage
     And I should not see the link "My account"
@@ -81,15 +78,14 @@ Feature: Login through OE Authentication
     Then I should be on the homepage
 
   Scenario: A site that requires administration validation on users should block them by default
-    Given the site is configured to make users blocked on creation
-
     # When I try to log in again I will be denied access.
+    Given the site is configured to make users blocked on creation
     When I am on the homepage
     And I click "Log in"
     And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
     And I fill in "Password" with "dragon_tattoo"
     And I press the "Login!" button
-    Then I should see "Your account is blocked or has not been activated. Please contact a site administrator."
+    Then I should be on the homepage
+    And I should see "Your account is blocked or has not been activated. Please contact a site administrator."
     And I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
-    And I should be on the homepage
     And I should see the link "Log in"

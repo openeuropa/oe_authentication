@@ -10,5 +10,4 @@ Feature: Manage users
     And I click "Edit"
     And I press "Cancel account"
     Then I should see "Disable the account and keep its content."
-    Then I should not see "Delete the account and its content."
-
+    And I should not see "Delete the account and its content."
