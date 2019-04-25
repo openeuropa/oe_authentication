@@ -1,10 +1,28 @@
 # Change Log
 
+## [1.0.0-alpha5](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha5) (2019-04-25)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha4...1.0.0-alpha5)
+
+**Closed issues:**
+
+- Fix redirect for login\_failure\_page for drupal/cas:2.5 [\#63](https://github.com/openeuropa/oe_authentication/issues/63)
+- Fix Drupal core lazy sessions issue [\#60](https://github.com/openeuropa/oe_authentication/issues/60)
+- Update information from EULogin [\#49](https://github.com/openeuropa/oe_authentication/issues/49)
+
+**Merged pull requests:**
+
+- OPENEUROPA-627 [\#62](https://github.com/openeuropa/oe_authentication/pull/62) ([dxvargas](https://github.com/dxvargas))
+- OPENEUROPA-1657: Fix cas module version. [\#59](https://github.com/openeuropa/oe_authentication/pull/59) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1649: Add redirection on login error. [\#58](https://github.com/openeuropa/oe_authentication/pull/58) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1649: eulogin default behavior on first login [\#56](https://github.com/openeuropa/oe_authentication/pull/56) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1685: Add post login event. [\#54](https://github.com/openeuropa/oe_authentication/pull/54) ([imanoleguskiza](https://github.com/imanoleguskiza))
+
 ## [1.0.0-alpha4](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha4) (2019-02-19)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha3...1.0.0-alpha4)
 
 **Merged pull requests:**
 
+- OPENEUROPA-1520: Prepare for release 1.0.0-alpha4 [\#51](https://github.com/openeuropa/oe_authentication/pull/51) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - OPENEUROPA-1609: Add ajax\_timeout setting for behat. [\#48](https://github.com/openeuropa/oe_authentication/pull/48) ([nagyad](https://github.com/nagyad))
 - OPENEUROPA-1586: Add extra EULogin fields. [\#47](https://github.com/openeuropa/oe_authentication/pull/47) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - OPENEUROPA-1609 Fix behat.yml.dist to use drupal-extension properly. [\#46](https://github.com/openeuropa/oe_authentication/pull/46) ([nagyad](https://github.com/nagyad))
