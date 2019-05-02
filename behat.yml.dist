@@ -9,6 +9,7 @@ default:
         - Drupal\DrupalExtension\Context\MessageContext
         - Drupal\DrupalExtension\Context\MinkContext
         - Drupal\Tests\oe_authentication\Behat\AuthenticationContext
+        - Drupal\Tests\oe_authentication\Behat\CleanupContext
         - OpenEuropa\Behat\TransformationContext:
             pages:
               Authentication configuration: 'admin/config/system/oe_authentication'
