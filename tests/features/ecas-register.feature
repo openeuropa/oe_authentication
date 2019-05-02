@@ -1,4 +1,4 @@
-@javascript
+@javascript @ecas-login
 Feature: Register through OE Authentication
   In order to be able to have new users
   As an anonymous user of the system
@@ -8,4 +8,5 @@ Feature: Register through OE Authentication
     Given I am an anonymous user
     When I visit "the user registration page"
     # Redirected to the Ecas mockup server.
+    And I click "External"
     Then I should see "Create an account"
