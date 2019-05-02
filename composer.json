@@ -18,7 +18,7 @@
         "drupal/devel": "~1.2",
         "drupal/drupal-extension": "~4.0",
         "drush/drush": "~9.0@stable",
-        "egulias/email-validator": "^1.2.1",
+        "egulias/email-validator": "^1.2.1 || ^2.0",
         "nikic/php-parser": "~3.0",
         "openeuropa/behat-transformation-context" : "~0.1",
         "openeuropa/code-review": "~1.0.0-alpha4",
