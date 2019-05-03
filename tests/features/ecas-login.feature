@@ -20,8 +20,8 @@ Feature: Login through OE Authentication
     And I should see the link "My account"
     And I should see the link "Log out"
     And I should not see the link "Log in"
-    # Redirected back to Drupal.
 
+    # Redirected back to Drupal.
     When I click "My account"
     Then I should see the heading "chucknorris"
 
@@ -56,8 +56,8 @@ Feature: Login through OE Authentication
     And I should see the link "My account"
     And I should see the link "Log out"
     And I should not see the link "Log in"
-    # Redirected back to Drupal.
 
+    # Redirected back to Drupal.
     When I click "My account"
     Then I should see the heading "jb007"
 

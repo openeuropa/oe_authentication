@@ -138,7 +138,7 @@ class AuthenticationContext extends RawDrupalContext {
   }
 
   /**
-   * We reset the authentication mock to the state it was when we found it.
+   * We reset the authentication mock to the state as it was.
    *
    * @AfterScenario @ecas-login
    */
@@ -155,23 +155,8 @@ class AuthenticationContext extends RawDrupalContext {
    * @BeforeScenario @AllowExternalLogin
    */
   public function allowExternalUsers(): void {
-    // Set the assurance level to allow also external users to login. Security
-    // implications are mitigated by the fact that users are by default blocked
-    // when they login for the first time if they don't yet exist.
-    $config = \Drupal::configFactory()->getEditable('oe_authentication.settings');
-    $config->set('assurance_level', 'LOW');
-    $config->save();
-  }
-
-  /**
-   * Disallow external users to login.
-   *
-   * @AfterScenario @AllowExternalLogin
-   */
-  public function disallowExternalUsers(): void {
-    $config = \Drupal::configFactory()->getEditable('oe_authentication.settings');
-    $config->set('assurance_level', 'TOP');
-    $config->save();
+    // Set the assurance level to allow also external users to login.
+    $this->configContext->setConfig('oe_authentication.settings', 'assurance_level', 'LOW');
   }
 
 }
