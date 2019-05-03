@@ -137,4 +137,26 @@ class AuthenticationContext extends RawDrupalContext {
     $this->configContext->setConfig('user.settings', 'register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
   }
 
+  /**
+   * We reset the authentication mock to the state as it was.
+   *
+   * @AfterScenario @ecas-login
+   */
+  public function resetAuthenticationMock(): void {
+    $this->visitPath('user/login');
+    if ($this->getSession()->getPage()->hasLink('Change it')) {
+      $this->getSession()->getPage()->clickLink('Change it');
+    }
+  }
+
+  /**
+   * Allow external users to login.
+   *
+   * @BeforeScenario @AllowExternalLogin
+   */
+  public function allowExternalUsers(): void {
+    // Set the assurance level to allow also external users to login.
+    $this->configContext->setConfig('oe_authentication.settings', 'assurance_level', 'LOW');
+  }
+
 }
