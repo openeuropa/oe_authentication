@@ -49,12 +49,14 @@ class RouteSubscriber extends RouteSubscriberBase {
     }
 
     // Replace default cas login route with eulogin one.
-    $route = $collection->get('cas.login');
-    $route->setPath('/eulogin');
+    if ($route = $collection->get('cas.login')) {
+      $route->setPath('/eulogin');
+    }
 
     // Replace route title for the Bulk Add CAS Users route.
-    $route = $collection->get('cas.bulk_add_cas_users');
-    $route->setDefault('_title', 'Bulk Add EU Login Users');
+    if ($route = $collection->get('cas.bulk_add_cas_users')) {
+      $route->setDefault('_title', 'Bulk Add EU Login Users');
+    }
   }
 
 }
