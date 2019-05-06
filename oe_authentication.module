@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Implements hook_user_cancel_methods_alter().
@@ -72,4 +73,39 @@ function oe_authentication_entity_base_field_info(EntityTypeInterface $entity_ty
       ]);
   }
   return $fields;
+}
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ *
+ * Change the title for the Add Cas users link added by the Cas module.
+ */
+function oe_authentication_menu_local_actions_alter(&$local_actions) {
+  if (isset($local_actions['cas.bulk_add_cas_users'])) {
+    $local_actions['cas.bulk_add_cas_users']['title'] = new TranslatableMarkup('Add EU Login user');
+  }
+}
+
+/**
+ * Implements hook_form_form_id_alter().
+ *
+ * Replace CAS from strings in the "bulk add users" form.
+ */
+function oe_authentication_form_bulk_add_cas_users_alter(&$form, &$form_state, $form_id) {
+
+  if (isset($form['intro']['#markup'])) {
+    $form['intro']['#markup'] = new TranslatableMarkup("Use this form to pre-register one or more users, allowing them to log in using EU Login.");
+  }
+
+  if (isset($form['cas_usernames']['#title'])) {
+    $form['cas_usernames']['#title'] = new TranslatableMarkup("EU Login username(s)");
+  }
+
+  if (isset($form['roles']['#description'])) {
+    $form['roles']['#description'] = new TranslatableMarkup("Optionally assign one or more roles to each user. Note that if you have EU Login configured to assign roles during automatic registration on login, those will be ignored.");
+  }
+
+  if (isset($form['extra_info']['#markup'])) {
+    $form['extra_info']['#markup'] = new TranslatableMarkup("Note that because EU Login attributes are only available when a user has logged in, any role or field assignment based on attributes will not be available using this form.");
+  }
 }

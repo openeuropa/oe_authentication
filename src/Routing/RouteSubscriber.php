@@ -47,6 +47,14 @@ class RouteSubscriber extends RouteSubscriberBase {
         '_controller' => '\Drupal\oe_authentication\Controller\ProxyCallbackController::callback',
       ]);
     }
+
+    // Replace default cas login route with eulogin one.
+    $route = $collection->get('cas.login');
+    $route->setPath('/eulogin');
+
+    // Replace route title for the Bulk Add CAS Users route.
+    $route = $collection->get('cas.bulk_add_cas_users');
+    $route->setDefault('_title', 'Bulk Add EU Login Users');
   }
 
 }
