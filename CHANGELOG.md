@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.0.0-alpha6](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha6) (2019-05-07)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha5...1.0.0-alpha6)
+
+**Merged pull requests:**
+
+- OPENEUROPA-1837: Replace CAS references with EU Login. [\#71](https://github.com/openeuropa/oe_authentication/pull/71) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1750: Allow user 1 to delete users. [\#68](https://github.com/openeuropa/oe_authentication/pull/68) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-1713: Adjust/correct behat tests of component. [\#67](https://github.com/openeuropa/oe_authentication/pull/67) ([sergepavle](https://github.com/sergepavle))
+- OPENEUROPA-1766: Fix Drupal 8.7. [\#66](https://github.com/openeuropa/oe_authentication/pull/66) ([voidtek](https://github.com/voidtek))
+
 ## [1.0.0-alpha5](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha5) (2019-04-25)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha4...1.0.0-alpha5)
 
@@ -11,6 +21,7 @@
 
 **Merged pull requests:**
 
+- Update CHANGELOG.md for release 1.0.0-alpha5. [\#65](https://github.com/openeuropa/oe_authentication/pull/65) ([ademarco](https://github.com/ademarco))
 - OPENEUROPA-627 [\#62](https://github.com/openeuropa/oe_authentication/pull/62) ([dxvargas](https://github.com/dxvargas))
 - OPENEUROPA-1657: Fix cas module version. [\#59](https://github.com/openeuropa/oe_authentication/pull/59) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - OPENEUROPA-1649: Add redirection on login error. [\#58](https://github.com/openeuropa/oe_authentication/pull/58) ([imanoleguskiza](https://github.com/imanoleguskiza))
