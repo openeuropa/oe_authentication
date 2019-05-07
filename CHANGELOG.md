@@ -1,10 +1,18 @@
 # Change Log
 
+## [1.0.0-alpha7](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha7) (2019-05-07)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha6...1.0.0-alpha7)
+
+**Merged pull requests:**
+
+- OPENEUROPA-1813: Upgrading to 8.7. [\#70](https://github.com/openeuropa/oe_authentication/pull/70) ([upchuk](https://github.com/upchuk))
+
 ## [1.0.0-alpha6](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha6) (2019-05-07)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha5...1.0.0-alpha6)
 
 **Merged pull requests:**
 
+- OPENEUROPA-1813: Create release 1.0.0-alpha6. [\#72](https://github.com/openeuropa/oe_authentication/pull/72) ([voidtek](https://github.com/voidtek))
 - OPENEUROPA-1837: Replace CAS references with EU Login. [\#71](https://github.com/openeuropa/oe_authentication/pull/71) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - OPENEUROPA-1750: Allow user 1 to delete users. [\#68](https://github.com/openeuropa/oe_authentication/pull/68) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - OPENEUROPA-1713: Adjust/correct behat tests of component. [\#67](https://github.com/openeuropa/oe_authentication/pull/67) ([sergepavle](https://github.com/sergepavle))
@@ -57,7 +65,6 @@
 - OPENEUROPA-1322: Use the proper Docker way of overriding docker-composer.yml file. [\#36](https://github.com/openeuropa/oe_authentication/pull/36) ([drupol](https://github.com/drupol))
 - OPENEUROPA-1299: Override proxyCallback for ECAS. [\#35](https://github.com/openeuropa/oe_authentication/pull/35) ([voidtek](https://github.com/voidtek))
 - OPENEUROPA-1300: Ensure config changes in hook\_install don't happen if the config is being synced and show disclaimer [\#33](https://github.com/openeuropa/oe_authentication/pull/33) ([nagyad](https://github.com/nagyad))
-- OPENEUROPA-627: Avoid touching default.settings.php \#31. [\#32](https://github.com/openeuropa/oe_authentication/pull/32) ([dxvargas](https://github.com/dxvargas))
 - OPENEUROPA-1249: Allow access for Drupal users on oe\_authentication [\#30](https://github.com/openeuropa/oe_authentication/pull/30) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - OPENEUROPA-1260: Fix authentication logout redirect for the demo server. [\#29](https://github.com/openeuropa/oe_authentication/pull/29) ([drupol](https://github.com/drupol))
 - OPENEUROPA-1197: Add missing configuration for emails. [\#28](https://github.com/openeuropa/oe_authentication/pull/28) ([imanoleguskiza](https://github.com/imanoleguskiza))
@@ -76,6 +83,7 @@
 
 **Merged pull requests:**
 
+- OPENEUROPA-627: Avoid touching default.settings.php \#31. [\#32](https://github.com/openeuropa/oe_authentication/pull/32) ([dxvargas](https://github.com/dxvargas))
 - Update CHANGELOG.md for 1.0.0-alpha1 [\#24](https://github.com/openeuropa/oe_authentication/pull/24) ([ademarco](https://github.com/ademarco))
 - OPENEUROPA-1227: EULogin validation service path is wrong [\#23](https://github.com/openeuropa/oe_authentication/pull/23) ([upchuk](https://github.com/upchuk))
 - OPENEUROPA-1209: Change settings for CAS and module [\#22](https://github.com/openeuropa/oe_authentication/pull/22) ([dxvargas](https://github.com/dxvargas))
