@@ -12,6 +12,7 @@
     },
     "require-dev": {
         "composer/installers": "~1.5",
+        "consolidation/robo": "~1.4",
         "drupal-composer/drupal-scaffold": "~2.2",
         "drupal/config_devel": "~1.2",
         "drupal/console": "~1.0",
@@ -28,6 +29,9 @@
         "phpunit/phpunit": "~6.0",
         "symfony/dom-crawler": "~3.4"
     },
+    "_readme": [
+        "We explicitly require consolidation/robo to allow lower 'composer update --prefer-lowest' to complete successfully."
+    ],
     "scripts": {
         "post-install-cmd": "./vendor/bin/run drupal:site-setup",
         "post-update-cmd": "./vendor/bin/run drupal:site-setup"
