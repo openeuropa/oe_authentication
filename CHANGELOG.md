@@ -1,10 +1,18 @@
 # Change Log
 
+## [1.0.0-beta1](https://github.com/openeuropa/oe_authentication/tree/1.0.0-beta1) (2019-05-15)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha7...1.0.0-beta1)
+
+**Closed issues:**
+
+- Create release 1.0.0-beta1 [\#75](https://github.com/openeuropa/oe_authentication/issues/75)
+
 ## [1.0.0-alpha7](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha7) (2019-05-07)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha6...1.0.0-alpha7)
 
 **Merged pull requests:**
 
+- OPENEUROPA-1813: Create release 1.0.0-alpha7. [\#73](https://github.com/openeuropa/oe_authentication/pull/73) ([voidtek](https://github.com/voidtek))
 - OPENEUROPA-1813: Upgrading to 8.7. [\#70](https://github.com/openeuropa/oe_authentication/pull/70) ([upchuk](https://github.com/upchuk))
 
 ## [1.0.0-alpha6](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha6) (2019-05-07)
