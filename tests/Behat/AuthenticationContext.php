@@ -106,6 +106,27 @@ class AuthenticationContext extends RawDrupalContext {
   }
 
   /**
+   * Act after reverting the config.
+   *
+   * Some tests are changing the oe_authentication:redirect_user_register_route
+   * config value. Changing this value, requires router rebuilding. This is
+   * covered in UI, see AuthenticationSettingsForm::submitForm(). But, after
+   * running the tests, the oe_authentication configuration is reverted to its
+   * initial values, in ConfigContext::cleanConfig(). This time the UI is not
+   * used anymore, so we need to do it after the scenario. Note that the hooks
+   * of AuthenticationContext are always running after ConfigContext hooks, so
+   * the router rebuild will run after reverting the config.
+   *
+   * @see \Drupal\oe_authentication\Form\AuthenticationSettingsForm::submitForm()
+   * @see \Drupal\DrupalExtension\Context\ConfigContext::cleanConfig()
+   *
+   * @AfterScenario @RebuildRouter
+   */
+  public function rebuildRoutes(): void {
+    \Drupal::service('router.builder')->rebuild();
+  }
+
+  /**
    * Navigates to the current user's page.
    *
    * @Given I visit my user page
