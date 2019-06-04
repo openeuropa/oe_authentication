@@ -98,9 +98,6 @@ class AuthenticationSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $original_redirect_user_register_route = $this->config(static::CONFIG_NAME)
-      ->get('redirect_user_register_route');
-
     $this->config(static::CONFIG_NAME)
       ->set('protocol', $form_state->getValue('protocol'))
       ->set('register_path', $form_state->getValue('register_path'))
@@ -110,11 +107,6 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       ->set('redirect_user_register_route', $form_state->getValue('redirect_user_register_route'))
       ->save();
     parent::submitForm($form, $form_state);
-
-    // Rebuild the routes if the redirect user register config has changed.
-    if ($original_redirect_user_register_route != $form_state->getValue('redirect_user_register_route')) {
-      $this->routeBuilder->rebuild();
-    }
   }
 
   /**

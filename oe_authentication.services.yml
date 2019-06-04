@@ -14,3 +14,8 @@ services:
     tags:
       - { name: event_subscriber }
     arguments: ['@config.factory', '@messenger']
+  oe_authentication.config_subscriber:
+    class: Drupal\oe_authentication\Event\UserRegisterRouteRedirectConfigSubscriber
+    arguments: ['@router.builder']
+    tags:
+      - { name: event_subscriber }
