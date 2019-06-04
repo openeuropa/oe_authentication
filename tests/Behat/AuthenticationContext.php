@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\oe_authentication\Behat;
 
-use Drupal\DrupalExtension\Context\ConfigContext;
 use Drupal\user\Entity\User;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
@@ -110,14 +109,16 @@ class AuthenticationContext extends RawDrupalContext {
    *
    * Some tests are changing the oe_authentication:redirect_user_register_route
    * config value. Changing this value, requires router rebuilding. This is
-   * covered in UI, see AuthenticationSettingsForm::submitForm(). But, after
-   * running the tests, the oe_authentication configuration is reverted to its
-   * initial values, in ConfigContext::cleanConfig(). This time the UI is not
-   * used anymore, so we need to do it after the scenario. Note that the hooks
-   * of AuthenticationContext are always running after ConfigContext hooks, so
-   * the router rebuild will run after reverting the config.
+   * covered by UserRegisterRouteRedirectConfigSubscriber event subscriber. The
+   * subscriber detects if the value of redirect_user_register_route has been
+   * changed and rebuilds the routes. However, because Behat tests are running
+   * in a single request, often the static cache is not invalidated, resulting
+   * in a failure to detect the config value changes, when the configs are
+   * reverted, in ConfigContext::cleanConfig(). Thus, we're manually rebuilding
+   * the routes at the end of the scenario for tests that requesting it, by
+   * using the @RebuildRouter tag.
    *
-   * @see \Drupal\oe_authentication\Form\AuthenticationSettingsForm::submitForm()
+   * @see \Drupal\oe_authentication\Event\UserRegisterRouteRedirectConfigSubscriber
    * @see \Drupal\DrupalExtension\Context\ConfigContext::cleanConfig()
    *
    * @AfterScenario @RebuildRouter
