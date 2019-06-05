@@ -50,7 +50,8 @@ class RouteSubscriber extends RouteSubscriberBase {
 
     }
 
-    // Replace the core register route controller.
+    // Switch the Drupal user register form with a redirect to the EU Login
+    // registration if this option is enabled in the module configuration.
     $config = $this->configFactory->get('oe_authentication.settings');
     if ($config->get('redirect_user_register_route')) {
       $route = $collection->get('user.register');
