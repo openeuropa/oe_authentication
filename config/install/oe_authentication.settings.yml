@@ -3,3 +3,4 @@ register_path: 'eim/external/register.cgi'
 validation_path: 'TicketValidationService'
 assurance_level: TOP
 ticket_types: SERVICE,PROXY
+block_on_site_admin_approval: true

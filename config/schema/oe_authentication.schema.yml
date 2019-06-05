@@ -17,3 +17,6 @@ oe_authentication.settings:
     ticket_types:
       type: string
       label: 'Application available ticket types'
+    block_on_site_admin_approval:
+      type: boolean
+      label: 'Block newly created users if the site requires admin approval'
