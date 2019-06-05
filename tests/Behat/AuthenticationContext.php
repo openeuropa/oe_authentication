@@ -138,6 +138,59 @@ class AuthenticationContext extends RawDrupalContext {
   }
 
   /**
+   * Asserts that a give field is disabled.
+   *
+   * @param string $field_locator
+   *   The field locator.
+   *
+   * @throws \Exception
+   *   If the field is enabled.
+   *
+   * @Given (the ):field (field )should be disabled
+   */
+  public function assertFieldIsDisabled(string $field_locator): void {
+    if ($this->isFieldEnabled($field_locator)) {
+      throw new \Exception("Field '$field_locator' is enabled but should be disabled.");
+    }
+  }
+
+  /**
+   * Asserts that a give field is not disabled.
+   *
+   * @param string $field_locator
+   *   The field locator.
+   *
+   * @throws \Exception
+   *   If the field is disabled.
+   *
+   * @Given (the ):field (field )should not be disabled
+   */
+  public function assertFieldIsNotDisabled(string $field_locator): void {
+    if (!$this->isFieldEnabled($field_locator)) {
+      throw new \Exception("Field '$field_locator' is disabled but should be enabled.");
+    }
+  }
+
+  /**
+   * Finds out if a given field is enabled or disabled.
+   *
+   * @param string $field_locator
+   *   The field locator.
+   *
+   * @return bool
+   *   TRUE if the field is enabled, FALSE otherwise.
+   *
+   * @throws \Exception
+   *   If the field doesn't exist.
+   */
+  protected function isFieldEnabled(string $field_locator): bool {
+    if (!$field = $this->getSession()->getPage()->findField($field_locator)) {
+      throw new \Exception("Field '$field_locator' doesn't exist.");
+    }
+    return empty($field->getAttribute('disabled'));
+  }
+
+  /**
    * We reset the authentication mock to the state as it was.
    *
    * @AfterScenario @ecas-login
