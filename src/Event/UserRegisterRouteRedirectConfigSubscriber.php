@@ -41,7 +41,12 @@ class UserRegisterRouteRedirectConfigSubscriber implements EventSubscriberInterf
   }
 
   /**
-   * Acts when oe_authentication.settings:redirect_user_register_route changes.
+   * Rebuilds route table on changing the user registration redirection.
+   *
+   * We need to rebuild the route table when an administrator changes the option
+   * to redirect the user registration form to EU Login. In normal operations
+   * the route table is only updated when the cache is being rebuilt, but the
+   * administrator expects this to take effect instantly.
    *
    * @param \Drupal\Core\Config\ConfigCrudEvent $event
    *   The config CRUD event.
