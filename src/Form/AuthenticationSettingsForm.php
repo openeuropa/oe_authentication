@@ -4,11 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_authentication\Form;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteBuilderInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Settings form for module.
@@ -19,36 +16,6 @@ class AuthenticationSettingsForm extends ConfigFormBase {
    * Name of the config being edited.
    */
   const CONFIG_NAME = 'oe_authentication.settings';
-
-  /**
-   * The route builder service.
-   *
-   * @var \Drupal\Core\Routing\RouteBuilderInterface
-   */
-  protected $routeBuilder;
-
-  /**
-   * Constructs a new form instance.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The factory for configuration objects.
-   * @param \Drupal\Core\Routing\RouteBuilderInterface $route_builder
-   *   The route builder service.
-   */
-  public function __construct(ConfigFactoryInterface $config_factory, RouteBuilderInterface $route_builder) {
-    parent::__construct($config_factory);
-    $this->routeBuilder = $route_builder;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('config.factory'),
-      $container->get('router.builder')
-    );
-  }
 
   /**
    * {@inheritdoc}
