@@ -16,7 +16,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  * Remove the option to delete users while keeping the option to block them.
  */
 function oe_authentication_user_cancel_methods_alter(&$methods) {
-  if (\Drupal::currentUser()->id() == 1) {
+  if (\Drupal::currentUser()->hasPermission('administer users')) {
     return;
   }
   $restricted_options = [
