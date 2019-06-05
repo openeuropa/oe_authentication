@@ -105,29 +105,6 @@ class AuthenticationContext extends RawDrupalContext {
   }
 
   /**
-   * Act after reverting the config.
-   *
-   * Some tests are changing the oe_authentication:redirect_user_register_route
-   * config value. Changing this value, requires router rebuilding. This is
-   * covered by UserRegisterRouteRedirectConfigSubscriber event subscriber. The
-   * subscriber detects if the value of redirect_user_register_route has been
-   * changed and rebuilds the routes. However, because Behat tests are running
-   * in a single request, often the static cache is not invalidated, resulting
-   * in a failure to detect the config value changes, when the configs are
-   * reverted, in ConfigContext::cleanConfig(). Thus, we're manually rebuilding
-   * the routes at the end of the scenario for tests that requesting it, by
-   * using the @RebuildRouter tag.
-   *
-   * @see \Drupal\oe_authentication\Event\UserRegisterRouteRedirectConfigSubscriber
-   * @see \Drupal\DrupalExtension\Context\ConfigContext::cleanConfig()
-   *
-   * @AfterScenario @RebuildRouter
-   */
-  public function rebuildRoutes(): void {
-    \Drupal::service('router.builder')->rebuild();
-  }
-
-  /**
    * Navigates to the current user's page.
    *
    * @Given I visit my user page

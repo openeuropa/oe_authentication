@@ -4,7 +4,7 @@ Feature: Register through OE Authentication
   As an anonymous user of the system
   I need to be able to go to the registration URL
 
-  @DrupalLogin @BackupAuthConfigs @RebuildRouter
+  @DrupalLogin
   Scenario: Register
     Given I am an anonymous user
     When I visit "the user registration page"
@@ -20,3 +20,8 @@ Feature: Register through OE Authentication
     Given I am an anonymous user
     When I visit "the user registration page"
     Then I should see "Create new account"
+
+    Given I am logged in as a user with the "administer authentication configuration" permission
+    When I am on "the Authentication configuration page"
+    And I check "Redirect user registration route to EU Login"
+    Then I press "Save configuration"
