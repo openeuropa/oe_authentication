@@ -11,24 +11,6 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
- * Implements hook_user_cancel_methods_alter().
- *
- * Remove the option to delete users while keeping the option to block them.
- */
-function oe_authentication_user_cancel_methods_alter(&$methods) {
-  if (\Drupal::currentUser()->hasPermission('administer users')) {
-    return;
-  }
-  $restricted_options = [
-    'user_cancel_reassign',
-    'user_cancel_delete',
-  ];
-  foreach ($restricted_options as $restricted_option) {
-    unset($methods[$restricted_option]);
-  }
-}
-
-/**
  * Implements hook_entity_base_field_info().
  *
  * Add custom EULogin fields.
