@@ -115,18 +115,3 @@ Feature: Login through OE Authentication
     When I click "Log out"
     And I press the "Log me out" button
     Then I should be on the homepage
-
-  @cleanup:user
-  Scenario: A site that requires administration validation on users should block them by default
-    # When I try to log in again I will be denied access.
-    Given the site is configured to make users blocked on creation
-    When I am on the homepage
-    And I click "Log in"
-    And I click "European Commission"
-    And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
-    And I fill in "Password" with "dragon_tattoo"
-    And I press the "Login!" button
-    Then I should be on the homepage
-    And I should see "Your account is blocked or has not been activated. Please contact a site administrator."
-    And I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
-    And I should see the link "Log in"

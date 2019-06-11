@@ -12,6 +12,7 @@ use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\oe_authentication\CasProcessor;
@@ -106,12 +107,16 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     $attributes = $event->getCasPropertyBag()->getAttributes();
     $event->setPropertyValues(CasProcessor::convertCasAttributesToFieldValues($attributes));
 
-    // If the site is configured to need administrator approval,
-    // change the status of the account to blocked.
+    // If the site is configured to require administrator approval on user
+    // registration and OE Authentication is configured to register new users as
+    // disabled users, change the status of the account to blocked.
     $user_settings = $this->configFactory->get('user.settings');
-    if ($user_settings->get('register') === USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL) {
-      $event->setPropertyValue('status', 0);
-      $this->messenger->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.'));
+    if ($user_settings->get('register') === UserInterface::REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL) {
+      $oe_authentication_settings = $this->configFactory->get('oe_authentication.settings');
+      if ($oe_authentication_settings->get('block_on_site_admin_approval')) {
+        $event->setPropertyValue('status', 0);
+        $this->messenger->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.'));
+      }
     }
   }
 
