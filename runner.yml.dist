@@ -15,7 +15,7 @@ drupal:
     - "./vendor/bin/drush en toolbar -y"
     - "./vendor/bin/drush en config_devel -y"
     # Enable the modules.
-    - "./vendor/bin/drush en oe_authentication -y"
+    - "./vendor/bin/drush en oe_authentication_user_fields -y"
     - "./vendor/bin/drush pmu big_pipe -y"
     - "./vendor/bin/drush cr"
   settings:
