@@ -10,7 +10,7 @@ namespace Drupal\oe_authentication_user_fields;
 class EuLoginAttributesHelper {
 
   /**
-   * Array mapping EU Login attributes with user account fields.
+   * Array mapping of EU Login attributes with user account fields.
    */
   const USER_EU_LOGIN_ATTRIBUTE_MAPPING = [
     'mail' => 'email',
@@ -21,13 +21,13 @@ class EuLoginAttributesHelper {
   ];
 
   /**
-   * Converts an array EU Login attributes into an array of Drupal field/values.
+   * Converts the EU Login attributes into a Drupal field/values array.
    *
    * @param array $attributes
    *   An array containing a series of EU Login attributes.
    *
    * @return array
-   *   An array containing a series of Drupal field names and values.
+   *   An associative array of field values indexed by the field name.
    */
   public static function convertEuLoginAttributesToFieldValues(array $attributes): array {
     $values = [];

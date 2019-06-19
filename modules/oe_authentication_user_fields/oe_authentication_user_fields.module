@@ -13,10 +13,10 @@ use Drupal\Core\Field\BaseFieldDefinition;
 /**
  * Implements hook_entity_base_field_info().
  *
- * Add custom EU Login fields.
+ * Adds custom EU Login fields.
  */
 function oe_authentication_user_fields_entity_base_field_info(EntityTypeInterface $entity_type): array {
-  if ($entity_type->id() != 'user') {
+  if ($entity_type->id() !== 'user') {
     return [];
   }
   $custom_fields = [

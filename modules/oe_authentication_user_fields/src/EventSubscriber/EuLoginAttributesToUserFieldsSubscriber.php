@@ -30,9 +30,6 @@ class EuLoginAttributesToUserFieldsSubscriber implements EventSubscriberInterfac
    *
    * @param \Drupal\cas\Event\CasPostLoginEvent $event
    *   The triggered event.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   *   In case of failures an exception is thrown.
    */
   public function updateUserData(CasPostLoginEvent $event): void {
     $properties = EuLoginAttributesHelper::convertEuLoginAttributesToFieldValues($event->getCasPropertyBag()->getAttributes());
