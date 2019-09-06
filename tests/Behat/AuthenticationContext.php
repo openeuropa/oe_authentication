@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\oe_authentication\Behat;
 
-use Drupal\DrupalExtension\Context\ConfigContext;
 use Drupal\user\Entity\User;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
