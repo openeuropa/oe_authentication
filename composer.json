@@ -18,7 +18,6 @@
         "drupal/drupal-extension": "~4.0",
         "drush/drush": "~9.0@stable",
         "egulias/email-validator": "^1.2.1 || ^2.0",
-        "guzzlehttp/guzzle": "~6.3",
         "nikic/php-parser": "~3.0",
         "openeuropa/behat-transformation-context" : "~0.1",
         "openeuropa/code-review": "~1.0.0-alpha4",
@@ -28,9 +27,6 @@
         "phpunit/phpunit": "~6.0",
         "symfony/dom-crawler": "~3.4"
     },
-    "_readme": [
-        "We explicitly require guzzlehttp/guzzle to allow tests after 'composer update --prefer-lowest' to complete successfully."
-    ],
     "scripts": {
         "post-install-cmd": "./vendor/bin/run drupal:site-setup",
         "post-update-cmd": "./vendor/bin/run drupal:site-setup"
