@@ -145,6 +145,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       'assuranceLevel' => $config->get('assurance_level'),
       'ticketTypes' => $config->get('ticket_types'),
       'userDetails' => 'true',
+      'groups' => '*',
     ];
     $event->addParameters($params);
   }
