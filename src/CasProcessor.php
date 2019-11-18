@@ -87,7 +87,12 @@ class CasProcessor {
       else {
         $value = $child->nodeValue;
       }
-      $attributes[$name] = $value;
+      if ($name === 'group') {
+        $attributes[$name][] = $value;
+      }
+      else {
+        $attributes[$name] = $value;
+      }
     }
     return $attributes;
   }
