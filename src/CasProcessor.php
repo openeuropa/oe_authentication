@@ -72,29 +72,58 @@ class CasProcessor {
    *
    * @param \DOMElement $node
    *   An XML element containing attributes.
+   * @param bool $sublevel
+   *   Whether the method is called in a recursive loop.
    *
    * @return array
    *   An associative array of attributes.
    */
-  private static function parseAttributes(\DOMElement $node): array {
+  private static function parseAttributes(\DOMElement $node, bool $sublevel = FALSE): array {
     $attributes = [];
     // @var \DOMElement $child
-    foreach ($node->childNodes as $child) {
+    foreach ($node->childNodes as $key => $child) {
       $name = $child->localName;
+      // If the child has sub-levels, recursively parse the attributes
+      // underneath.
       if ($child->hasAttribute('number')) {
-        $value = CasProcessor::parseAttributes($child);
+        $value = CasProcessor::parseAttributes($child, TRUE);
       }
       else {
         $value = $child->nodeValue;
       }
-      if ($name === 'group') {
-        $attributes[$name][] = $value;
+
+      if ($sublevel) {
+        // If the sublevel children are keyed by the same key, we cannot make
+        // it an associated array so we have to key numerically.
+        $associative = CasProcessor::isAssociative($node);
+        $sublevel_name = $associative ? $name : $key;
+        $attributes[$sublevel_name] = $value;
+        continue;
       }
-      else {
-        $attributes[$name] = $value;
-      }
+
+      $attributes[$name] = $value;
     }
     return $attributes;
+  }
+
+  /**
+   * Checks whether the node children can be represented as an associated array.
+   *
+   * @param \DOMElement $node
+   *   The node element.
+   *
+   * @return bool
+   *   Whether the node children should be mapped to an associated array.
+   */
+  protected static function isAssociative(\DOMElement $node): bool {
+    $names = [];
+    foreach ($node->childNodes as $key => $child) {
+      $names[] = $child->localName;
+    }
+
+    // We consider it as associative if we have only one name value or if  the
+    // name values are different.
+    return count($names) < 2 || count(array_unique($names)) > 1;
   }
 
   /**
