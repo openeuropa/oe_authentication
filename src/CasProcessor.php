@@ -72,13 +72,18 @@ class CasProcessor {
    *
    * @param \DOMElement $node
    *   An XML element containing attributes.
-   * @param bool $sublevel
-   *   Whether the method is called in a recursive loop.
+   * @param bool $toplevel
+   *   Whether the method is called from out of the recursive loop.
    *
    * @return array
-   *   An associative array of attributes.
+   *   An array of attributes.
    */
-  private static function parseAttributes(\DOMElement $node, bool $sublevel = FALSE): array {
+  private static function parseAttributes(\DOMElement $node, bool $toplevel = TRUE): array {
+
+    // Check if we can return an associative array or if
+    // we must use numeric keys.
+    $associative = $toplevel || CasProcessor::isAssociative($node);
+
     $attributes = [];
     // @var \DOMElement $child
     foreach ($node->childNodes as $key => $child) {
@@ -86,28 +91,27 @@ class CasProcessor {
       // If the child has sub-levels, recursively parse the attributes
       // underneath.
       if ($child->hasAttribute('number')) {
-        $value = CasProcessor::parseAttributes($child, TRUE);
+        $value = CasProcessor::parseAttributes($child, FALSE);
       }
       else {
         $value = $child->nodeValue;
       }
 
-      if ($sublevel) {
-        // If the sublevel children are keyed by the same key, we cannot make
-        // it an associated array so we have to key numerically.
-        $associative = CasProcessor::isAssociative($node);
-        $sublevel_name = $associative ? $name : $key;
-        $attributes[$sublevel_name] = $value;
-        continue;
+      if ($associative) {
+        $attributes[$name] = $value;
+      }
+      else {
+        $attributes[] = $value;
       }
 
-      $attributes[$name] = $value;
     }
     return $attributes;
   }
 
   /**
-   * Checks whether the node children can be represented as an associated array.
+   * Checks if the node children can be represented as an associative array.
+   *
+   * Array can be associative if it will get different names for all keys.
    *
    * @param \DOMElement $node
    *   The node element.
@@ -116,14 +120,11 @@ class CasProcessor {
    *   Whether the node children should be mapped to an associated array.
    */
   protected static function isAssociative(\DOMElement $node): bool {
-    $names = [];
-    foreach ($node->childNodes as $key => $child) {
-      $names[] = $child->localName;
+    $names = $counter = [];
+    foreach ($node->childNodes as $child) {
+      $names[$child->localName] = $counter[] = $child->localName;
     }
-
-    // We consider it as associative if we have only one name value or if  the
-    // name values are different.
-    return count($names) < 2 || count(array_unique($names)) > 1;
+    return count($names) === count($counter);
   }
 
   /**
