@@ -10,7 +10,6 @@ use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -45,12 +44,9 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger.
    */
-  public function __construct(ConfigFactoryInterface $configFactory, MessengerInterface $messenger) {
+  public function __construct(ConfigFactoryInterface $configFactory) {
     $this->configFactory = $configFactory;
-    $this->messenger = $messenger;
   }
 
   /**
@@ -111,7 +107,6 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     $user_settings = $this->configFactory->get('user.settings');
     if ($user_settings->get('register') === USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL) {
       $event->setPropertyValue('status', 0);
-      $this->messenger->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.'));
     }
   }
 
