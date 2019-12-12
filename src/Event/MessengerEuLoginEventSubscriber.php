@@ -21,17 +21,17 @@ class MessengerEuLoginEventSubscriber implements EventSubscriberInterface {
   use StringTranslationTrait;
 
   /**
-   * Stores a Messenger object.
+   * The messenger service.
    *
    * @var \Drupal\Core\Messenger\MessengerInterface
    */
   protected $messenger;
 
   /**
-   * Constructors the MessengerEuLoginEventSubscriber.
+   * Constructs the MessengerEuLoginEventSubscriber.
    *
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger.
+   *   The messenger service.
    */
   public function __construct(MessengerInterface $messenger) {
     $this->messenger = $messenger;
@@ -56,7 +56,6 @@ class MessengerEuLoginEventSubscriber implements EventSubscriberInterface {
    *   The triggered event.
    */
   public function showUserMessage(CasPreRegisterEvent $event): void {
-
     $properties = $event->getPropertyValues();
 
     if (!isset($properties['status'])) {
@@ -66,7 +65,6 @@ class MessengerEuLoginEventSubscriber implements EventSubscriberInterface {
     if (!$properties['status']) {
       $this->messenger->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.'));
     }
-
   }
 
 }

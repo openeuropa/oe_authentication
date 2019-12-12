@@ -55,9 +55,9 @@ class CasProcessor {
     // Load cas attributes.
     $dom = new \DOMDocument();
     $dom->preserveWhiteSpace = FALSE;
-    $dom->encoding = "utf-8";
+    $dom->encoding = 'utf-8';
     @$dom->loadXML($source);
-    $success_elements = $dom->getElementsByTagName("authenticationSuccess");
+    $success_elements = $dom->getElementsByTagName('authenticationSuccess');
 
     // There should only be one success element, grab it and extract username.
     $success_element = $success_elements->item(0);
@@ -138,7 +138,7 @@ class CasProcessor {
   public static function isValidResponse(string $response) {
     $dom = new \DOMDocument();
     $dom->preserveWhiteSpace = FALSE;
-    $dom->encoding = "utf-8";
+    $dom->encoding = 'utf-8';
 
     // Suppress errors from this function, as we intend to allow other
     // event subscribers to work on the data.
@@ -146,7 +146,7 @@ class CasProcessor {
       return FALSE;
     }
 
-    $success_elements = $dom->getElementsByTagName("authenticationSuccess");
+    $success_elements = $dom->getElementsByTagName('authenticationSuccess');
     return $success_elements->length !== 0;
   }
 
