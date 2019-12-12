@@ -13,8 +13,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Event subscriber for CAS module events.
  *
- * The class subscribes to the events provided by the CAS module shows messages
- * accordingly.
+ * The class subscribes to the events provided by the CAS module and shows
+ * messages accordingly.
  */
 class MessengerEuLoginEventSubscriber implements EventSubscriberInterface {
 
