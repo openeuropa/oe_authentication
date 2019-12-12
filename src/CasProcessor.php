@@ -49,7 +49,7 @@ class CasProcessor {
    *   An array containing the parsed attributes.
    */
   public static function processValidationResponseAttributes(string $source): array {
-    if (!CasProcessor::isValidResponse($source)) {
+    if (!static::isValidResponse($source)) {
       throw new \InvalidArgumentException();
     }
     // Load cas attributes.
@@ -63,7 +63,7 @@ class CasProcessor {
     $success_element = $success_elements->item(0);
     // Parse the attributes coming from Eu Login
     // and add them to the default ones.
-    $eulogin_attributes = CasProcessor::parseAttributes($success_element);
+    $eulogin_attributes = static::parseAttributes($success_element);
     return $eulogin_attributes;
   }
 
@@ -78,11 +78,10 @@ class CasProcessor {
    * @return array
    *   An array of attributes.
    */
-  private static function parseAttributes(\DOMElement $node, bool $toplevel = TRUE): array {
-
+  protected static function parseAttributes(\DOMElement $node, bool $toplevel = TRUE): array {
     // Check if we can return an associative array or if
     // we must use numeric keys.
-    $associative = $toplevel || CasProcessor::isAssociative($node);
+    $associative = $toplevel || static::isAssociative($node);
 
     $attributes = [];
     // @var \DOMElement $child
@@ -91,7 +90,7 @@ class CasProcessor {
       // If the child has sub-levels, recursively parse the attributes
       // underneath.
       if ($child->hasAttribute('number')) {
-        $value = CasProcessor::parseAttributes($child, FALSE);
+        $value = static::parseAttributes($child, FALSE);
       }
       else {
         $value = $child->nodeValue;
