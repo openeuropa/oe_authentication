@@ -62,11 +62,13 @@ class RegisterController extends ControllerBase {
     $url = $this->getRegisterUrl()->toString();
     $response = new TrustedRedirectResponse($url);
 
-    $cache = new CacheableMetadata();
-    $cache->addCacheContexts(['user.roles:anonymous']);
-    $response->addCacheableDependency($cache);
+    $cache_metadata = (new CacheableMetadata())
+      ->addCacheContexts(['user.roles:anonymous']);
+    $oe_auth_settings = $this->configFactory->get('oe_authentication.settings');
 
-    return $response;
+    return $response
+      ->addCacheableDependency($cache_metadata)
+      ->addCacheableDependency($oe_auth_settings);
   }
 
   /**

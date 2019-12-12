@@ -17,3 +17,6 @@ oe_authentication.settings:
     ticket_types:
       type: string
       label: 'Application available ticket types'
+    redirect_user_register_route:
+      type: boolean
+      label: 'Redirect Drupal user registration route to EU Login'

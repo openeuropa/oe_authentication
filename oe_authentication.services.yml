@@ -5,7 +5,8 @@ services:
       tags:
         - { name: access_check, applies_to: _external_user_access_check }
   oe_authentication.route_subscriber:
-    class: \Drupal\oe_authentication\Routing\RouteSubscriber
+    class: Drupal\oe_authentication\Routing\RouteSubscriber
+    arguments: ['@config.factory']
     tags:
       - { name: event_subscriber }
   oe_authentication.event_subscriber:
@@ -13,3 +14,8 @@ services:
     tags:
       - { name: event_subscriber }
     arguments: ['@config.factory', '@messenger']
+  oe_authentication.config_subscriber:
+    class: Drupal\oe_authentication\Event\UserRegisterRouteRedirectConfigSubscriber
+    arguments: ['@router.builder']
+    tags:
+      - { name: event_subscriber }

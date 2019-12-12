@@ -53,6 +53,11 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Application available ticket types'),
       '#default_value' => $this->config(static::CONFIG_NAME)->get('ticket_types'),
     ];
+    $form['redirect_user_register_route'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Redirect user registration route to EU Login'),
+      '#default_value' => $this->config(static::CONFIG_NAME)->get('redirect_user_register_route'),
+    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -66,6 +71,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       ->set('validation_path', $form_state->getValue('validation_path'))
       ->set('assurance_level', $form_state->getValue('assurance_level'))
       ->set('ticket_types', $form_state->getValue('ticket_types'))
+      ->set('redirect_user_register_route', $form_state->getValue('redirect_user_register_route'))
       ->save();
     parent::submitForm($form, $form_state);
   }
