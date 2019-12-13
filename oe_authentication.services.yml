@@ -12,4 +12,9 @@ services:
     class: \Drupal\oe_authentication\Event\EuLoginEventSubscriber
     tags:
       - { name: event_subscriber }
-    arguments: ['@config.factory', '@messenger']
+    arguments: ['@config.factory']
+  oe_authentication.messenger.event_subscriber:
+    class: \Drupal\oe_authentication\Event\MessengerEuLoginEventSubscriber
+    tags:
+      - { name: event_subscriber }
+    arguments: ['@messenger']
