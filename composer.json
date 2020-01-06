@@ -6,7 +6,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "drupal/cas": "^1.5",
+        "drupal/cas": "^1.6",
         "drupal/core": "^8.7",
         "php": "^7.1"
     },
@@ -20,7 +20,7 @@
         "egulias/email-validator": "^1.2.1 || ^2.0",
         "nikic/php-parser": "~3.0",
         "openeuropa/behat-transformation-context" : "~0.1",
-        "openeuropa/code-review": "~1.0.0-alpha4",
+        "openeuropa/code-review": "^1.0.0-beta2",
         "openeuropa/drupal-core-require-dev": "^8.7",
         "openeuropa/task-runner": "~1.0-beta4",
         "symfony/browser-kit": "~3.0||~4.0",
@@ -50,11 +50,6 @@
     "extra": {
         "composer-exit-on-patch-failure": true,
         "enable-patching": true,
-        "patches": {
-            "drupal/cas": {
-                "https://www.drupal.org/project/cas/issues/3047390": "https://www.drupal.org/files/issues/2019-04-12/3047390_2.patch"
-            }
-        },
         "installer-paths": {
             "build/core": ["type:drupal-core"],
             "build/profiles/contrib/{$name}": ["type:drupal-profile"],
