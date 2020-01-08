@@ -36,6 +36,8 @@ function oe_authentication_install(): void {
       ->set('login_link_enabled', TRUE)
       ->set('login_link_label', 'EU Login')
       ->set('error_handling.login_failure_page', '/')
+      ->set('error_handling.message_prevent_normal_login', 'This account must log in using <a href="[cas:login-url]">EU Login</a>.')
+      ->set('error_handling.message_restrict_password_management', 'The requested account is associated with EU Login and its password cannot be managed from this website.')
       ->set('login_success_message', 'You have been logged in.')
       ->save();
 
