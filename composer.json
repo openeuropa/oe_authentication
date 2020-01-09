@@ -50,11 +50,6 @@
     "extra": {
         "composer-exit-on-patch-failure": true,
         "enable-patching": true,
-        "patches": {
-            "drupal/cas": {
-                "https://www.drupal.org/project/cas/issues/3047390": "https://www.drupal.org/files/issues/2019-04-12/3047390_2.patch"
-            }
-        },
         "installer-paths": {
             "build/core": ["type:drupal-core"],
             "build/profiles/contrib/{$name}": ["type:drupal-profile"],
