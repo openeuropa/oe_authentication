@@ -28,7 +28,7 @@ class RouteSubscriber extends RouteSubscriberBase {
       if (($route = $collection->get($internal_route)) === NULL) {
         continue;
       }
-      $route->setRequirement('_external_user_access_check', 'TRUE');
+      $route->setRequirement('_cas_user_access', 'TRUE');
 
     }
 

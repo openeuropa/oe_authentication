@@ -7,6 +7,7 @@ namespace Drupal\Tests\oe_authentication\Behat;
 use Drupal\user\Entity\User;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\user\UserInterface;
 
 /**
  * Defines step definitions specifically for testing the CAS options.
@@ -124,7 +125,7 @@ class AuthenticationContext extends RawDrupalContext {
    * @Given the site is configured to make users active on creation
    */
   public function setNewUsersActive(): void {
-    $this->configContext->setConfig('user.settings', 'register', USER_REGISTER_VISITORS);
+    $this->configContext->setConfig('user.settings', 'register', UserInterface::REGISTER_VISITORS);
   }
 
   /**
@@ -133,7 +134,7 @@ class AuthenticationContext extends RawDrupalContext {
    * @Given the site is configured to make users blocked on creation
    */
   public function setNewUsersBlocked(): void {
-    $this->configContext->setConfig('user.settings', 'register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
+    $this->configContext->setConfig('user.settings', 'register', UserInterface::REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
   }
 
   /**
