@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.1.0](https://github.com/openeuropa/oe_authentication/tree/1.1.0) (2020-01-21)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0...1.1.0)
+
+**Closed issues:**
+
+- Could not apply patch! Skipping. The error was: Cannot apply patch https://www.drupal.org/files/issues/2019-04-12/3047390\_2.patch [\#104](https://github.com/openeuropa/oe_authentication/issues/104)
+
+**Merged pull requests:**
+
+- OPENEUROPA-2700: Update CAS to 1.6 [\#106](https://github.com/openeuropa/oe_authentication/pull/106) ([imanoleguskiza](https://github.com/imanoleguskiza))
+
 ## [1.0.0](https://github.com/openeuropa/oe_authentication/tree/1.0.0) (2019-12-16)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-beta1...1.0.0)
 
@@ -16,6 +27,7 @@
 
 **Merged pull requests:**
 
+- Update CHANGELOG.md for release 1.0.0. [\#101](https://github.com/openeuropa/oe_authentication/pull/101) ([ademarco](https://github.com/ademarco))
 - OPENEUROPA-0000: Separate cache folder on drone. [\#100](https://github.com/openeuropa/oe_authentication/pull/100) ([voidtek](https://github.com/voidtek))
 - OPENEUROPA-2502: Add param groups to validation path. [\#99](https://github.com/openeuropa/oe_authentication/pull/99) ([dxvargas](https://github.com/dxvargas))
 - OPENEUROPA-2258: Undo use of PHP 7.2. [\#98](https://github.com/openeuropa/oe_authentication/pull/98) ([dxvargas](https://github.com/dxvargas))
