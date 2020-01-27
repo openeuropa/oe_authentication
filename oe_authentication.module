@@ -42,21 +42,25 @@ function oe_authentication_entity_base_field_info(EntityTypeInterface $entity_ty
       'machine_name' => 'field_oe_firstname',
       'name' => t('First Name'),
       'description' => t("User's first name."),
+      'hidden' => FALSE,
     ],
     '8' => [
       'machine_name' => 'field_oe_lastname',
       'name' => t('Last Name'),
       'description' => t("User's last name."),
+      'hidden' => FALSE,
     ],
     '9' => [
       'machine_name' => 'field_oe_department',
       'name' => t('Department'),
       'description' => t("User's department."),
+      'hidden' => FALSE,
     ],
     '10' => [
       'machine_name' => 'field_oe_organisation',
       'name' => t('Organisation'),
       'description' => t("User's organisation."),
+      'hidden' => FALSE,
     ],
   ];
 
@@ -72,7 +76,9 @@ function oe_authentication_entity_base_field_info(EntityTypeInterface $entity_ty
       ->setDisplayOptions('form', [
         'weight' => $weight,
         'region' => 'content',
-      ]);
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
   }
   return $fields;
 }
