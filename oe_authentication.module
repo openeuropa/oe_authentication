@@ -78,7 +78,7 @@ function oe_authentication_entity_base_field_info(EntityTypeInterface $entity_ty
         'region' => 'content',
       ])
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('form', TRUE);
+      ->setDisplayConfigurable('view', TRUE);
   }
   return $fields;
 }
