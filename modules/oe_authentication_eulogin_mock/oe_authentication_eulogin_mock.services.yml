@@ -1,0 +1,11 @@
+services:
+  oe_authentication_eulogin_mock.event_subscriber:
+    class: Drupal\oe_authentication_eulogin_mock\EventSubscriber\CasMockServerSubscriber
+    tags:
+      - { name: event_subscriber }
+  oe_authentication_eulogin_mock.route_subscriber:
+    class: Drupal\oe_authentication_eulogin_mock\Routing\RouteSubscriber
+    arguments: ['@config.factory']
+    tags:
+      - { name: event_subscriber }
+
