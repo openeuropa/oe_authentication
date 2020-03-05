@@ -15,8 +15,9 @@ drupal:
     - "./vendor/bin/drush en toolbar -y"
     - "./vendor/bin/drush en config_devel -y"
     # Enable the modules.
-    - "./vendor/bin/drush en oe_authentication_user_fields -y"
+    - "./vendor/bin/drush en oe_authentication_user_fields oe_authentication_eulogin_mock -y"
     - "./vendor/bin/drush pmu big_pipe -y"
+    - "./vendor/bin/drush cas-mock-server:start"
     - "./vendor/bin/drush cr"
   settings:
     settings:
@@ -39,8 +40,6 @@ commands:
     - task: "append"
       file: "build/sites/default/settings.override.php"
       text: |
-        $config['cas.settings']['server']['hostname'] = 'authentication';
-        $config['cas.settings']['server']['port'] = '7002';
         // Enable the option 'Initialize this client as a proxy'
         // $config['cas.settings']['proxy']['initialize'] = TRUE;
         // SSL Configuration to not verify CAS server. DO NOT USE IN PRODUCTION!
