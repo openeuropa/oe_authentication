@@ -43,7 +43,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Drupal\\Tests\\oe_authentication\\": "./tests/"
+            "Drupal\\Tests\\oe_authentication\\": "./tests/",
+            "Drupal\\Tests\\cas_mock_server\\": "./build/modules/contrib/cas_mock_server/tests/src/"
         }
     },
     "repositories": {
