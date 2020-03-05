@@ -12,6 +12,7 @@
     },
     "require-dev": {
         "composer/installers": "~1.5",
+        "drupal/cas_mock_server": "^1.0@alpha",
         "drupal/core-composer-scaffold": "^8.8",
         "drupal/config_devel": "~1.2",
         "drupal/devel": "~1.2",
