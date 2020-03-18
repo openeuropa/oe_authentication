@@ -8,7 +8,7 @@
     "require": {
         "drupal/cas": "^1.6",
         "drupal/core-recommended": "^8.7",
-        "php": "^7.1"
+        "php": "~7.2.0 || ~7.3.0"
     },
     "require-dev": {
         "composer/installers": "~1.5",
