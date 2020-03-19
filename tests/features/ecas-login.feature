@@ -84,7 +84,7 @@ Feature: Login through OE Authentication
     And I should not see the link "Log out"
     And I should see the link "Log in"
 
-  @cleanup:user
+  @cleanup:user @run @javascript
   Scenario: A user's information should update every login
     # Login with an EULogin user.
     Given the site is configured to make users active on creation
