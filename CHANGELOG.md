@@ -1,5 +1,15 @@
 # Change Log
 
+## [1.2.0](https://github.com/openeuropa/oe_authentication/tree/1.2.0) (2020-04-08)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.1.0...1.2.0)
+
+**Merged pull requests:**
+
+- OPENEUROPA-2943: Update composer.json. [\#115](https://github.com/openeuropa/oe_authentication/pull/115) ([sergepavle](https://github.com/sergepavle))
+- OPENEUROPA-0000: Use drupal/core instead of drupal/core-recommended. [\#114](https://github.com/openeuropa/oe_authentication/pull/114) ([22Alexandra](https://github.com/22Alexandra))
+- OPENEUROPA-2939: PHP 7.3. - Update OE Authentication component. [\#113](https://github.com/openeuropa/oe_authentication/pull/113) ([sergepavle](https://github.com/sergepavle))
+- OPENEUROPA-2604: Drupal 8 recommended project. [\#112](https://github.com/openeuropa/oe_authentication/pull/112) ([upchuk](https://github.com/upchuk))
+
 ## [1.1.0](https://github.com/openeuropa/oe_authentication/tree/1.1.0) (2020-01-21)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0...1.1.0)
 
@@ -9,6 +19,7 @@
 
 **Merged pull requests:**
 
+- OPENEUROPA-0000: Preparing for 1.1.0 release. [\#107](https://github.com/openeuropa/oe_authentication/pull/107) ([hernani](https://github.com/hernani))
 - OPENEUROPA-2700: Update CAS to 1.6 [\#106](https://github.com/openeuropa/oe_authentication/pull/106) ([imanoleguskiza](https://github.com/imanoleguskiza))
 
 ## [1.0.0](https://github.com/openeuropa/oe_authentication/tree/1.0.0) (2019-12-16)
