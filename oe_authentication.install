@@ -91,7 +91,7 @@ function oe_authentication_update_8001(): void {
 }
 
 /**
- * Install oe_authentication_user_fields.module.
+ * Install oe_authentication_user_fields module.
  */
 function oe_authentication_update_8002(): void {
   $entity_definition_manager = \Drupal::entityDefinitionUpdateManager();
