@@ -2,7 +2,7 @@
 
 /**
  * @file
- * OpenEuropa Authentication post updates.
+ * Post update functions for OE Authentication module.
  */
 
 declare(strict_types = 1);

@@ -10,36 +10,6 @@ namespace Drupal\oe_authentication;
 class CasProcessor {
 
   /**
-   * Array mapping CAS attributes with oe_authentication fields.
-   */
-  const USER_CAS_ATTRIBUTE_MAPPING = [
-    'mail' => 'email',
-    'field_oe_firstname' => 'firstName',
-    'field_oe_lastname' => 'lastName',
-    'field_oe_department' => 'departmentNumber',
-    'field_oe_organisation' => 'domain',
-  ];
-
-  /**
-   * Converts an array of cas attributes into an array of drupal field/values.
-   *
-   * @param array $attributes
-   *   An array containing a series of cas attributes.
-   *
-   * @return array
-   *   An array containing a series of Drupal field names and values.
-   */
-  public static function convertCasAttributesToFieldValues(array $attributes): array {
-    $values = [];
-    foreach (static::USER_CAS_ATTRIBUTE_MAPPING as $field_name => $property_name) {
-      if (!empty($attributes[$property_name])) {
-        $values[$field_name] = $attributes[$property_name];
-      }
-    }
-    return $values;
-  }
-
-  /**
    * Parses the EU Login attributes from the validation response.
    *
    * @param string $source

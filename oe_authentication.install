@@ -89,3 +89,29 @@ function oe_authentication_update_8001(): void {
       ->installFieldStorageDefinition($field['name'], 'user', 'oe_authentication', $storage_definition);
   }
 }
+
+/**
+ * Install oe_authentication_user_fields module.
+ */
+function oe_authentication_update_8002(): void {
+  $entity_definition_manager = \Drupal::entityDefinitionUpdateManager();
+
+  // Change the base fields provider.
+  $field_names = [
+    'field_oe_firstname',
+    'field_oe_lastname',
+    'field_oe_department',
+    'field_oe_organisation',
+  ];
+  foreach ($field_names as $field_name) {
+    $field_storage_definition = $entity_definition_manager->getFieldStorageDefinition($field_name, 'user');
+    $field_storage_definition->setProvider('oe_authentication_user_fields');
+    $entity_definition_manager->updateFieldStorageDefinition($field_storage_definition);
+  }
+
+  // Changing the base field provider requires container invalidation.
+  \Drupal::service('kernel')->invalidateContainer();
+
+  // Install the new sub-module.
+  \Drupal::service('module_installer')->install(['oe_authentication_user_fields']);
+}

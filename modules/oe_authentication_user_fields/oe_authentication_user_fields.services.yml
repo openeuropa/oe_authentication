@@ -1,0 +1,5 @@
+services:
+  oe_authentication_user_fields.event_subscriber:
+    class: Drupal\oe_authentication_user_fields\EventSubscriber\EuLoginAttributesToUserFieldsSubscriber
+    tags:
+      - { name: event_subscriber }
