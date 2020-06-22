@@ -1,16 +1,32 @@
-# Change Log
+# Changelog
+
+## [1.3.0](https://github.com/openeuropa/oe_authentication/tree/1.3.0) (2020-06-22)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.2.0...1.3.0)
+
+**Implemented enhancements:**
+
+- Don't create and map user fields. Use cas\_attributes instead [\#81](https://github.com/openeuropa/oe_authentication/issues/81)
+
+**Merged pull requests:**
+
+- OPENEUROPA-0000: Fix the drupal/cas version to 1.6. [\#120](https://github.com/openeuropa/oe_authentication/pull/120) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- Move user fields into a sub-module [\#89](https://github.com/openeuropa/oe_authentication/pull/89) ([claudiu-cristea](https://github.com/claudiu-cristea))
 
 ## [1.2.0](https://github.com/openeuropa/oe_authentication/tree/1.2.0) (2020-04-08)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.1.0...1.2.0)
 
 **Merged pull requests:**
 
+- OPENEUROPA-2954: Release 1.2.0. [\#116](https://github.com/openeuropa/oe_authentication/pull/116) ([nagyad](https://github.com/nagyad))
 - OPENEUROPA-2943: Update composer.json. [\#115](https://github.com/openeuropa/oe_authentication/pull/115) ([sergepavle](https://github.com/sergepavle))
 - OPENEUROPA-0000: Use drupal/core instead of drupal/core-recommended. [\#114](https://github.com/openeuropa/oe_authentication/pull/114) ([22Alexandra](https://github.com/22Alexandra))
 - OPENEUROPA-2939: PHP 7.3. - Update OE Authentication component. [\#113](https://github.com/openeuropa/oe_authentication/pull/113) ([sergepavle](https://github.com/sergepavle))
 - OPENEUROPA-2604: Drupal 8 recommended project. [\#112](https://github.com/openeuropa/oe_authentication/pull/112) ([upchuk](https://github.com/upchuk))
 
 ## [1.1.0](https://github.com/openeuropa/oe_authentication/tree/1.1.0) (2020-01-21)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0...1.1.0)
 
 **Closed issues:**
@@ -23,6 +39,7 @@
 - OPENEUROPA-2700: Update CAS to 1.6 [\#106](https://github.com/openeuropa/oe_authentication/pull/106) ([imanoleguskiza](https://github.com/imanoleguskiza))
 
 ## [1.0.0](https://github.com/openeuropa/oe_authentication/tree/1.0.0) (2019-12-16)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-beta1...1.0.0)
 
 **Implemented enhancements:**
@@ -47,6 +64,7 @@
 - OPENEUROPA-1897: Removed drone permission fix. [\#76](https://github.com/openeuropa/oe_authentication/pull/76) ([imanoleguskiza](https://github.com/imanoleguskiza))
 
 ## [1.0.0-beta1](https://github.com/openeuropa/oe_authentication/tree/1.0.0-beta1) (2019-05-15)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha7...1.0.0-beta1)
 
 **Closed issues:**
@@ -58,6 +76,7 @@
 - OPENEUROPA-1864: Create release 1.0.0-beta1. [\#74](https://github.com/openeuropa/oe_authentication/pull/74) ([imanoleguskiza](https://github.com/imanoleguskiza))
 
 ## [1.0.0-alpha7](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha7) (2019-05-07)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha6...1.0.0-alpha7)
 
 **Merged pull requests:**
@@ -66,6 +85,7 @@
 - OPENEUROPA-1813: Upgrading to 8.7. [\#70](https://github.com/openeuropa/oe_authentication/pull/70) ([upchuk](https://github.com/upchuk))
 
 ## [1.0.0-alpha6](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha6) (2019-05-07)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha5...1.0.0-alpha6)
 
 **Merged pull requests:**
@@ -77,6 +97,7 @@
 - OPENEUROPA-1766: Fix Drupal 8.7. [\#66](https://github.com/openeuropa/oe_authentication/pull/66) ([voidtek](https://github.com/voidtek))
 
 ## [1.0.0-alpha5](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha5) (2019-04-25)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha4...1.0.0-alpha5)
 
 **Closed issues:**
@@ -95,6 +116,7 @@
 - OPENEUROPA-1685: Add post login event. [\#54](https://github.com/openeuropa/oe_authentication/pull/54) ([imanoleguskiza](https://github.com/imanoleguskiza))
 
 ## [1.0.0-alpha4](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha4) (2019-02-19)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha3...1.0.0-alpha4)
 
 **Merged pull requests:**
@@ -111,6 +133,7 @@
 - OPENEUROPA-1486: Remove access to user delete. [\#39](https://github.com/openeuropa/oe_authentication/pull/39) ([imanoleguskiza](https://github.com/imanoleguskiza))
 
 ## [1.0.0-alpha3](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha3) (2018-12-05)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha2...1.0.0-alpha3)
 
 **Closed issues:**
@@ -130,6 +153,7 @@
 - OPENEUROPA-1206: Removed custom service in favor of new event. [\#25](https://github.com/openeuropa/oe_authentication/pull/25) ([imanoleguskiza](https://github.com/imanoleguskiza))
 
 ## [1.0.0-alpha2](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha2) (2018-09-28)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.0.0-alpha1...1.0.0-alpha2)
 
 **Merged pull requests:**
@@ -138,6 +162,7 @@
 - OPENEUROPA-784: Make sure component dependencies are as relaxed as possible. [\#20](https://github.com/openeuropa/oe_authentication/pull/20) ([aritomelo](https://github.com/aritomelo))
 
 ## [1.0.0-alpha1](https://github.com/openeuropa/oe_authentication/tree/1.0.0-alpha1) (2018-09-19)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.5.0...1.0.0-alpha1)
 
 **Merged pull requests:**
@@ -149,6 +174,7 @@
 - OPENEUROPA-1192: Replace PCas with Cas module. [\#19](https://github.com/openeuropa/oe_authentication/pull/19) ([dxvargas](https://github.com/dxvargas))
 
 ## [0.5.0](https://github.com/openeuropa/oe_authentication/tree/0.5.0) (2018-08-29)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.4.0...0.5.0)
 
 **Merged pull requests:**
@@ -160,6 +186,7 @@
 - OPENEUROPA-1119: Create a docker-compose.yml.dist file [\#13](https://github.com/openeuropa/oe_authentication/pull/13) ([netlooker](https://github.com/netlooker))
 
 ## [0.4.0](https://github.com/openeuropa/oe_authentication/tree/0.4.0) (2018-08-20)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.3.0...0.4.0)
 
 **Merged pull requests:**
@@ -167,6 +194,7 @@
 - OPENEUROPA-1159: Rename Auth to Authentification [\#12](https://github.com/openeuropa/oe_authentication/pull/12) ([Medi4tor](https://github.com/Medi4tor))
 
 ## [0.3.0](https://github.com/openeuropa/oe_authentication/tree/0.3.0) (2018-08-13)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.2.0...0.3.0)
 
 **Merged pull requests:**
@@ -176,6 +204,7 @@
 - OPENEUROPA-582: Update images on docker-compose and drone file. [\#9](https://github.com/openeuropa/oe_authentication/pull/9) ([voidtek](https://github.com/voidtek))
 
 ## [0.2.0](https://github.com/openeuropa/oe_authentication/tree/0.2.0) (2018-06-25)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/0.1.0...0.2.0)
 
 **Merged pull requests:**
@@ -184,6 +213,9 @@
 - OPENEUROPA-679: Make authentication service endpoint configurable [\#6](https://github.com/openeuropa/oe_authentication/pull/6) ([voidtek](https://github.com/voidtek))
 
 ## [0.1.0](https://github.com/openeuropa/oe_authentication/tree/0.1.0) (2018-06-19)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/a00b8cccbde9eab85cd5ddbd3b95223781029bb3...0.1.0)
+
 **Merged pull requests:**
 
 - Add CHANGELOG.md for 0.1.0 release. [\#5](https://github.com/openeuropa/oe_authentication/pull/5) ([ademarco](https://github.com/ademarco))
@@ -194,4 +226,4 @@
 
 
 
-\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*
