@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * @file
+ * OpenEuropa Authentication User Fields module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Implements hook_entity_base_field_info().
+ *
+ * Adds custom EU Login fields.
+ */
+function oe_authentication_user_fields_entity_base_field_info(EntityTypeInterface $entity_type): array {
+  if ($entity_type->id() !== 'user') {
+    return [];
+  }
+  $custom_fields = [
+    '7' => [
+      'machine_name' => 'field_oe_firstname',
+      'name' => t('First Name'),
+      'description' => t("User's first name."),
+    ],
+    '8' => [
+      'machine_name' => 'field_oe_lastname',
+      'name' => t('Last Name'),
+      'description' => t("User's last name."),
+    ],
+    '9' => [
+      'machine_name' => 'field_oe_department',
+      'name' => t('Department'),
+      'description' => t("User's department."),
+    ],
+    '10' => [
+      'machine_name' => 'field_oe_organisation',
+      'name' => t('Organisation'),
+      'description' => t("User's organisation."),
+    ],
+  ];
+
+  $fields = [];
+  foreach ($custom_fields as $weight => $field) {
+    $fields[$field['machine_name']] = BaseFieldDefinition::create('string')
+      ->setLabel($field['name'])
+      ->setDescription($field['description'])
+      ->setSettings([
+        'default_value' => '',
+        'max_length' => 255,
+      ])
+      ->setDisplayOptions('form', [
+        'weight' => $weight,
+        'region' => 'content',
+      ]);
+  }
+  return $fields;
+}

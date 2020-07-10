@@ -1,9 +1,4 @@
 services:
-  oe_authentication.external_user_access_checker:
-      class: Drupal\oe_authentication\Access\ExternalUserAccessCheck
-      arguments: ['@externalauth.authmap']
-      tags:
-        - { name: access_check, applies_to: _external_user_access_check }
   oe_authentication.route_subscriber:
     class: Drupal\oe_authentication\Routing\RouteSubscriber
     arguments: ['@config.factory']
@@ -19,3 +14,8 @@ services:
     arguments: ['@router.builder']
     tags:
       - { name: event_subscriber }
+  oe_authentication.messenger.event_subscriber:
+    class: \Drupal\oe_authentication\Event\MessengerEuLoginEventSubscriber
+    tags:
+      - { name: event_subscriber }
+    arguments: ['@messenger']

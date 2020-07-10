@@ -89,6 +89,9 @@ Feature: Login through OE Authentication
     And I press the "Login!" button
     And I click "Edit"
     Then the "First Name" field should contain "Chuck"
+    And the "Last Name" field should contain "NORRIS"
+    And the "Department" field should contain "DIGIT.A.3.001"
+    And the "Organisation" field should contain "eu.europa.ec"
 
     # Edit the details.
     When I fill in "First Name" with "New name"
@@ -97,6 +100,9 @@ Feature: Login through OE Authentication
 
     When I click "Edit"
     Then the "First Name" field should contain "New name"
+    And the "Last Name" field should contain "NORRIS"
+    And the "Department" field should contain "DIGIT.A.3.001"
+    And the "Organisation" field should contain "eu.europa.ec"
 
     # Logout.
     When I click "Log out"
@@ -110,6 +116,9 @@ Feature: Login through OE Authentication
     And I press the "Login!" button
     And I click "Edit"
     Then the "First Name" field should contain "Chuck"
+    And the "Last Name" field should contain "NORRIS"
+    And the "Department" field should contain "DIGIT.A.3.001"
+    And the "Organisation" field should contain "eu.europa.ec"
 
     #Logout to continue scenarios.
     When I click "Log out"
