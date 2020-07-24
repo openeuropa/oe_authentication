@@ -34,7 +34,7 @@ services:
   authentication:
     # For local access, run this command in the terminal
     # echo "127.0.1.1       authentication" >> /etc/hosts
-    image: registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0
+    image: registry.fpfis.eu/fpfis/eulogin-mock-server:6.2.7
     volumes:
       - ./tests/fixtures/mock-server-config:/data/ecas-mock-server-shared
     ports:
