@@ -8,7 +8,7 @@ services:
     environment:
       - DOCUMENT_ROOT=/test/oe_authentication
   mysql:
-    image: percona/percona-server:5.6
+    image: percona/percona-server:5.7
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
   selenium:
@@ -20,7 +20,7 @@ services:
 pipeline:
   authentication:
     group: conf-authentication
-    image: registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0
+    image: registry.fpfis.eu/fpfis/eulogin-mock-server:6.2.7
     detach: true
     entrypoint: [ /bin/bash ]
     command: [ -c, "cp /test/oe_authentication/tests/fixtures/mock-server-config/*.xml  /data/ecas-mock-server-shared; echo 'eCAS Mockup Server shared configuration is done.'; /u01/oracle/user_projects/domains/base_domain/startWebLogic.sh"]
