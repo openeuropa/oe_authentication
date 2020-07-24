@@ -146,4 +146,43 @@
         <strongPasswordHash>dragon_tattoo</strongPasswordHash>
         <uid>lsalander</uid>
     </user>
+    <user>
+        <cn>Jason BOURNE</cn>
+        <cudGroups>MEDUSA</cudGroups>
+        <cudGroups>TREADSTONE</cudGroups>
+        <departmentNumber>DIGIT.X.1.001</departmentNumber>
+        <email>Jason.BOURNE@ec.europa.eu</email>
+        <employeeNumber>00000001</employeeNumber>
+        <employeeType>f</employeeType>
+        <firstName>Jason</firstName>
+        <internalGroups>OPS-ADMIN</internalGroups>
+        <internalGroups>USER-ADMIN</internalGroups>
+        <internalTelephoneNumber>00002</internalTelephoneNumber>
+        <lastName>BOURNE</lastName>
+        <mobilePhone>COMREF:+32480123456</mobilePhone>
+        <objectStatus>a</objectStatus>
+        <organisation>eu.europa.ec</organisation>
+        <organisationUsername>bournja</organisationUsername>
+        <orgId>1234567890</orgId>
+        <passwordLastChangedTime>2013-12-19T19:29:22.196+01:00</passwordLastChangedTime>
+        <passwordMustChange>N</passwordMustChange>
+        <resetPasswordPermission>N</resetPasswordPermission>
+        <strongPasswordHash>Admin123</strongPasswordHash>
+        <tokenCramId>123@eu</tokenCramId>
+        <tokenSerialNumber>12-3456789-0</tokenSerialNumber>
+        <uid>bournja</uid>
+    </user>
+    <user>
+        <cn>job1337</cn>
+        <description>job1337 is a job account</description>
+        <email>mary@ec.europa.eu</email>
+        <employeeType>e</employeeType>
+        <firstName>job</firstName>
+        <lastName>account</lastName>
+        <manager>false</manager>
+        <objectStatus>a</objectStatus>
+        <organisation>eu.europa.ec</organisation>
+        <organisationUsername>job account</organisationUsername>
+        <uid>job1337</uid>
+    </user>
 </userDataBase>

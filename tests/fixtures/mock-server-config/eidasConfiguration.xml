@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~ ECAS Software
+  ~ Copyright (c) 2017 European Commission
+  ~ Licensed under the EUPL
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~ http://ec.europa.eu/idabc/eupl
+  ~
+  ~ This product includes the CAS software developed by Yale University,
+  ~ Copyright (c) 2000-2004 Yale University. All rights reserved.
+  ~ THE CAS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESS OR IMPLIED
+  ~ WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  ~ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, ARE EXPRESSLY
+  ~ DISCLAIMED. IN NO EVENT SHALL YALE UNIVERSITY OR ITS EMPLOYEES BE
+  ~ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  ~ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED, THE COSTS OF
+  ~ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA OR
+  ~ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  ~ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  ~ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  ~ SOFTWARE, EVEN IF ADVISED IN ADVANCE OF THE POSSIBILITY OF SUCH
+  ~ DAMAGE.
+  -->
+
+<!--
+###############################################################################
+#                                                                             #
+#   ECAS Server eIDAS Configuration properties file - eidasConfiguration.xml    #
+#                                                                             #
+#                                                                             #
+#   This file holds mutable eIDAS configuration information.                   #
+#                                                                             #
+# Any change in this file is reflected in the ECAS eIDAS component at runtime. #
+#                                                                             #
+###############################################################################
+ -->
+
+<eidasConfiguration xmlns="https://ecas.ec.europa.eu/cas/schemas/eidas/eidasConfiguration.xsd"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="https://ecas.ec.europa.eu/cas/schemas/eidas/eidasConfiguration.xsd https://ecas.ec.europa.eu/cas/schemas/eidas/eidasConfiguration.xsd">
+    <proxyServiceMetadatas/>
+</eidasConfiguration>
