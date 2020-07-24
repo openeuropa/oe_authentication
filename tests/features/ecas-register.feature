@@ -7,6 +7,5 @@ Feature: Register through OE Authentication
   Scenario: Register
     Given I am an anonymous user
     When I visit "the user registration page"
-    # Redirected to the Ecas mockup server.
-    And I click "External"
+    # Redirected to the EU Login mockup server.
     Then I should see "Create an account"
