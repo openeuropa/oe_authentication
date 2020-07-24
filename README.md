@@ -16,11 +16,11 @@ The OpenEuropa Authentication module allows authentication against EU Login, the
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contribution)
 - [Versioning](#versioning)
-  
+
 ## Requirements
 
-This module requires the following modules: 
- - [Cas](https://www.drupal.org/project/cas) 
+This module requires the following modules:
+ - [Cas](https://www.drupal.org/project/cas)
 
 ## Installation
 
@@ -44,7 +44,7 @@ be specified. You can see Project setup section on how to override these paramet
 ## Configuration
 
 EU Login service parameters are already set by default when installing the module. Please refer to the EU Login
-documentation for the available options that can be specified. You can see Project setup section on how to override 
+documentation for the available options that can be specified. You can see Project setup section on how to override
 these parameters.
 
 ### Settings overrides
@@ -82,7 +82,7 @@ See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ### SSL Verification Setting
 
-The EU Login Authentication server must be accessed over HTTPS and the drupal site will verify the SSL/TLS certificate 
+The EU Login Authentication server must be accessed over HTTPS and the drupal site will verify the SSL/TLS certificate
 of the server to be sure it is authentic.
 
 For development, you can configure the module to disable this verification:
@@ -95,14 +95,14 @@ See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ### Proxy
 
-You can configure the module to "Initialize this client as a proxy" which allows 
-authentication requests to 3rd party services (e.g. ePOETRY). 
+You can configure the module to "Initialize this client as a proxy" which allows
+authentication requests to 3rd party services (e.g. ePOETRY).
 
 ```php
 $config['cas.settings']['proxy']['initialize'] = TRUE;
 ```
 
-This option is not enabled by default, if you want to use it please refer to 
+This option is not enabled by default, if you want to use it please refer to
 [Enable HTTPS PROXY for the drupal site for development.](#enable-https-proxy-for-the-drupal-site-for-development)
 to be sure that your site is available over HTTPS and has good certificates.
 
@@ -135,7 +135,7 @@ to `./runner.yml` and overriding relevant properties.
 This command will also:
 
 - Symlink the theme in  `./build/modules/custom/oe_authentication` so that it's available for the test site
-- Setup Drush and Drupal's settings using values from `./runner.yml.dist`. This includes adding parameters for EULogin
+- Setup Drush and Drupal's settings using values from `./runner.yml.dist`. This includes adding parameters for EU Login
 - Setup PHPUnit and Behat configuration files using values from `./runner.yml.dist`
 
 After a successful setup install the site by running:
@@ -151,10 +151,10 @@ This will:
 
 ### Using Docker Compose
 
-Alternatively, you can build a development site using [Docker](https://www.docker.com/get-docker) and 
+Alternatively, you can build a development site using [Docker](https://www.docker.com/get-docker) and
 [Docker Compose](https://docs.docker.com/compose/) with the provided configuration.
 
-Docker provides the necessary services and tools such as a web server and a database server to get the site running, 
+Docker provides the necessary services and tools such as a web server and a database server to get the site running,
 regardless of your local host configuration.
 
 #### Requirements:
@@ -165,8 +165,8 @@ regardless of your local host configuration.
 #### Configuration
 
 By default, Docker Compose reads two files, a `docker-compose.yml` and an optional `docker-compose.override.yml` file.
-By convention, the `docker-compose.yml` contains your base configuration and it's provided by default.
-The override file, as its name implies, can contain configuration overrides for existing services or entirely new 
+By convention, the `docker-compose.yml` contains your base configuration, and it's provided by default.
+The override file, as its name implies, can contain configuration overrides for existing services or entirely new
 services.
 If a service is defined in both files, Docker Compose merges the configurations.
 
@@ -222,11 +222,11 @@ To run the behat tests:
 docker-compose exec web ./vendor/bin/behat
 ```
 
-#### Authenticating using the EULogin Mock Service
+#### Authenticating using the EU Login Mock Server
 
-EULogin Mock Service container replicates the [EU Login](https://ecas.ec.europa.eu/cas/about.html) service.
+The EU Login Mock Server container replicates the [EU Login](https://ecas.ec.europa.eu/cas/about.html) service.
 
-To be able to interact with the EULogin Mock Service container you need to add the internal container
+To be able to interact with the EU Login Mock Server container you need to add the internal container
 hostname to the hosts file in your _OS_.
 
 ```bash
@@ -234,11 +234,10 @@ echo "127.0.1.1       authentication" >> /etc/hosts
 ```
 
 To configure the container with User's structures and with some examples of User, you can use files present on the
-folder `tests/fixtures/mock-server-config/`. 
+folder `tests/fixtures/mock-server-config/`.
 
-The container docker that provides the EULogin Mock Service `ecas-mock-server:4.6.0` is available on a private repo
-`registry.fpfis.tech.ec.europa.eu`, please contact [DEVOPS team](DIGIT-NEXTEUROPA-DEVOPS@ec.europa.eu) to request 
-access.
+The container docker that provides the EU Login Mock Server `eulogin-mock-server:6.2.7` is available on a private repo
+`registry.fpfis.eu`, please contact [DEVOPS team](DIGIT-NEXTEUROPA-DEVOPS@ec.europa.eu) to request access.
 
 See [Docker login](https://docs.docker.com/engine/reference/commandline/login/) to connect to the repository.
 
