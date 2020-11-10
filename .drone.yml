@@ -4,6 +4,8 @@ workspace:
 
 pipeline:
   gitlab-docker:
+    group: hello
     image: registry.fpfis.eu/drone-plugins/docker
   hub-docker:
+    group: hello
     image: plugins/docker
