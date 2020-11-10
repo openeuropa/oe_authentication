@@ -4,81 +4,15 @@ workspace:
 
 services:
   web:
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
+    image: registry.fpfis.eu/fpfis/httpd-php:7.3-ci
     environment:
       - DOCUMENT_ROOT=/test/oe_authentication
-  mysql:
-    image: percona/percona-server:5.6
-    environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-  selenium:
-    image: selenium/standalone-chrome:3.11
-    environment:
-      - DISPLAY=:99
-      - SE_OPTS=-debug
 
 pipeline:
-  authentication:
-    group: conf-authentication
-    image: registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0
-    detach: true
-    entrypoint: [ /bin/bash ]
-    command: [ -c, "cp /test/oe_authentication/tests/fixtures/mock-server-config/*.xml  /data/ecas-mock-server-shared; echo 'eCAS Mockup Server shared configuration is done.'; /u01/oracle/user_projects/domains/base_domain/startWebLogic.sh"]
   composer-install:
-    group: prepare
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
+    image: registry.fpfis.eu/fpfis/httpd-php:7.3-ci
     commands:
       - composer install --ansi --no-suggest --no-progress
 
-  composer-update-lowest:
-    group: prepare-lowest
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    commands:
-      # @todo remove "composer install" step once the following issue is fixed.
-      # @link https://webgate.ec.europa.eu/CITnet/jira/browse/OPENEUROPA-1234
-      - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
-    when:
-      matrix:
-        COMPOSER_BOUNDARY: lowest
-
-  site-install:
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
-    commands:
-      - ./vendor/bin/run drupal:site-install
-
-  test-grumphp:
-    group: test
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
-    commands:
-      - ./vendor/bin/grumphp run
-
-  test-phpunit:
-    group: test
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
-    commands:
-      - ./vendor/bin/phpunit
-
-  test-behat:
-    group: test
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
-    commands:
-      - ./vendor/bin/behat --strict
-
-  debug:
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
-    commands:
-      - ./vendor/bin/drush ws --count 500
-    when:
-      status: failure
-
-matrix:
-  COMPOSER_BOUNDARY:
-    - lowest
-    - highest
-  PHP_VERSION:
-    - 7.2
-    - 7.3
+  publish-docker-build-base:
+    image: plugins/docker
