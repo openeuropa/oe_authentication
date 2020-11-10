@@ -15,4 +15,4 @@ pipeline:
       - composer install --ansi --no-suggest --no-progress
 
   publish-docker-build-base:
-    image: plugins/docker
+    image: registry.fpfis.eu/drone-plugins/docker
