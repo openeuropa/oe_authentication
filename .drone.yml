@@ -2,17 +2,8 @@ workspace:
   base: /test
   path: oe_authentication
 
-services:
-  web:
-    image: registry.fpfis.eu/fpfis/httpd-php:7.3-ci
-    environment:
-      - DOCUMENT_ROOT=/test/oe_authentication
-
 pipeline:
-  composer-install:
-    image: registry.fpfis.eu/fpfis/httpd-php:7.3-ci
-    commands:
-      - composer install --ansi --no-suggest --no-progress
-
-  publish-docker-build-base:
+  gitlab-docker:
     image: registry.fpfis.eu/drone-plugins/docker
+  hub-docker:
+    image: plugins/docker
