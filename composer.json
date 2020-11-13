@@ -21,7 +21,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "nikic/php-parser": "~3.0",
         "openeuropa/behat-transformation-context": "~0.1",
-        "openeuropa/code-review": "~1.0.0-alpha4",
+        "openeuropa/code-review": "~1.5",
         "openeuropa/drupal-core-require-dev": "^8.7",
         "openeuropa/task-runner": "~1.0-beta4",
         "phpunit/phpunit": "~6.0",
