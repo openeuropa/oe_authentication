@@ -1,18 +1,29 @@
+clone:
+  git:
+    image: registry.fpfis.eu/drone-plugins/git:next
+    when:
+      event: [ push, pull_request, tag ]
+  git:
+    image: registry.fpfis.eu/drone-plugins/git
+    when:
+      event: [ deployment ]
+
 workspace:
   base: /test
   path: oe_authentication
 
 services:
   web:
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     environment:
       - DOCUMENT_ROOT=/test/oe_authentication
   mysql:
-    image: percona/percona-server:5.6
+    image: registry.fpfis.eu/fpfis/sql:percona-5.7
+    command: --innodb-log-file-size=1G --max_allowed_packet=1G --innodb-buffer-pool-size=512M --wait_timeout=3000 --net_write_timeout=3000 --log_error_verbosity=3
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
   selenium:
-    image: selenium/standalone-chrome:3.11
+    image: registry.fpfis.eu/fpfis/selenium:standalone-chrome-3.11
     environment:
       - DISPLAY=:99
       - SE_OPTS=-debug
@@ -20,13 +31,13 @@ services:
 pipeline:
   authentication:
     group: conf-authentication
-    image: registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0
+    image: registry.fpfis.eu/fpfis/eulogin-mock-server:4.6.0
     detach: true
     entrypoint: [ /bin/bash ]
     command: [ -c, "cp /test/oe_authentication/tests/fixtures/mock-server-config/*.xml  /data/ecas-mock-server-shared; echo 'eCAS Mockup Server shared configuration is done.'; /u01/oracle/user_projects/domains/base_domain/startWebLogic.sh"]
   composer-install:
     group: prepare
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -34,7 +45,7 @@ pipeline:
 
   composer-update-lowest:
     group: prepare-lowest
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -46,30 +57,30 @@ pipeline:
         COMPOSER_BOUNDARY: lowest
 
   site-install:
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/run drupal:site-install
 
   test-grumphp:
     group: test
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/grumphp run
 
   test-phpunit:
     group: test
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/phpunit
 
   test-behat:
     group: test
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/behat --strict
 
   debug:
-    image: fpfis/httpd-php-ci:${PHP_VERSION}
+    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/drush ws --count 500
     when:
