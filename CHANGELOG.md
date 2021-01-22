@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.0](https://github.com/openeuropa/oe_authentication/tree/1.4.0) (2021-01-22)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.3.0...1.4.0)
+
+**Merged pull requests:**
+
+- EWPP-529: Replace scaffold library. [\#127](https://github.com/openeuropa/oe_authentication/pull/127) ([sergepavle](https://github.com/sergepavle))
+- EWPP-516: Update docker images. [\#124](https://github.com/openeuropa/oe_authentication/pull/124) ([22Alexandra](https://github.com/22Alexandra))
+
 ## [1.3.0](https://github.com/openeuropa/oe_authentication/tree/1.3.0) (2020-06-22)
 
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.2.0...1.3.0)
@@ -11,6 +20,7 @@
 **Merged pull requests:**
 
 - OPENEUROPA-0000: Fix the drupal/cas version to 1.6. [\#120](https://github.com/openeuropa/oe_authentication/pull/120) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- Prepare 1.3.0 release. [\#119](https://github.com/openeuropa/oe_authentication/pull/119) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - Move user fields into a sub-module [\#89](https://github.com/openeuropa/oe_authentication/pull/89) ([claudiu-cristea](https://github.com/claudiu-cristea))
 
 ## [1.2.0](https://github.com/openeuropa/oe_authentication/tree/1.2.0) (2020-04-08)
@@ -191,7 +201,7 @@
 
 **Merged pull requests:**
 
-- OPENEUROPA-1159: Rename Auth to Authentification [\#12](https://github.com/openeuropa/oe_authentication/pull/12) ([Medi4tor](https://github.com/Medi4tor))
+- OPENEUROPA-1159: Rename Auth to Authentification [\#12](https://github.com/openeuropa/oe_authentication/pull/12) ([ku-enza](https://github.com/ku-enza))
 
 ## [0.3.0](https://github.com/openeuropa/oe_authentication/tree/0.3.0) (2018-08-13)
 
