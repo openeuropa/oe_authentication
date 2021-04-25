@@ -9,7 +9,7 @@ Feature: Login through OE Authentication
     Given CAS users:
       | Username    | E-mail                            | Password           | First name | Last name | Department    | Organisation |
       | chucknorris | texasranger@chucknorris.com.eu    | Qwerty098          | Chuck      | Norris    | DIGIT.A.3.001 | eu.europa.ec |
-      | jb007       | 007@mi6.eu                        | shaken_not_stirred | James      | Bond      |               |              |
+      | jb007       | 007@mi6.eu                        | shaken_not_stirred | James      | Bond      | DIGIT.A.3.001 | external     |
       | lissa       | Lisbeth.SALANDER@ext.ec.europa.eu | dragon_tattoo      | Lisbeth    | Salander  |               |              |
 
   @cleanup:user
@@ -17,7 +17,6 @@ Feature: Login through OE Authentication
     Given the site is configured to make users active on creation
     When I am on the homepage
     And I click "Log in"
-    # And I click "European Commission"
     # Redirected to the mock server.
     And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
@@ -94,6 +93,8 @@ Feature: Login through OE Authentication
     And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
+    And I click "My account"
+
     And I click "Edit"
     Then the "First Name" field should contain "Chuck"
     And the "Last Name" field should contain "NORRIS"
@@ -121,6 +122,8 @@ Feature: Login through OE Authentication
     And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
+    And I click "My account"
+
     And I click "Edit"
     Then the "First Name" field should contain "Chuck"
     And the "Last Name" field should contain "NORRIS"
