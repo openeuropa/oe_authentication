@@ -38,6 +38,11 @@ class RouteSubscriber extends RouteSubscriberBase {
       $config = $this->configFactory->get('oe_authentication.settings');
       $route->setPath('/cas-mock-server/' . trim($config->get('validation_path'), '/'));
     }
+    if ($route = $collection->get('oe_authentication_eulogin_mock.register')) {
+      // Adapt route path to currect configuration.
+      $config = $this->configFactory->get('oe_authentication.settings');
+      $route->setPath('/cas-mock-server/' . trim($config->get('register_path'), '/'));
+    }
   }
 
 }
