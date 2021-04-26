@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * OpenEuropa Authentication EU Login mock install file.
+ */
+
 declare(strict_types = 1);
 
 /**
