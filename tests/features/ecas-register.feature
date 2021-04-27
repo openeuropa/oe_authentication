@@ -1,4 +1,3 @@
-@javascript @ecas-login @reg
 Feature: Register through OE Authentication
   In order to be able to have new users
   As an anonymous user of the system

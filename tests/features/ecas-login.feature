@@ -1,4 +1,4 @@
-@api @javascript @ecas-login @casMockServer
+@api @casMockServer
 Feature: Login through OE Authentication
   In order to be able to access the CMS backend
   As user of the system
@@ -52,7 +52,6 @@ Feature: Login through OE Authentication
     Given the site is configured to make users active on creation
     When I am on the homepage
     And I click "Log in"
-    # And I click "External"
     # Redirected to the mock server.
     And I fill in "Username or e-mail address" with "007@mi6.eu"
     And I fill in "Password" with "shaken_not_stirred"
@@ -89,7 +88,6 @@ Feature: Login through OE Authentication
     Given the site is configured to make users active on creation
     When I am on the homepage
     And I click "Log in"
-    # And I click "European Commission"
     And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
@@ -141,7 +139,6 @@ Feature: Login through OE Authentication
     Given the site is configured to make users blocked on creation
     When I am on the homepage
     And I click "Log in"
-    # And I click "European Commission"
     And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
     And I fill in "Password" with "dragon_tattoo"
     And I press the "Login!" button
