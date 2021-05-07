@@ -29,9 +29,25 @@ class LogoutForm extends FormBase {
       '#type' => 'value',
       '#value' => $url,
     ];
-    $form['actions'] = [
+
+    $form['notice'] = [
+      '#plain_text' => $this->t('You are about to be logged out of EU Login.'),
+    ];
+
+    $form['container'] = [
+      '#type' => 'container',
+    ];
+    $form['container']['actions'] = ['#type' => 'actions'];
+    $form['container']['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Log me out'),
+      '#button_type' => 'primary',
+    ];
+    $form['container']['actions']['cancel'] = [
+      '#title' => $this->t('No, stay logged in!'),
+      '#type' => 'link',
+      '#attributes' => ['class' => ['button']],
+      '#url' => Url::fromUri($url),
     ];
 
     return $form;
@@ -41,6 +57,7 @@ class LogoutForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $this->messenger()->addStatus($this->t('You have logged out from EU Login'));
     $url = $form_state->getValue('url');
     $form_state->setRedirectUrl(Url::fromUri($url));
   }

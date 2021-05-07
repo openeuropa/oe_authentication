@@ -24,7 +24,12 @@ class RegisterForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $form['registering'] = [
-      '#markup' => $this->t('Create an account'),
+      '#type' => 'inline_template',
+      '#template' => '<h2>{{ title }}</h2><p>{{ message }}</p>',
+      '#context' => [
+        'title' => $this->t('Create an account'),
+        'message' => $this->t('This page is part of the EU login mock.'),
+      ],
     ];
 
     return $form;
