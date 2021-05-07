@@ -57,7 +57,7 @@ class LogoutForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $this->messenger()->addStatus($this->t('You have logged out from EU Login'));
+    $this->messenger()->addStatus($this->t('You have logged out from EU Login.'));
     $url = $form_state->getValue('url');
     $form_state->setRedirectUrl(Url::fromUri($url));
   }

@@ -222,26 +222,6 @@ To run the behat tests:
 docker-compose exec web ./vendor/bin/behat
 ```
 
-#### Authenticating using the EULogin Mock Service
-
-EULogin Mock Service container replicates the [EU Login](https://ecas.ec.europa.eu/cas/about.html) service.
-
-To be able to interact with the EULogin Mock Service container you need to add the internal container
-hostname to the hosts file in your _OS_.
-
-```bash
-echo "127.0.1.1       authentication" >> /etc/hosts
-```
-
-To configure the container with User's structures and with some examples of User, you can use files present on the
-folder `tests/fixtures/mock-server-config/`. 
-
-The container docker that provides the EULogin Mock Service `ecas-mock-server:4.6.0` is available on a private repo
-`registry.fpfis.tech.ec.europa.eu`, please contact [DEVOPS team](DIGIT-NEXTEUROPA-DEVOPS@ec.europa.eu) to request 
-access.
-
-See [Docker login](https://docs.docker.com/engine/reference/commandline/login/) to connect to the repository.
-
 ##### Authenticating with HTTPS PROXY Ticket
 
 To enable the https proxy you can uncomment and use the service `secureweb` in `docker-compose.yml`

@@ -10,6 +10,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Subscriber to CAS mock server events.
+ *
+ * Event subscriber initially used in Joinup project.
+ *
+ * @see https://github.com/ec-europa/joinup-dev/blob/develop/web/modules/custom/joinup_cas_mock_server/src/EventSubscriber/JoinupCasMockServerSubscriber.php
  */
 class CasMockServerSubscriber implements EventSubscriberInterface {
 

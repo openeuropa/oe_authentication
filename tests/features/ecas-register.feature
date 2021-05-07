@@ -8,3 +8,4 @@ Feature: Register through OE Authentication
     When I visit "the user registration page"
     # Redirected to the Ecas mockup server.
     Then I should see "Create an account"
+    And I should see "This page is part of the EU login mock."

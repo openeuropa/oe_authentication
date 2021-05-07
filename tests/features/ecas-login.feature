@@ -39,10 +39,13 @@ Feature: Login through OE Authentication
     And the "Organisation" field should contain "eu.europa.ec"
 
     When I click "Log out"
+    And I should see "You are about to be logged out of EU Login."
+    And I should see the link "No, stay logged in!"
     # Redirected to the Ecas mockup server.
     And I press the "Log me out" button
     # Redirected back to Drupal.
     Then I should be on the homepage
+    And I should see "You have logged out from EU Login."
     And I should not see the link "My account"
     And I should not see the link "Log out"
     And I should see the link "Log in"
