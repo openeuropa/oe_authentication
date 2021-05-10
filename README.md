@@ -95,16 +95,12 @@ See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ### Proxy
 
-You can configure the module to "Initialize this client as a proxy" which allows 
-authentication requests to 3rd party services (e.g. ePOETRY). 
+You can configure the module to "Initialize this client as a proxy" which allows
+authentication requests to 3rd party services (e.g. ePOETRY).
 
 ```php
 $config['cas.settings']['proxy']['initialize'] = TRUE;
 ```
-
-This option is not enabled by default, if you want to use it please refer to 
-[Enable HTTPS PROXY for the drupal site for development.](#enable-https-proxy-for-the-drupal-site-for-development)
-to be sure that your site is available over HTTPS and has good certificates.
 
 See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
@@ -221,40 +217,6 @@ To run the behat tests:
 ```bash
 docker-compose exec web ./vendor/bin/behat
 ```
-
-##### Authenticating with HTTPS PROXY Ticket
-
-To enable the https proxy you can uncomment and use the service `secureweb` in `docker-compose.yml`
-
-```dockerfile
-services:
-  secureweb:
-    image: aheimsbakk/https-proxy:4
-    ports:
-      - 80:80
-      - 443:443
-    links:
-      - <name of web container>:http
-    restart: always
-    volumes:
-      - ./tests/fixtures/certs/secureweb:/etc/ssl/private
-    environment:
-      - SERVER_NAME=secureweb
-      - SERVER_ADMIN=webmaster@mydomain.com
-      - PORT_REDIRECT=8080
-      - SSL_CERT_FILE=/etc/ssl/private/MyKeystore.crt
-      - SSL_PRIVKEY_FILE=/etc/ssl/private/MyKeystore.key
-      - SSL_CHAIN_FILE=/etc/ssl/private/MyKeystore.p12
-```
-
-To be able to interact with the https proxy container you need to add the internal container hostname to the hosts
-file in your _OS_.
-
-```bash
-echo "127.0.1.1       secureweb" >> /etc/hosts
-```
-
-Your test site will be available at [https://secureweb/build](https://secureweb/build).
 
 ### Troubleshooting
 
