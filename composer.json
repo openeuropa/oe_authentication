@@ -7,23 +7,23 @@
     "prefer-stable": true,
     "require": {
         "drupal/cas": "1.6",
-        "drupal/core": "^8.7",
+        "drupal/core": "^8.9",
         "php": ">=7.2"
     },
     "require-dev": {
         "composer/installers": "~1.5",
-        "drupal/core-composer-scaffold": "^8.8",
+        "drupal/cas_mock_server": "^1.0@alpha",
+        "drupal/core-composer-scaffold": "^8.9",
         "drupal/config_devel": "~1.2",
         "drupal/devel": "~1.2",
         "drupal/drupal-extension": "~4.0",
-        "drush/drush": "~9.0@stable",
-        "egulias/email-validator": "^1.2.1 || ^2.0",
+        "drush/drush": "~10.0",
         "guzzlehttp/guzzle": "^6.3",
         "nikic/php-parser": "~3.0",
         "openeuropa/behat-transformation-context": "~0.1",
-        "openeuropa/code-review": "~1.5",
-        "openeuropa/drupal-core-require-dev": "^8.7",
-        "openeuropa/task-runner": "~1.0-beta4",
+        "openeuropa/code-review": "~1.6",
+        "openeuropa/drupal-core-require-dev": "^8.9",
+        "openeuropa/task-runner": "~1.0-beta6",
         "phpunit/phpunit": "~6.0",
         "symfony/browser-kit": "~3.0||~4.0",
         "symfony/dom-crawler": "~3.4"
@@ -42,7 +42,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Drupal\\Tests\\oe_authentication\\": "./tests/"
+            "Drupal\\Tests\\oe_authentication\\": "./tests/",
+            "Drupal\\Tests\\cas_mock_server\\": "./build/modules/contrib/cas_mock_server/tests/src/"
         }
     },
     "repositories": {

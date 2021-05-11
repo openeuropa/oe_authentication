@@ -1,16 +1,22 @@
-@api @javascript @ecas-login
+@api @casMockServer
 Feature: Login through OE Authentication
   In order to be able to access the CMS backend
   As user of the system
   I need to login through OE Authentication
   I need to be redirect back to the site
 
+  Background:
+    Given CAS users:
+      | Username    | E-mail                            | Password           | First name | Last name | Department    | Organisation |
+      | chucknorris | texasranger@chucknorris.com.eu    | Qwerty098          | Chuck      | Norris    | DIGIT.A.3.001 | eu.europa.ec |
+      | jb007       | 007@mi6.eu                        | shaken_not_stirred | James      | Bond      | DIGIT.A.3.001 | external     |
+      | lissa       | Lisbeth.SALANDER@ext.ec.europa.eu | dragon_tattoo      | Lisbeth    | Salander  |               |              |
+
   @cleanup:user
   Scenario: Login/Logout with eCAS mockup server of internal users
     Given the site is configured to make users active on creation
     When I am on the homepage
     And I click "Log in"
-    And I click "European Commission"
     # Redirected to the mock server.
     And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
@@ -33,10 +39,13 @@ Feature: Login through OE Authentication
     And the "Organisation" field should contain "eu.europa.ec"
 
     When I click "Log out"
+    And I should see "You are about to be logged out of EU Login."
+    And I should see the link "No, stay logged in!"
     # Redirected to the Ecas mockup server.
     And I press the "Log me out" button
     # Redirected back to Drupal.
     Then I should be on the homepage
+    And I should see "You have logged out from EU Login."
     And I should not see the link "My account"
     And I should not see the link "Log out"
     And I should see the link "Log in"
@@ -46,7 +55,6 @@ Feature: Login through OE Authentication
     Given the site is configured to make users active on creation
     When I am on the homepage
     And I click "Log in"
-    And I click "External"
     # Redirected to the mock server.
     And I fill in "Username or e-mail address" with "007@mi6.eu"
     And I fill in "Password" with "shaken_not_stirred"
@@ -83,10 +91,11 @@ Feature: Login through OE Authentication
     Given the site is configured to make users active on creation
     When I am on the homepage
     And I click "Log in"
-    And I click "European Commission"
     And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
+    And I click "My account"
+
     And I click "Edit"
     Then the "First Name" field should contain "Chuck"
     And the "Last Name" field should contain "NORRIS"
@@ -114,6 +123,8 @@ Feature: Login through OE Authentication
     And I fill in "Username or e-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "Qwerty098"
     And I press the "Login!" button
+    And I click "My account"
+
     And I click "Edit"
     Then the "First Name" field should contain "Chuck"
     And the "Last Name" field should contain "NORRIS"
@@ -131,7 +142,6 @@ Feature: Login through OE Authentication
     Given the site is configured to make users blocked on creation
     When I am on the homepage
     And I click "Log in"
-    And I click "European Commission"
     And I fill in "Username or e-mail address" with "Lisbeth.SALANDER@ext.ec.europa.eu"
     And I fill in "Password" with "dragon_tattoo"
     And I press the "Login!" button

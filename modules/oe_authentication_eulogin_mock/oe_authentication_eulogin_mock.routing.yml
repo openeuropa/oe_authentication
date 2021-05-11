@@ -1,0 +1,16 @@
+oe_authentication_eulogin_mock.logout:
+  path: '/cas-mock-server/logout'
+  defaults:
+    _form: 'Drupal\oe_authentication_eulogin_mock\Form\LogoutForm'
+    _title: 'Log out'
+  requirements:
+    _access: 'TRUE'
+
+oe_authentication_eulogin_mock.register:
+  path: '/cas-mock-server/register'
+  defaults:
+    _form: 'Drupal\oe_authentication_eulogin_mock\Form\RegisterForm'
+    _title: 'Register'
+  requirements:
+    _access: 'TRUE'
+

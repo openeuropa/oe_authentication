@@ -10,6 +10,12 @@ default:
         - Drupal\DrupalExtension\Context\MinkContext
         - Drupal\Tests\oe_authentication\Behat\AuthenticationContext
         - Drupal\Tests\oe_authentication\Behat\CleanupContext
+        - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
+            attributes_map:
+              firstName: First name
+              lastName: Last name
+              departmentNumber: Department
+              domain: Organisation
         - OpenEuropa\Behat\TransformationContext:
             pages:
               Authentication configuration: 'admin/config/system/oe_authentication'

@@ -138,18 +138,6 @@ class AuthenticationContext extends RawDrupalContext {
   }
 
   /**
-   * We reset the authentication mock to the state as it was.
-   *
-   * @AfterScenario @ecas-login
-   */
-  public function resetAuthenticationMock(): void {
-    $this->visitPath('user/login');
-    if ($this->getSession()->getPage()->hasLink('Change it')) {
-      $this->getSession()->getPage()->clickLink('Change it');
-    }
-  }
-
-  /**
    * Allow external users to login.
    *
    * @BeforeScenario @AllowExternalLogin

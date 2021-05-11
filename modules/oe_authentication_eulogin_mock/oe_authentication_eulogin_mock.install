@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * OpenEuropa Authentication EU Login mock install file.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_install().
+ *
+ * Sets the same labels used by the EU login service.
+ */
+function oe_authentication_eulogin_mock_install(): void {
+  $config = \Drupal::configFactory()->getEditable('cas_mock_server.settings');
+  $config->set('login_form.title', 'Sign in to continue')
+    ->set('login_form.email', 'Username or e-mail address')
+    ->set('login_form.submit', 'Login!')
+    ->save();
+}

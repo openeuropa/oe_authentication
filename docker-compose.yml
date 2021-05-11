@@ -32,39 +32,6 @@ services:
       - 5900:5900
     expose:
       - 4444
-  authentication:
-    # For local access, run this command in the terminal
-    # echo "127.0.1.1       authentication" >> /etc/hosts
-    image: registry.fpfis.tech.ec.europa.eu/ecas-mock-server:4.6.0
-    volumes:
-      - ./tests/fixtures/mock-server-config:/data/ecas-mock-server-shared
-    ports:
-      - 7001:7001
-      - 7002:7002
-      - 7003:7003
-
-#### Secure container: provide a https proxy to access to website with https.
-#### @see: README.md#development
-#
-#  secureweb:
-#    image: aheimsbakk/https-proxy:4
-#    ports:
-#    - 80:80
-#    - 443:443
-#    links:
-#    - web:http
-#    restart: always
-#    volumes:
-#    - ./tests/fixtures/certs/secureweb:/etc/ssl/private
-#    environment:
-#    - SERVER_NAME=secureweb
-#    - SERVER_ADMIN=webmaster@mydomain.com
-#    - PORT_REDIRECT=8080
-#    - SSL_CERT_FILE=/etc/ssl/private/MyKeystore.crt
-#    - SSL_PRIVKEY_FILE=/etc/ssl/private/MyKeystore.key
-#    - SSL_CHAIN_FILE=/etc/ssl/private/MyKeystore.p12
-#
-#### End Secure container.
 
 #### Mac users: uncomment the "volumes" key to enable the NFS file sharing.
 #### You can find more information about Docker for Mac here:
