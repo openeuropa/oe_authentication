@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_authentication_eulogin_mock\EventSubscriber;
 
-use Drupal\cas\Event\CasPreRegisterEvent;
-use Drupal\cas\Service\CasHelper;
 use Drupal\cas_mock_server\Event\CasMockServerEvents;
 use Drupal\cas_mock_server\Event\CasMockServerResponseAlterEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,7 +23,6 @@ class CasMockServerSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return [
       CasMockServerEvents::RESPONSE_ALTER => 'alterResponse',
-      CasHelper::EVENT_PRE_REGISTER => 'postProcessUserProperties',
     ];
   }
 
@@ -51,24 +48,22 @@ class CasMockServerSubscriber implements EventSubscriberInterface {
     // Add the attributes one level up.
     foreach ($event->getUserData() as $key => $value) {
       $attribute = $dom->createElement("cas:$key");
-      $attribute->textContent = $value;
+      // If the response has a "groups" key, each group
+      // needs to be in an individual element so it is
+      // processed as an array down the line.
+      if ($key === "groups") {
+        $groups = array_map('trim', explode(',', $value));
+        $attribute->setAttribute('number', (string) count($groups));
+        foreach ($groups as $index => $group) {
+          $group = $dom->createElement("cas:group");
+          $group->textContent = $value;
+          $attribute->appendChild($group);
+        }
+      }
+      else {
+        $attribute->textContent = $value;
+      }
       $authentication_success->appendChild($attribute);
-    }
-  }
-
-  /**
-   * Acts on the CAS user registration.
-   *
-   * If the user has defined "groups" attribute, convert value to array
-   * with "," as delimiter.
-   *
-   * @param \Drupal\cas\Event\CasPreRegisterEvent $event
-   *   The triggered event.
-   */
-  public function postProcessUserProperties(CasPreRegisterEvent $event): void {
-    $groups = $event->getCasPropertyBag()->getAttribute('groups');
-    if (!empty($groups)) {
-      $event->getCasPropertyBag()->setAttribute('groups', array_map('trim', explode(',', $groups)));
     }
   }
 
