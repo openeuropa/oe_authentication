@@ -8,8 +8,6 @@
     "require": {
         "php": ">=7.3",
         "drupal/core": "^8.9 || ^9.1",
-        "drupal/upgrade_status": "^3.5",
-        "mglaman/drupal-check": "^1.1.8",
         "drupal/cas": "^1.7"
     },
     "require-dev": {
@@ -19,6 +17,7 @@
         "drupal/config_devel": "~1.2",
         "drupal/drupal-extension": "~4.0",
         "drush/drush": "^10.3",
+        "nikic/php-parser": "~3.0",
         "openeuropa/behat-transformation-context" : "~0.1",
         "openeuropa/code-review": "~1.6",
         "openeuropa/drupal-core-require-dev": "^8.9 || ^9.1",

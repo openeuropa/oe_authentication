@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_authentication\Controller;
 
-use Drupal\cas\Service\CasHelper;
+use Drupal\cas\CasServerConfig;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
@@ -19,22 +19,12 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class RegisterController extends ControllerBase {
 
   /**
-   * CAS Helper object.
-   *
-   * @var \Drupal\cas\Service\CasHelper
-   */
-  protected $casHelper;
-
-  /**
    * Constructs the controller object.
    *
-   * @param \Drupal\cas\Service\CasHelper $cas_helper
-   *   The CAS Helper service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory.
    */
-  public function __construct(CasHelper $cas_helper, ConfigFactoryInterface $configFactory) {
-    $this->casHelper = $cas_helper;
+  public function __construct(ConfigFactoryInterface $configFactory) {
     $this->configFactory = $configFactory;
   }
 
@@ -43,7 +33,6 @@ class RegisterController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('cas.helper'),
       $container->get('config.factory')
     );
   }
@@ -77,7 +66,8 @@ class RegisterController extends ControllerBase {
    */
   public function getRegisterUrl(): Url {
     $config = $this->configFactory->get('oe_authentication.settings');
-    $base_url = $this->casHelper->getServerBaseUrl();
+    $casServerConfig = CasServerConfig::createFromModuleConfig($this->configFactory->get('cas.settings'));
+    $base_url = $casServerConfig->getServerBaseUrl();
     $path = $config->get('register_path');
     $service = Url::fromRoute('<front>');
     $service->setAbsolute();
