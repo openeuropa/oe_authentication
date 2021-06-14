@@ -2,7 +2,7 @@ default:
   suites:
     default:
       paths:
-        - %paths.base%/tests/features
+        - "%paths.base%/tests/features"
       contexts:
         - Drupal\DrupalExtension\Context\ConfigContext
         - Drupal\DrupalExtension\Context\DrupalContext
@@ -23,7 +23,6 @@ default:
   extensions:
     Drupal\MinkExtension:
       goutte: ~
-      selenium2: ~
       ajax_timeout: 10
       browser_name: 'chrome'
       javascript_session: 'selenium2'

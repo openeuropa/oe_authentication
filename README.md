@@ -16,11 +16,11 @@ The OpenEuropa Authentication module allows authentication against EU Login, the
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contribution)
 - [Versioning](#versioning)
-  
+
 ## Requirements
 
-This module requires the following modules: 
- - [Cas](https://www.drupal.org/project/cas) 
+This module requires the following modules:
+ - [Cas](https://www.drupal.org/project/cas)
 
 ## Installation
 
@@ -44,7 +44,7 @@ be specified. You can see Project setup section on how to override these paramet
 ## Configuration
 
 EU Login service parameters are already set by default when installing the module. Please refer to the EU Login
-documentation for the available options that can be specified. You can see Project setup section on how to override 
+documentation for the available options that can be specified. You can see Project setup section on how to override
 these parameters.
 
 ### Settings overrides
@@ -82,7 +82,7 @@ See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ### SSL Verification Setting
 
-The EU Login Authentication server must be accessed over HTTPS and the drupal site will verify the SSL/TLS certificate 
+The EU Login Authentication server must be accessed over HTTPS and the drupal site will verify the SSL/TLS certificate
 of the server to be sure it is authentic.
 
 For development, you can configure the module to disable this verification:
@@ -104,41 +104,38 @@ $config['cas.settings']['proxy']['initialize'] = TRUE;
 
 See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
-## Development
+## Development setup
 
-The OpenEuropa Authentication project contains all the necessary code and tools for an effective development process,
-such as:
+You can build the development site by running the following steps:
 
-- All PHP development dependencies (Drupal core included) are required by [composer.json](composer.json)
-- Project setup and installation can be easily handled thanks to the integration with the [Task Runner][3] project.
-- All system requirements are containerized using [Docker Composer][4]
-- A mock server for testing.
-
-### Project setup
-
-Download all required PHP code by running:
+* Install the Composer dependencies:
 
 ```bash
 composer install
 ```
 
-This will build a fully functional Drupal test site in the `./build` directory that can be used to develop and showcase
-the module's functionality.
+A post command hook (`drupal:site-setup`) is triggered automatically after `composer install`.
+This will symlink the module in the proper directory within the test site and perform token substitution in test configuration files such as `behat.yml.dist`.
 
-Before setting up and installing the site make sure to customize default configuration values by copying [runner.yml.dist](runner.yml.dist)
-to `./runner.yml` and overriding relevant properties.
+**Please note:** project files and directories are symlinked within the test site by using the
+[OpenEuropa Task Runner's Drupal project symlink](https://github.com/openeuropa/task-runner-drupal-project-symlink) command.
 
-This command will also:
+If you add a new file or directory in the root of the project, you need to re-run `drupal:site-setup` in order to make
+sure they are be correctly symlinked.
 
-- Symlink the theme in  `./build/modules/custom/oe_authentication` so that it's available for the test site
-- Setup Drush and Drupal's settings using values from `./runner.yml.dist`. This includes adding parameters for EULogin
-- Setup PHPUnit and Behat configuration files using values from `./runner.yml.dist`
+If you don't want to re-run a full site setup for that, you can simply run:
 
-After a successful setup install the site by running:
+```
+$ ./vendor/bin/run drupal:symlink-project
+```
+
+* Install test site by running:
 
 ```bash
-./vendor/bin/run drupal:site-install
+$ ./vendor/bin/run drupal:site-install
 ```
+
+The development site web root should be available in the `build` directory.
 
 This will:
 
@@ -147,10 +144,10 @@ This will:
 
 ### Using Docker Compose
 
-Alternatively, you can build a development site using [Docker](https://www.docker.com/get-docker) and 
+Alternatively, you can build a development site using [Docker](https://www.docker.com/get-docker) and
 [Docker Compose](https://docs.docker.com/compose/) with the provided configuration.
 
-Docker provides the necessary services and tools such as a web server and a database server to get the site running, 
+Docker provides the necessary services and tools such as a web server and a database server to get the site running,
 regardless of your local host configuration.
 
 #### Requirements:
@@ -162,7 +159,7 @@ regardless of your local host configuration.
 
 By default, Docker Compose reads two files, a `docker-compose.yml` and an optional `docker-compose.override.yml` file.
 By convention, the `docker-compose.yml` contains your base configuration and it's provided by default.
-The override file, as its name implies, can contain configuration overrides for existing services or entirely new 
+The override file, as its name implies, can contain configuration overrides for existing services or entirely new
 services.
 If a service is defined in both files, Docker Compose merges the configurations.
 

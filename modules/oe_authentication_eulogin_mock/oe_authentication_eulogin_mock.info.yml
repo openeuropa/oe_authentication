@@ -2,6 +2,6 @@ name: OE Authentication EU Login mock
 description: EU Login mock server implementation.
 package: OpenEuropa
 type: module
-core: 8.x
+core_version_requirement: ^8 || ^9
 dependencies:
   - cas_mock_server:cas_mock_server
