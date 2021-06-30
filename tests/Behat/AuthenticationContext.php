@@ -129,7 +129,7 @@ class AuthenticationContext extends RawDrupalContext {
   }
 
   /**
-   * Configures the the Drupal site so that users are blocked on creation.
+   * Configures the Drupal site so that users are blocked on creation.
    *
    * @Given the site is configured to make users blocked on creation
    */
@@ -145,6 +145,32 @@ class AuthenticationContext extends RawDrupalContext {
   public function allowExternalUsers(): void {
     // Set the assurance level to allow also external users to login.
     $this->configContext->setConfig('oe_authentication.settings', 'assurance_level', 'LOW');
+  }
+
+  /**
+   * Configures the CAS server so users are created in login if not exists.
+   *
+   * @Given the site is configured to register users if not exists
+   */
+  public function theSiteIsConfiguredToRegisterUsersIfNotExists(): void {
+    $this->configContext->setConfig('user_accounts.auto_register', 'cas.settings', TRUE);
+  }
+
+  /**
+   * Create a local user.
+   *
+   * @Given a user with the same email already exists locally
+   */
+  public function createLocalUser(): void {
+    $edit = [
+      'name' => 'james',
+      'mail' => '007@mi6.eu',
+      'pass' => 'haken_not_stirred',
+      'status' => 1,
+    ];
+
+    $account = User::create($edit);
+    $account->save();
   }
 
 }

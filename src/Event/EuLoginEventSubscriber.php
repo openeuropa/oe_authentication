@@ -86,6 +86,23 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     if ($user_settings->get('register') === UserInterface::REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL) {
       $event->setPropertyValue('status', 0);
     }
+    // If user from cas does not exists and user_accounts.auto_register is set,
+    // then check if user mail exists before create.
+    // If exists, user can not be registered neither login
+    // and must be informed with a message.
+    $cas_settings = $this->configFactory->get('cas.settings');
+    $auto_register = $cas_settings->get('user_accounts.auto_register');
+    if ($auto_register === TRUE) {
+      $bag = $event->getCasPropertyBag();
+      $email = $bag->getAttribute('email');
+
+      $userMailAlreadyExists = user_load_by_mail($email);
+      if ($userMailAlreadyExists !== FALSE) {
+        $event->cancelAutomaticRegistration('A user with this mail already exists. Please contact with your site administrator.');
+        $event->setPropertyValue('status', 'error_automatic_registration');
+      }
+    }
+
   }
 
   /**
