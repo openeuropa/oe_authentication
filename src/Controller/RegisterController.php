@@ -66,8 +66,8 @@ class RegisterController extends ControllerBase {
    */
   public function getRegisterUrl(): Url {
     $config = $this->configFactory->get('oe_authentication.settings');
-    $casServerConfig = CasServerConfig::createFromModuleConfig($this->configFactory->get('cas.settings'));
-    $base_url = $casServerConfig->getServerBaseUrl();
+    $cas_server_config = CasServerConfig::createFromModuleConfig($this->configFactory->get('cas.settings'));
+    $base_url = $cas_server_config->getServerBaseUrl();
     $path = $config->get('register_path');
     $service = Url::fromRoute('<front>');
     $service->setAbsolute();
