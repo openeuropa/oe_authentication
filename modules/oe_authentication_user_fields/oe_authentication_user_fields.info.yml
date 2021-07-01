@@ -1,7 +1,7 @@
-name: 'OE Authentication User Fields'
-description: 'Provides some user basic fields and map them with EU Login attributes.'
+name: OE Authentication User Fields
+description: Provides some user basic fields and map them with EU Login attributes.
 package: OpenEuropa
 type: module
-core: 8.x
+core_version_requirement: ^8.9 || ^9.1
 dependencies:
   - oe_authentication:oe_authentication

@@ -16,11 +16,11 @@ The OpenEuropa Authentication module allows authentication against EU Login, the
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contribution)
 - [Versioning](#versioning)
-  
+
 ## Requirements
 
-This module requires the following modules: 
- - [Cas](https://www.drupal.org/project/cas) 
+This module requires the following modules:
+- [Cas](https://www.drupal.org/project/cas)
 
 ## Installation
 
@@ -44,7 +44,7 @@ be specified. You can see Project setup section on how to override these paramet
 ## Configuration
 
 EU Login service parameters are already set by default when installing the module. Please refer to the EU Login
-documentation for the available options that can be specified. You can see Project setup section on how to override 
+documentation for the available options that can be specified. You can see Project setup section on how to override
 these parameters.
 
 ### Settings overrides
@@ -82,7 +82,7 @@ See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ### SSL Verification Setting
 
-The EU Login Authentication server must be accessed over HTTPS and the drupal site will verify the SSL/TLS certificate 
+The EU Login Authentication server must be accessed over HTTPS and the drupal site will verify the SSL/TLS certificate
 of the server to be sure it is authentic.
 
 For development, you can configure the module to disable this verification:
@@ -130,7 +130,7 @@ to `./runner.yml` and overriding relevant properties.
 
 This command will also:
 
-- Symlink the theme in  `./build/modules/custom/oe_authentication` so that it's available for the test site
+- This will symlink the module in the proper directory within the test site and perform token substitution in test configuration files such as `behat.yml.dist`.
 - Setup Drush and Drupal's settings using values from `./runner.yml.dist`. This includes adding parameters for EULogin
 - Setup PHPUnit and Behat configuration files using values from `./runner.yml.dist`
 
@@ -147,10 +147,10 @@ This will:
 
 ### Using Docker Compose
 
-Alternatively, you can build a development site using [Docker](https://www.docker.com/get-docker) and 
+Alternatively, you can build a development site using [Docker](https://www.docker.com/get-docker) and
 [Docker Compose](https://docs.docker.com/compose/) with the provided configuration.
 
-Docker provides the necessary services and tools such as a web server and a database server to get the site running, 
+Docker provides the necessary services and tools such as a web server and a database server to get the site running,
 regardless of your local host configuration.
 
 #### Requirements:
@@ -162,7 +162,7 @@ regardless of your local host configuration.
 
 By default, Docker Compose reads two files, a `docker-compose.yml` and an optional `docker-compose.override.yml` file.
 By convention, the `docker-compose.yml` contains your base configuration and it's provided by default.
-The override file, as its name implies, can contain configuration overrides for existing services or entirely new 
+The override file, as its name implies, can contain configuration overrides for existing services or entirely new
 services.
 If a service is defined in both files, Docker Compose merges the configurations.
 
@@ -238,8 +238,8 @@ Note: to fully disable Twig caching the following additional manual steps are re
 
 ```yaml
 parameters:
- twig.config:
-   cache: false
+  twig.config:
+    cache: false
 ```
 
 3. Rebuild Drupal cache: `./vendor/bin/drush cr`

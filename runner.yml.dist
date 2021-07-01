@@ -32,9 +32,7 @@ selenium:
 
 commands:
   drupal:site-setup:
-    - { task: "mkdir", dir: "${drupal.root}/profiles" }
-    - { task: "mkdir", dir: "${drupal.root}/themes" }
-    - { task: "symlink", from: "../../..", to: "${drupal.root}/modules/custom/oe_authentication" }
+    - { task: "run", command: "drupal:symlink-project" }
     - { task: "run", command: "drupal:drush-setup" }
     - { task: "run", command: "drupal:settings-setup" }
     - task: "append"

@@ -29,7 +29,7 @@ class ProxyCallbackTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->installConfig(['system', 'user']);
     $this->installEntitySchema('user');

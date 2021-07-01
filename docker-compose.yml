@@ -22,16 +22,24 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     # ports:
       # - 3306:3306
-  # Spawn a Selenium server which also includes a VNC server on localhost:5900 (the password is "secret")
+  # If you would like to see what is going on you can run the following on your host:
+  # docker run --rm -p 4444:4444 -p 5900:5900 --network="host" selenium/standalone-chrome-debug:latest
+  # Newer version of this image might run into this issue:
+  # @link https://github.com/elgalu/docker-selenium/issues/20
   selenium:
-    image: selenium/standalone-chrome-debug:3.11
+    image: selenium/standalone-chrome-debug:3.141.59-oxygen
+    expose:
+      - '4444'
     environment:
       - DISPLAY=:99
       - SE_OPTS=-debug
+      - SCREEN_WIDTH=1280
+      - SCREEN_HEIGHT=800
+      - VNC_NO_PASSWORD=1
     ports:
-      - 5900:5900
-    expose:
-      - 4444
+      - '4444:4444'
+      - '5900:5900'
+    shm_size: 2g
 
 #### Mac users: uncomment the "volumes" key to enable the NFS file sharing.
 #### You can find more information about Docker for Mac here:
