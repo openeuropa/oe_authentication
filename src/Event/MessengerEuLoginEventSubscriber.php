@@ -62,10 +62,6 @@ class MessengerEuLoginEventSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    if ($properties['status'] === 'error_automatic_registration') {
-      return;
-    }
-
     if (!$properties['status']) {
       $this->messenger->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.'));
     }
