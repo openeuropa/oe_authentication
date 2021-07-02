@@ -147,30 +147,4 @@ class AuthenticationContext extends RawDrupalContext {
     $this->configContext->setConfig('oe_authentication.settings', 'assurance_level', 'LOW');
   }
 
-  /**
-   * Configures the CAS server so users are created in login if not exists.
-   *
-   * @Given the site is configured to register users if not exists
-   */
-  public function theSiteIsConfiguredToRegisterUsersIfNotExists(): void {
-    $this->configContext->setConfig('user_accounts.auto_register', 'cas.settings', TRUE);
-  }
-
-  /**
-   * Create a local user.
-   *
-   * @Given a user with the same email already exists locally
-   */
-  public function createLocalUser(): void {
-    $edit = [
-      'name' => 'james',
-      'mail' => '007@mi6.eu',
-      'pass' => 'haken_not_stirred',
-      'status' => 1,
-    ];
-
-    $account = User::create($edit);
-    $account->save();
-  }
-
 }
