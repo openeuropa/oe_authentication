@@ -8,7 +8,7 @@
     "require": {
         "php": ">=7.3",
         "drupal/core": "^8.9 || ^9.1",
-        "cweagans/composer-patches": "^1.6",
+        "cweagans/composer-patches": "^1.7",
         "drupal/cas": "^1.7"
     },
     "require-dev": {
