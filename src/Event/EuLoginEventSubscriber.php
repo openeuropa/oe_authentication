@@ -77,7 +77,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Checks user e-mail exists previously.
+   * Checks user email exists previously.
    *
    * @param \Drupal\cas\Event\CasPreRegisterEvent $event
    *   The triggered event.
@@ -87,8 +87,8 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     if ($cas_settings->get('user_accounts.auto_register')) {
       $email = $event->getCasPropertyBag()->getAttribute('email');
 
-      if (user_load_by_mail($email) !== FALSE) {
-        $event->cancelAutomaticRegistration(t('A user with this mail already exists. Please contact with your site administrator.')->render());
+      if (user_load_by_mail($email)) {
+        $event->cancelAutomaticRegistration($this->t('A user with this mail already exists. Please contact with your site administrator.'));
         $event->stopPropagation();
       }
     }

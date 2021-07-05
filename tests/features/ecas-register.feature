@@ -13,10 +13,10 @@ Feature: Register through OE Authentication
 
   @cleanup:user
   Scenario: Login user with auto-register enabled
-    Given I am an anonymous user
     Given CAS users:
       | Username    | E-mail                            | Password           | First name | Last name | Department    | Organisation |
       | jb007       | 007@mi6.eu                        | shaken_not_stirred | James      | Bond      | DIGIT.A.3.001 | external     |
+    And I am an anonymous user
     When I am on the homepage
     And I click "Log in"
     # Redirected to the mock server.
@@ -24,20 +24,18 @@ Feature: Register through OE Authentication
     And I fill in "Password" with "shaken_not_stirred"
     And I press the "Login!" button
     # Redirected back to Drupal.
-    Then I should see "Your account is currently pending approval by the site administrator."
+    Then I should see the success message "Your account is currently pending approval by the site administrator."
     And I should see the link "Log in"
 
   @cleanup:user
   Scenario: Login user with an already registered email with auto-register enabled
-    Given I am an anonymous user
     Given users:
       | name    | mail        |
       | james   | 007@mi6.eu  |
-
-    Given CAS users:
+    And CAS users:
       | Username    | E-mail         | Password           | First name | Last name | Department    | Organisation |
       | jb007       | 007@mi6.eu     | shaken_not_stirred | James      | Bond      | DIGIT.A.3.001 | external     |
-
+    And I am an anonymous user
     When I am on the homepage
     And I click "Log in"
     # Redirected to the mock server.
