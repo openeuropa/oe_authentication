@@ -43,5 +43,5 @@ Feature: Register through OE Authentication
     And I fill in "Password" with "shaken_not_stirred"
     And I press the "Login!" button
     # Redirected back to Drupal.
-    Then I should see the error message "A user with this mail already exists. Please contact with your site administrator."
+    Then I should see the error message "A user with this email address already exists. Please contact the site administrator."
     And I should see the link "Log in"

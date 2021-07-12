@@ -88,7 +88,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       $email = $event->getCasPropertyBag()->getAttribute('email');
 
       if (user_load_by_mail($email)) {
-        $event->cancelAutomaticRegistration($this->t('A user with this mail already exists. Please contact with your site administrator.'));
+        $event->cancelAutomaticRegistration($this->t('A user with this email address already exists. Please contact the site administrator.'));
         $event->stopPropagation();
       }
     }
