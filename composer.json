@@ -8,6 +8,7 @@
     "require": {
         "php": ">=7.3",
         "drupal/core": "^8.9 || ^9.1",
+        "cweagans/composer-patches": "^1.7",
         "drupal/cas": "^1.7"
     },
     "require-dev": {
@@ -53,6 +54,11 @@
             "build/profiles/contrib/{$name}": ["type:drupal-profile"],
             "build/modules/contrib/{$name}": ["type:drupal-module"],
             "build/themes/contrib/{$name}": ["type:drupal-theme"]
+        },
+        "patches": {
+            "drupal/cas": {
+                "https://www.drupal.org/project/cas/issues/3221111": "https://git.drupalcode.org/project/cas/-/merge_requests/4.patch"
+            }
         },
         "drupal-scaffold": {
             "locations": {

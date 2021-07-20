@@ -129,7 +129,7 @@ class AuthenticationContext extends RawDrupalContext {
   }
 
   /**
-   * Configures the the Drupal site so that users are blocked on creation.
+   * Configures the Drupal site so that users are blocked on creation.
    *
    * @Given the site is configured to make users blocked on creation
    */

@@ -67,10 +67,31 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [];
-    $events[CasHelper::EVENT_PRE_REGISTER] = 'processUserProperties';
+    $events[CasHelper::EVENT_PRE_REGISTER] = [
+      ['checkUserMailExists', 1000],
+      ['processUserProperties'],
+    ];
     $events[CasHelper::EVENT_POST_VALIDATE] = 'processCasAttributes';
     $events[CasHelper::EVENT_PRE_VALIDATE] = 'alterValidationPath';
     return $events;
+  }
+
+  /**
+   * Checks user email exists previously.
+   *
+   * @param \Drupal\cas\Event\CasPreRegisterEvent $event
+   *   The triggered event.
+   */
+  public function checkUserMailExists(CasPreRegisterEvent $event): void {
+    $cas_settings = $this->configFactory->get('cas.settings');
+    if ($cas_settings->get('user_accounts.auto_register')) {
+      $email = $event->getCasPropertyBag()->getAttribute('email');
+
+      if (user_load_by_mail($email)) {
+        $event->cancelAutomaticRegistration($this->t('A user with this email address already exists. Please contact the site administrator.'));
+        $event->stopPropagation();
+      }
+    }
   }
 
   /**

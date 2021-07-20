@@ -35,5 +35,8 @@ default:
         drupal_root: "${drupal.root}"
       selectors:
         message_selector: ".messages"
+        error_message_selector: '.messages.messages--error'
+        success_message_selector: '.messages.messages--status'
+        warning_message_selector: '.messages.messages--warning'
   formatters:
     progress: ~
