@@ -54,7 +54,7 @@ class CasProcessor {
     $associative = $toplevel || static::isAssociative($node);
 
     $attributes = [];
-    // @var \DOMElement $child
+    /** @var \DOMElement $child */
     foreach ($node->childNodes as $key => $child) {
       $name = $child->localName;
       // If the child has sub-levels, recursively parse the attributes
