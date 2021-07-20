@@ -149,3 +149,19 @@ Feature: Login through OE Authentication
     And I should see "Your account is blocked or has not been activated. Please contact a site administrator."
     And I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
     And I should see the link "Log in"
+
+  @cleanup:user
+  Scenario: Login user with an already registered email with auto-register enabled
+    Given users:
+      | name    | mail        |
+      | james   | 007@mi6.eu  |
+    And I am an anonymous user
+    When I am on the homepage
+    And I click "Log in"
+    # Redirected to the mock server.
+    And I fill in "Username or e-mail address" with "007@mi6.eu"
+    And I fill in "Password" with "shaken_not_stirred"
+    And I press the "Login!" button
+    # Redirected back to Drupal.
+    Then I should see the error message "A user with this email address already exists. Please contact the site administrator."
+    And I should see the link "Log in"
