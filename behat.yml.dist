@@ -16,6 +16,7 @@ default:
               lastName: Last name
               departmentNumber: Department
               domain: Organisation
+              groups: Groups
         - OpenEuropa\Behat\TransformationContext:
             pages:
               Authentication configuration: 'admin/config/system/oe_authentication'
