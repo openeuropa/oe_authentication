@@ -1,7 +1,23 @@
-# Changelog
+# Change Log
+
+## [1.4.0](https://github.com/openeuropa/oe_authentication/tree/1.4.0) (2021-08-12)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.3.0...1.4.0)
+
+**Closed issues:**
+
+- New release plan [\#134](https://github.com/openeuropa/oe_authentication/issues/134)
+- Use oe\_authentication with Drupal 9  [\#125](https://github.com/openeuropa/oe_authentication/issues/125)
+
+**Merged pull requests:**
+
+- OEL-153: Prevent CAS from creating a new user account if the email is already taken. [\#133](https://github.com/openeuropa/oe_authentication/pull/133) ([escuriola](https://github.com/escuriola))
+- OEL-74: Drupal 9 compatibility fixes.  [\#132](https://github.com/openeuropa/oe_authentication/pull/132) ([saidatom](https://github.com/saidatom))
+- EWPP-1062: Handle group property in user data. [\#131](https://github.com/openeuropa/oe_authentication/pull/131) ([sergepavle](https://github.com/sergepavle))
+- EWPP-1048: Fix ecas mock failure. [\#130](https://github.com/openeuropa/oe_authentication/pull/130) ([sergepavle](https://github.com/sergepavle))
+- EWPP-529: Replace scaffold library. [\#127](https://github.com/openeuropa/oe_authentication/pull/127) ([sergepavle](https://github.com/sergepavle))
+- EWPP-516: Update docker images. [\#124](https://github.com/openeuropa/oe_authentication/pull/124) ([22Alexandra](https://github.com/22Alexandra))
 
 ## [1.3.0](https://github.com/openeuropa/oe_authentication/tree/1.3.0) (2020-06-22)
-
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.2.0...1.3.0)
 
 **Implemented enhancements:**
@@ -11,10 +27,10 @@
 **Merged pull requests:**
 
 - OPENEUROPA-0000: Fix the drupal/cas version to 1.6. [\#120](https://github.com/openeuropa/oe_authentication/pull/120) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- Prepare 1.3.0 release. [\#119](https://github.com/openeuropa/oe_authentication/pull/119) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - Move user fields into a sub-module [\#89](https://github.com/openeuropa/oe_authentication/pull/89) ([claudiu-cristea](https://github.com/claudiu-cristea))
 
 ## [1.2.0](https://github.com/openeuropa/oe_authentication/tree/1.2.0) (2020-04-08)
-
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.1.0...1.2.0)
 
 **Merged pull requests:**
