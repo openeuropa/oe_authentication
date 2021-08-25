@@ -3,3 +3,8 @@ services:
     class: Drupal\oe_authentication_user_fields\EventSubscriber\EuLoginAttributesToUserFieldsSubscriber
     tags:
       - { name: event_subscriber }
+  oe_authentication_user_fields.sanitize_commands:
+    class: Drupal\oe_authentication_user_fields\Commands\sql\EuLoginUserSanitizeCommand
+    arguments: ['@entity_type.manager']
+    tags:
+      -  { name: drush.command }
