@@ -13,7 +13,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 /**
  * Sanitizes the user fields related data.
  */
-class EuLoginUserSanitizeCommand extends DrushCommands implements SanitizePluginInterface {
+class UserSanitizeCommand extends DrushCommands implements SanitizePluginInterface {
 
   /**
    * The entity type manager.
@@ -44,13 +44,13 @@ class EuLoginUserSanitizeCommand extends DrushCommands implements SanitizePlugin
     /** @var \Drupal\user\Entity\User[] $users */
     $users = $this->entityTypeManager->getStorage('user')->loadMultiple();
     foreach ($users as $user) {
-      $user->set('field_oe_firstname', 'FirstName' . $user->id());
-      $user->set('field_oe_lastname', 'LastName' . $user->id());
-      $user->set('field_oe_department', 'Department' . $user->id());
-      $user->set('field_oe_organisation', 'Organisation' . $user->id());
+      $user->set('field_oe_firstname', 'First Name ' . $user->id());
+      $user->set('field_oe_lastname', 'Last Name ' . $user->id());
+      $user->set('field_oe_department', 'Department ' . $user->id());
+      $user->set('field_oe_organisation', 'Organisation ' . $user->id());
       $user->save();
     }
-    $this->logger->success('EU login user fields data are sanitized.');
+    $this->logger->success('User fields have been sanitised.');
   }
 
   /**
@@ -61,7 +61,7 @@ class EuLoginUserSanitizeCommand extends DrushCommands implements SanitizePlugin
    * @inheritdoc
    */
   public function messages(&$messages, InputInterface $input) {
-    $messages[] = dt('Sanitize EU Login users field values.');
+    $messages[] = dt('Sanitise user fields.');
   }
 
 }

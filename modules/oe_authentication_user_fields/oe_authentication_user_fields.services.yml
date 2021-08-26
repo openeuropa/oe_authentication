@@ -4,7 +4,7 @@ services:
     tags:
       - { name: event_subscriber }
   oe_authentication_user_fields.sanitize_commands:
-    class: Drupal\oe_authentication_user_fields\Commands\sql\EuLoginUserSanitizeCommand
+    class: Drupal\oe_authentication_user_fields\Commands\sql\UserSanitizeCommand
     arguments: ['@entity_type.manager']
     tags:
       -  { name: drush.command }

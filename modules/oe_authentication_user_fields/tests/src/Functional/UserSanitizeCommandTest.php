@@ -10,7 +10,7 @@ use Drush\TestTraits\DrushTestTrait;
 /**
  * Tests the user fields drush sanitization.
  */
-class EuLoginUserSanitizeCommandTest extends BrowserTestBase {
+class UserSanitizeCommandTest extends BrowserTestBase {
 
   use DrushTestTrait;
 
@@ -39,7 +39,7 @@ class EuLoginUserSanitizeCommandTest extends BrowserTestBase {
 
     $this->drush('sql:sanitize');
     $expected = 'The following operations will be performed:' . PHP_EOL . PHP_EOL;
-    $expected .= '* Sanitize EU Login users field values.' . PHP_EOL;
+    $expected .= '* Sanitise user fields.' . PHP_EOL;
     $expected .= '* Truncate sessions table.' . PHP_EOL;
     $expected .= '* Sanitize text fields associated with users.' . PHP_EOL;
     $expected .= '* Sanitize user passwords.' . PHP_EOL;
@@ -47,10 +47,10 @@ class EuLoginUserSanitizeCommandTest extends BrowserTestBase {
     $this->assertOutputEquals($expected);
 
     $user = \Drupal::entityTypeManager()->getStorage('user')->load($user->id());
-    $this->assertEquals('FirstName' . $user->id(), $user->get('field_oe_firstname')->value);
-    $this->assertEquals('LastName' . $user->id(), $user->get('field_oe_lastname')->value);
-    $this->assertEquals('Department' . $user->id(), $user->get('field_oe_department')->value);
-    $this->assertEquals('Organisation' . $user->id(), $user->get('field_oe_organisation')->value);
+    $this->assertEquals('First Name ' . $user->id(), $user->get('field_oe_firstname')->value);
+    $this->assertEquals('Last Name ' . $user->id(), $user->get('field_oe_lastname')->value);
+    $this->assertEquals('Department ' . $user->id(), $user->get('field_oe_department')->value);
+    $this->assertEquals('Organisation ' . $user->id(), $user->get('field_oe_organisation')->value);
   }
 
 }
