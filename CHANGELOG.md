@@ -1,8 +1,8 @@
 # Changelog
 
-## [1.15.0](https://github.com/openeuropa/oe_authentication/tree/1.15.0) (2021-09-27)
+## [1.5.0](https://github.com/openeuropa/oe_authentication/tree/1.5.0) (2021-09-27)
 
-[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.4.0...1.15.0)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.4.0...1.5.0)
 
 **Merged pull requests:**
 
