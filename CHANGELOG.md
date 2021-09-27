@@ -1,15 +1,26 @@
-# Change Log
+# Changelog
 
-## [1.4.0](https://github.com/openeuropa/oe_authentication/tree/1.4.0) (2021-08-12)
+## [1.15.0](https://github.com/openeuropa/oe_authentication/tree/1.15.0) (2021-09-27)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.4.0...1.15.0)
+
+**Merged pull requests:**
+
+- EWPP-1405: Implementation drush sql sanitization for user fields. [\#138](https://github.com/openeuropa/oe_authentication/pull/138) ([sergepavle](https://github.com/sergepavle))
+
+## [1.4.0](https://github.com/openeuropa/oe_authentication/tree/1.4.0) (2021-08-16)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.3.0...1.4.0)
 
 **Closed issues:**
 
+- Drupal 9 support [\#135](https://github.com/openeuropa/oe_authentication/issues/135)
 - New release plan [\#134](https://github.com/openeuropa/oe_authentication/issues/134)
 - Use oe\_authentication with Drupal 9  [\#125](https://github.com/openeuropa/oe_authentication/issues/125)
 
 **Merged pull requests:**
 
+- Prepare changelog for release 1.4.0. [\#136](https://github.com/openeuropa/oe_authentication/pull/136) ([brummbar](https://github.com/brummbar))
 - OEL-153: Prevent CAS from creating a new user account if the email is already taken. [\#133](https://github.com/openeuropa/oe_authentication/pull/133) ([escuriola](https://github.com/escuriola))
 - OEL-74: Drupal 9 compatibility fixes.  [\#132](https://github.com/openeuropa/oe_authentication/pull/132) ([saidatom](https://github.com/saidatom))
 - EWPP-1062: Handle group property in user data. [\#131](https://github.com/openeuropa/oe_authentication/pull/131) ([sergepavle](https://github.com/sergepavle))
@@ -18,6 +29,7 @@
 - EWPP-516: Update docker images. [\#124](https://github.com/openeuropa/oe_authentication/pull/124) ([22Alexandra](https://github.com/22Alexandra))
 
 ## [1.3.0](https://github.com/openeuropa/oe_authentication/tree/1.3.0) (2020-06-22)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.2.0...1.3.0)
 
 **Implemented enhancements:**
@@ -31,6 +43,7 @@
 - Move user fields into a sub-module [\#89](https://github.com/openeuropa/oe_authentication/pull/89) ([claudiu-cristea](https://github.com/claudiu-cristea))
 
 ## [1.2.0](https://github.com/openeuropa/oe_authentication/tree/1.2.0) (2020-04-08)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.1.0...1.2.0)
 
 **Merged pull requests:**
@@ -207,7 +220,7 @@
 
 **Merged pull requests:**
 
-- OPENEUROPA-1159: Rename Auth to Authentification [\#12](https://github.com/openeuropa/oe_authentication/pull/12) ([Medi4tor](https://github.com/Medi4tor))
+- OPENEUROPA-1159: Rename Auth to Authentification [\#12](https://github.com/openeuropa/oe_authentication/pull/12) ([ku-enza](https://github.com/ku-enza))
 
 ## [0.3.0](https://github.com/openeuropa/oe_authentication/tree/0.3.0) (2018-08-13)
 
