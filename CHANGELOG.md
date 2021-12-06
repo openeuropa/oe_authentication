@@ -1,11 +1,21 @@
 # Changelog
 
+## [1.5.1](https://github.com/openeuropa/oe_authentication/tree/1.5.1) (2021-12-06)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.5.0...1.5.1)
+
+**Merged pull requests:**
+
+- EWPP-1732: Replace patch for cas module. [\#141](https://github.com/openeuropa/oe_authentication/pull/141) ([sergepavle](https://github.com/sergepavle))
+- Fix release 1.5.0 Changelog. [\#140](https://github.com/openeuropa/oe_authentication/pull/140) ([imanoleguskiza](https://github.com/imanoleguskiza))
+
 ## [1.5.0](https://github.com/openeuropa/oe_authentication/tree/1.5.0) (2021-09-27)
 
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.4.0...1.5.0)
 
 **Merged pull requests:**
 
+- Prepare release 1.5.0. [\#139](https://github.com/openeuropa/oe_authentication/pull/139) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - EWPP-1405: Implementation drush sql sanitization for user fields. [\#138](https://github.com/openeuropa/oe_authentication/pull/138) ([sergepavle](https://github.com/sergepavle))
 
 ## [1.4.0](https://github.com/openeuropa/oe_authentication/tree/1.4.0) (2021-08-16)
