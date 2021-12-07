@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\oe_authentication\Event;
 
 use Drupal\cas\Event\CasPostValidateEvent;
+use Drupal\cas\Event\CasPreRedirectEvent;
 use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
@@ -67,6 +68,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [];
+    $events[CasHelper::EVENT_PRE_REDIRECT] = 'preRedirect';
     $events[CasHelper::EVENT_PRE_REGISTER] = [
       ['checkUserMailExists', 1000],
       ['processUserProperties'],
@@ -74,6 +76,17 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     $events[CasHelper::EVENT_POST_VALIDATE] = 'processCasAttributes';
     $events[CasHelper::EVENT_PRE_VALIDATE] = 'alterValidationPath';
     return $events;
+  }
+
+  /**
+   * Forces the usage of 2FA methods.
+   *
+   * @param \Drupal\cas\Event\CasPreRedirectEvent $event
+   *   The triggered event.
+   */
+  public function preRedirect(CasPreRedirectEvent $event): void {
+    $data = $event->getCasRedirectData();
+    $data->setParameter('acceptStrengths', 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS');
   }
 
   /**
@@ -139,6 +152,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       'assuranceLevel' => $config->get('assurance_level'),
       'ticketTypes' => $config->get('ticket_types'),
       'userDetails' => 'true',
+      'acceptStrengths' => 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS',
       'groups' => '*',
     ];
     $event->addParameters($params);
