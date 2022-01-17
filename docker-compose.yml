@@ -10,6 +10,7 @@ services:
       # - ~/.cache/composer:/root/.composer/cache # use a local cache.
       # - nfsmount:/var/www/html # Mac Users with the nfsmount volume.
     environment:
+      COMPOSERVER: "--2"
       XDEBUG_CONFIG: "remote_enable=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=1"
       PHP_IDE_CONFIG: "serverName=Docker"
       # For Xdebug setup, run this command in the terminal:
