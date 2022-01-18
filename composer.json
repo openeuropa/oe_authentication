@@ -23,7 +23,7 @@
         "nikic/php-parser": "^4.12.0",
         "openeuropa/behat-transformation-context": "^0.1",
         "openeuropa/code-review": "^2.0",
-        "openeuropa/task-runner-drupal-project-symlink": "dev-EWPP-1884",
+        "openeuropa/task-runner-drupal-project-symlink": "^1.0.0-beta5",
         "phpspec/prophecy-phpunit": "^2",
         "symfony/dom-crawler": "^4.4.12"
     },
