@@ -17,6 +17,7 @@ services:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     environment:
       - DOCUMENT_ROOT=/test/oe_authentication
+      - COMPOSERVER=--2
   mysql:
     image: registry.fpfis.eu/fpfis/sql:percona-5.7
     command: --innodb-log-file-size=1G --max_allowed_packet=1G --innodb-buffer-pool-size=512M --wait_timeout=3000 --net_write_timeout=3000 --log_error_verbosity=3
@@ -40,7 +41,11 @@ pipeline:
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
+      - composer self-update --2
       - composer install --ansi --no-suggest --no-progress
+    when:
+      matrix:
+        COMPOSER_BOUNDARY: highest
 
   composer-update-lowest:
     group: prepare-lowest
@@ -50,7 +55,8 @@ pipeline:
     commands:
       # @todo remove "composer install" step once the following issue is fixed.
       # @link https://webgate.ec.europa.eu/CITnet/jira/browse/OPENEUROPA-1234
-      - composer update --prefer-lowest --prefer-stable --ansi --no-suggest --no-progress
+      - composer self-update --2
+      - composer update --prefer-lowest --prefer-stable --ansi --no-progress
     when:
       matrix:
         COMPOSER_BOUNDARY: lowest
@@ -58,6 +64,7 @@ pipeline:
   site-install:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
+      - while ! mysqladmin ping -h mysql --silent; do sleep 1; done
       - ./vendor/bin/run drupal:site-install
 
   test-grumphp:
@@ -90,4 +97,5 @@ matrix:
     - lowest
     - highest
   PHP_VERSION:
-    - 7.3
+    - 7.4
+    - 8.0

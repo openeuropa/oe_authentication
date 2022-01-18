@@ -10,7 +10,7 @@
   <testsuites>
     <testsuite name="OpenEuropa Authentication Tests">
       <directory>./tests/</directory>
-      <directory>./modules/oe_authentication_eulogin_mock/tests/src/</directory>
+      <directory>./modules/**/tests/src/</directory>
     </testsuite>
   </testsuites>
 </phpunit>
