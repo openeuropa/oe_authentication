@@ -1,11 +1,24 @@
 # Changelog
 
+## [1.6.0](https://github.com/openeuropa/oe_authentication/tree/1.6.0) (2022-02-17)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.5.1...1.6.0)
+
+**Closed issues:**
+
+-  Error when validating ticket: Error Code INVALID\_USER: Invalid user: "XXXXXXX" belongs to   "SELF\_REGISTERED" users while application accepts only "INTERNAL"  [\#144](https://github.com/openeuropa/oe_authentication/issues/144)
+
+**Merged pull requests:**
+
+- EWPP-1893: Update to PHP8.0. [\#143](https://github.com/openeuropa/oe_authentication/pull/143) ([22Alexandra](https://github.com/22Alexandra))
+
 ## [1.5.1](https://github.com/openeuropa/oe_authentication/tree/1.5.1) (2021-12-06)
 
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.5.0...1.5.1)
 
 **Merged pull requests:**
 
+- Prepare release 1.5.1. [\#142](https://github.com/openeuropa/oe_authentication/pull/142) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - EWPP-1732: Replace patch for cas module. [\#141](https://github.com/openeuropa/oe_authentication/pull/141) ([sergepavle](https://github.com/sergepavle))
 - Fix release 1.5.0 Changelog. [\#140](https://github.com/openeuropa/oe_authentication/pull/140) ([imanoleguskiza](https://github.com/imanoleguskiza))
 
