@@ -16,3 +16,11 @@ function oe_authentication_post_update_00001(array &$sandbox) {
     ->set('error_handling.message_restrict_password_management', 'The requested account is associated with EU Login and its password cannot be managed from this website.')
     ->save();
 }
+
+/**
+ * Set force_2fa to FALSE as default.
+ */
+function oe_authentication_post_update_00002() {
+  \Drupal::configFactory()->getEditable('oe_authentication.settings')
+    ->set('force_2fa', FALSE)->save();
+}
