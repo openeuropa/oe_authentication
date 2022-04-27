@@ -53,6 +53,11 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Application available ticket types'),
       '#default_value' => $this->config(static::CONFIG_NAME)->get('ticket_types'),
     ];
+    $form['force_2fa'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Force two factor authentication'),
+      '#default_value' => $this->config(static::CONFIG_NAME)->get('force_2fa'),
+    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -66,6 +71,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       ->set('validation_path', $form_state->getValue('validation_path'))
       ->set('assurance_level', $form_state->getValue('assurance_level'))
       ->set('ticket_types', $form_state->getValue('ticket_types'))
+      ->set('force_2fa', (bool) $form_state->getValue('force_2fa'))
       ->save();
     parent::submitForm($form, $form_state);
   }

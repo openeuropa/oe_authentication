@@ -17,3 +17,6 @@ oe_authentication.settings:
     ticket_types:
       type: string
       label: 'Application available ticket types'
+    force_2fa:
+      type: boolean
+      label: 'Force two factor authentication'
