@@ -62,7 +62,7 @@ class MockResponseTest extends KernelTestBase {
       ],
     ])->toString(TRUE)->getGeneratedUrl());
 
-    $response = \Drupal::service('http_kernel')->handle($request);
+    $response = $this->container->get('http_kernel')->handle($request);
 
     $crawler = new Crawler($response->getContent());
     // The cas:attributes element has been removed.
