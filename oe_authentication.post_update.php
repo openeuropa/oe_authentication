@@ -16,3 +16,12 @@ function oe_authentication_post_update_00001(array &$sandbox) {
     ->set('error_handling.message_restrict_password_management', 'The requested account is associated with EU Login and its password cannot be managed from this website.')
     ->save();
 }
+
+/**
+ * Update email domain in CAS settings.
+ */
+function oe_authentication_post_update_00002(array &$sandbox) {
+  \Drupal::configFactory()->getEditable('cas.settings')
+    ->set('user_accounts.email_hostname', 'example.com')
+    ->save();
+}
