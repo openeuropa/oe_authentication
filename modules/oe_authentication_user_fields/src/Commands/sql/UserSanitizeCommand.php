@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_authentication_user_fields\Commands\sql;
 
+use Drupal\Core\Database\Connection;
 use Drush\Commands\DrushCommands;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Consolidation\AnnotatedCommand\CommandData;
@@ -23,14 +24,24 @@ class UserSanitizeCommand extends DrushCommands implements SanitizePluginInterfa
   protected $entityTypeManager;
 
   /**
+   * The database connection to use.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $connection;
+
+  /**
    * EuLoginUserSanitizeCommand constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   * @param \Drupal\Core\Database\Connection $connection
+   *   The database connection to use.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, Connection $connection) {
     parent::__construct();
     $this->entityTypeManager = $entityTypeManager;
+    $this->connection = $connection;
   }
 
   /**
@@ -41,15 +52,24 @@ class UserSanitizeCommand extends DrushCommands implements SanitizePluginInterfa
    * @inheritdoc
    */
   public function sanitize($result, CommandData $commandData) {
-    /** @var \Drupal\user\Entity\User[] $users */
-    $users = $this->entityTypeManager->getStorage('user')->loadMultiple();
-    foreach ($users as $user) {
-      $user->set('field_oe_firstname', 'First Name ' . $user->id());
-      $user->set('field_oe_lastname', 'Last Name ' . $user->id());
-      $user->set('field_oe_department', 'Department ' . $user->id());
-      $user->set('field_oe_organisation', 'Organisation ' . $user->id());
-      $user->save();
-    }
+    $this->connection->update('users_field_data')
+      ->expression('field_oe_firstname', 'CONCAT(:fn_dummy_string, uid)', [
+        ':fn_dummy_string' => 'First Name ',
+      ])
+      ->expression('field_oe_lastname', 'CONCAT(:ln_dummy_string, uid)', [
+        ':ln_dummy_string' => 'Last Name ',
+      ])
+      ->expression('field_oe_department', 'CONCAT(:dep_dummy_string, uid)', [
+        ':dep_dummy_string' => 'Department ',
+      ])
+      ->expression('field_oe_organisation', 'CONCAT(:org_dummy_string, uid)', [
+        ':org_dummy_string' => 'Organisation ',
+      ])
+      ->execute();
+
+    // Make sure that we don't have sensitive data of users in the cache.
+    $this->entityTypeManager->getStorage('user')->resetCache();
+
     $this->logger->success('User fields have been sanitised.');
   }
 

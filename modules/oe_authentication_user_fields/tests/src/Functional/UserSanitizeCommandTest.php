@@ -31,10 +31,17 @@ class UserSanitizeCommandTest extends BrowserTestBase {
    */
   public function testEuLoginUsersDataSanitization() {
     $user = $this->createUser([], NULL, FALSE, [
-      'field_oe_firstname' => 'First name',
-      'field_oe_lastname' => 'Last name',
-      'field_oe_department' => 'Department',
-      'field_oe_organisation' => 'Organisation',
+      'field_oe_firstname' => 'Laurissa',
+      'field_oe_lastname' => 'Garrett',
+      'field_oe_department' => 'Needless',
+      'field_oe_organisation' => 'Beam',
+    ]);
+
+    $user2 = $this->createUser([], NULL, FALSE, [
+      'field_oe_firstname' => 'Beverly',
+      'field_oe_lastname' => 'Thorley',
+      'field_oe_department' => 'Green',
+      'field_oe_organisation' => 'Lantern',
     ]);
 
     $this->drush('sql:sanitize');
@@ -51,6 +58,12 @@ class UserSanitizeCommandTest extends BrowserTestBase {
     $this->assertEquals('Last Name ' . $user->id(), $user->get('field_oe_lastname')->value);
     $this->assertEquals('Department ' . $user->id(), $user->get('field_oe_department')->value);
     $this->assertEquals('Organisation ' . $user->id(), $user->get('field_oe_organisation')->value);
+
+    $user2 = \Drupal::entityTypeManager()->getStorage('user')->load($user2->id());
+    $this->assertEquals('First Name ' . $user2->id(), $user2->get('field_oe_firstname')->value);
+    $this->assertEquals('Last Name ' . $user2->id(), $user2->get('field_oe_lastname')->value);
+    $this->assertEquals('Department ' . $user2->id(), $user2->get('field_oe_department')->value);
+    $this->assertEquals('Organisation ' . $user2->id(), $user2->get('field_oe_organisation')->value);
   }
 
 }
