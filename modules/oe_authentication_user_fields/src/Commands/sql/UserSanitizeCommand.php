@@ -41,15 +41,9 @@ class UserSanitizeCommand extends DrushCommands implements SanitizePluginInterfa
    * @inheritdoc
    */
   public function sanitize($result, CommandData $commandData) {
-    /** @var \Drupal\user\Entity\User[] $users */
-    $users = $this->entityTypeManager->getStorage('user')->loadMultiple();
-    foreach ($users as $user) {
-      $user->set('field_oe_firstname', 'First Name ' . $user->id());
-      $user->set('field_oe_lastname', 'Last Name ' . $user->id());
-      $user->set('field_oe_department', 'Department ' . $user->id());
-      $user->set('field_oe_organisation', 'Organisation ' . $user->id());
-      $user->save();
-    }
+    \Drupal::database()->update('users_field_data')
+      ->fields(['field_oe_firstname' => 'First Name', 'field_oe_lastname' => 'Last Name', 'field_oe_department' => 'Department', 'field_oe_organisation' => 'Organisation'])
+      ->execute();
     $this->logger->success('User fields have been sanitised.');
   }
 
