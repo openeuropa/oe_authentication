@@ -49,6 +49,7 @@ class UserSanitizeCommand extends DrushCommands implements SanitizePluginInterfa
     $user_ids = $user_storage->getQuery()->execute();
 
     foreach ($user_ids as $uid) {
+      /** @var \Drupal\user\Entity\User $user */
       $user = $user_storage->load($uid);
       $user->set('field_oe_firstname', 'First Name ' . $user->id());
       $user->set('field_oe_lastname', 'Last Name ' . $user->id());
