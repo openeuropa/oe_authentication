@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\oe_authentication\Event;
 
 use Drupal\cas\Event\CasPostValidateEvent;
+use Drupal\cas\Event\CasPreRedirectEvent;
 use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
@@ -33,13 +34,6 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
-   * Stores a Messenger object.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $messenger;
-
-  /**
    * Constructors the EuLoginEventSubscriber.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
@@ -55,7 +49,6 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('messenger')
     );
   }
 
@@ -71,6 +64,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       ['checkUserMailExists', 1000],
       ['processUserProperties'],
     ];
+    $events[CasHelper::EVENT_PRE_REDIRECT] = 'forceTwoFactorAuthentication';
     $events[CasHelper::EVENT_POST_VALIDATE] = 'processCasAttributes';
     $events[CasHelper::EVENT_PRE_VALIDATE] = 'alterValidationPath';
     return $events;
@@ -110,6 +104,19 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
+   * Ensures that 2-factor authentication is forced if it is configured.
+   *
+   * @param \Drupal\cas\Event\CasPreRedirectEvent $event
+   *   The triggered event.
+   */
+  public function forceTwoFactorAuthentication(CasPreRedirectEvent $event): void {
+    if ($this->configFactory->get('oe_authentication.settings')->get('force_2fa')) {
+      $data = $event->getCasRedirectData();
+      $data->setParameter('acceptStrengths', 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS');
+    }
+  }
+
+  /**
    * Parses the EU Login attributes from the validation response.
    *
    * @param \Drupal\cas\Event\CasPostValidateEvent $event
@@ -141,6 +148,9 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       'userDetails' => 'true',
       'groups' => '*',
     ];
+    if ($config->get('force_2fa')) {
+      $params['acceptStrengths'] = 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS';
+    }
     $event->addParameters($params);
   }
 
