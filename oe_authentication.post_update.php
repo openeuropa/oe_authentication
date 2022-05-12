@@ -18,9 +18,18 @@ function oe_authentication_post_update_00001(array &$sandbox) {
 }
 
 /**
+ * Update email domain in CAS settings.
+ */
+function oe_authentication_post_update_00002(array &$sandbox) {
+  \Drupal::configFactory()->getEditable('cas.settings')
+    ->set('user_accounts.email_hostname', 'example.com')
+    ->save();
+}
+
+/**
  * Set force_2fa to FALSE as default.
  */
-function oe_authentication_post_update_00002() {
+function oe_authentication_post_update_00003() {
   \Drupal::configFactory()->getEditable('oe_authentication.settings')
     ->set('force_2fa', FALSE)->save();
 }
