@@ -5,6 +5,6 @@ services:
       - { name: event_subscriber }
   oe_authentication_user_fields.sanitize_commands:
     class: Drupal\oe_authentication_user_fields\Commands\sql\UserSanitizeCommand
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.manager', '@database']
     tags:
       -  { name: drush.command }
