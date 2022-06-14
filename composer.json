@@ -9,7 +9,8 @@
         "php": ">=7.4",
         "cweagans/composer-patches": "~1.4",
         "drupal/cas": "^1.7",
-        "drupal/core": "^9.2"
+        "drupal/core": "^9.2",
+        "symfony/http-foundation": "4.4.41"
     },
     "require-dev": {
         "composer/installers": "^1.11",
