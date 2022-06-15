@@ -10,7 +10,7 @@
         "cweagans/composer-patches": "~1.4",
         "drupal/cas": "^1.7",
         "drupal/core": "^9.2",
-        "symfony/http-foundation": "4.4.41"
+        "symfony/http-foundation": "<=4.4.41"
     },
     "require-dev": {
         "composer/installers": "^1.11",
@@ -60,7 +60,8 @@
         },
         "_readme": [
             "Explicit minimum version requirement for symfony/dom-crawler due to its lower versions using the deprecated function libxml_disable_entity_loader() in PHP8.",
-            "Explicit requirement for egulias/email-validator due to https://www.drupal.org/project/drupal/issues/3061074#comment-14300579. It can be removed when Drupal core 9.2 support is droppped."
+            "Explicit requirement for egulias/email-validator due to https://www.drupal.org/project/drupal/issues/3061074#comment-14300579. It can be removed when Drupal core 9.2 support is droppped.",
+            "Explicit requirement for symfony/http-foundation to prevent session loss. It can be removed when Drupal core 9.3 support is dropped or https://www.drupal.org/project/drupal/issues/3285696 is fixed upstream."
         ],
         "patches": {
             "drupal/cas": {
