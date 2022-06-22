@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.0](https://github.com/openeuropa/oe_authentication/tree/1.7.0) (2022-06-21)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.6.0...1.7.0)
+
+**Merged pull requests:**
+
+- EWPP-2349: Master branch tests are failing. [\#160](https://github.com/openeuropa/oe_authentication/pull/160) ([brummbar](https://github.com/brummbar))
+- EWPP-2153: Update 2fa epic. [\#159](https://github.com/openeuropa/oe_authentication/pull/159) ([nagyad](https://github.com/nagyad))
+- EWPP-2153: 2-factor authentication. [\#157](https://github.com/openeuropa/oe_authentication/pull/157) ([nagyad](https://github.com/nagyad))
+- EWPP-2210: Optimize query for sanitizing of user data. [\#155](https://github.com/openeuropa/oe_authentication/pull/155) ([sergepavle](https://github.com/sergepavle))
+- EWPP-2190: Fix dependency from composer patches. [\#150](https://github.com/openeuropa/oe_authentication/pull/150) ([yenyasinn](https://github.com/yenyasinn))
+- EWPP-2133: Update default email hostname for eulogin user bulk import. [\#149](https://github.com/openeuropa/oe_authentication/pull/149) ([sergepavle](https://github.com/sergepavle))
+
 ## [1.6.0](https://github.com/openeuropa/oe_authentication/tree/1.6.0) (2022-02-17)
 
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.5.1...1.6.0)
@@ -10,6 +23,7 @@
 
 **Merged pull requests:**
 
+- Release-1.6.0: Update changelog. [\#145](https://github.com/openeuropa/oe_authentication/pull/145) ([nagyad](https://github.com/nagyad))
 - EWPP-1893: Update to PHP8.0. [\#143](https://github.com/openeuropa/oe_authentication/pull/143) ([22Alexandra](https://github.com/22Alexandra))
 
 ## [1.5.1](https://github.com/openeuropa/oe_authentication/tree/1.5.1) (2021-12-06)
