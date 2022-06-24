@@ -147,4 +147,18 @@ class AuthenticationContext extends RawDrupalContext {
     $this->configContext->setConfig('oe_authentication.settings', 'assurance_level', 'LOW');
   }
 
+  /**
+   * Clicks/presses a link or button.
+   *
+   * "Cancel account" in Drupal 9.3 is a button, but in Drupal 9.4 is a link.
+   *
+   * @todo can be removed after Drupal 9.3 support is dropped.
+   *
+   * @When I tap :label
+   */
+  public function tapElement($label): void {
+    $element = $this->getSession()->getPage()->find('xpath', "//a[text()='$label']|//input[@value='$label']");
+    $element->click();
+  }
+
 }

@@ -9,18 +9,18 @@
         "php": ">=7.4",
         "cweagans/composer-patches": "~1.4",
         "drupal/cas": "^1.7",
-        "drupal/core": ">=9.2 <9.4",
+        "drupal/core": "^9.3",
         "symfony/http-foundation": "<=4.4.41"
     },
     "require-dev": {
         "composer/installers": "^1.11",
         "drupal/cas_mock_server": "^1.1",
         "drupal/config_devel": "^1.2",
-        "drupal/core-composer-scaffold": ">=9.2 <9.4",
-        "drupal/core-dev": ">=9.2 <9.4",
+        "drupal/core-composer-scaffold": "^9.3",
+        "drupal/core-dev": "^9.3",
         "drupal/drupal-extension": "^4.0",
         "drush/drush": "^10.3",
-        "egulias/email-validator": "^2.1.22 || ^3.0",
+        "fabpot/goutte": "^3.3",
         "nikic/php-parser": "^4.12.0",
         "openeuropa/behat-transformation-context": "^0.1",
         "openeuropa/code-review": "^2.0",
@@ -60,7 +60,7 @@
         },
         "_readme": [
             "Explicit minimum version requirement for symfony/dom-crawler due to its lower versions using the deprecated function libxml_disable_entity_loader() in PHP8.",
-            "Explicit requirement for egulias/email-validator due to https://www.drupal.org/project/drupal/issues/3061074#comment-14300579. It can be removed when Drupal core 9.2 support is droppped.",
+            "Explicit minimum version requirement for fabpot/goutte due to lower Drupal 9.3 compatibility.",
             "Explicit requirement for symfony/http-foundation to prevent session loss. It can be removed when Drupal core 9.3 support is dropped or https://www.drupal.org/project/drupal/issues/3285696 is fixed upstream."
         ],
         "patches": {
