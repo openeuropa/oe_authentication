@@ -1,11 +1,20 @@
 # Changelog
 
-## [1.7.0](https://github.com/openeuropa/oe_authentication/tree/1.7.0) (2022-06-21)
+## [1.8.0](https://github.com/openeuropa/oe_authentication/tree/1.8.0) (2022-07-29)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.7.0...1.8.0)
+
+**Merged pull requests:**
+
+- EWPP-2358: Drupal 9.4 support. [\#162](https://github.com/openeuropa/oe_authentication/pull/162) ([yenyasinn](https://github.com/yenyasinn))
+
+## [1.7.0](https://github.com/openeuropa/oe_authentication/tree/1.7.0) (2022-06-22)
 
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.6.0...1.7.0)
 
 **Merged pull requests:**
 
+- Prepare release 1.7.0. [\#161](https://github.com/openeuropa/oe_authentication/pull/161) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - EWPP-2349: Master branch tests are failing. [\#160](https://github.com/openeuropa/oe_authentication/pull/160) ([brummbar](https://github.com/brummbar))
 - EWPP-2153: Update 2fa epic. [\#159](https://github.com/openeuropa/oe_authentication/pull/159) ([nagyad](https://github.com/nagyad))
 - EWPP-2153: 2-factor authentication. [\#157](https://github.com/openeuropa/oe_authentication/pull/157) ([nagyad](https://github.com/nagyad))
