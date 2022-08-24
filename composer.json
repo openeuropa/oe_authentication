@@ -9,8 +9,7 @@
         "php": ">=7.4",
         "cweagans/composer-patches": "~1.4",
         "drupal/cas": "^1.7",
-        "drupal/core": "^9.3",
-        "symfony/http-foundation": "<=4.4.41"
+        "drupal/core": "^9.3"
     },
     "require-dev": {
         "composer/installers": "^1.11",
@@ -60,8 +59,7 @@
         },
         "_readme": [
             "Explicit minimum version requirement for symfony/dom-crawler due to its lower versions using the deprecated function libxml_disable_entity_loader() in PHP8.",
-            "Explicit minimum version requirement for fabpot/goutte due to lower Drupal 9.3 compatibility.",
-            "Explicit requirement for symfony/http-foundation to prevent session loss. It can be removed when Drupal core 9.3 support is dropped or https://www.drupal.org/project/drupal/issues/3285696 is fixed upstream."
+            "Explicit minimum version requirement for fabpot/goutte due to lower Drupal 9.3 compatibility."
         ],
         "patches": {
             "drupal/cas": {
