@@ -53,8 +53,14 @@ function oe_authentication_user_fields_entity_base_field_info(EntityTypeInterfac
       ])
       ->setDisplayOptions('form', [
         'weight' => $weight,
-        'region' => 'content',
-      ]);
+        'region' => 'disabled',
+      ])
+      ->setDisplayOptions('view', [
+        'weight' => $weight,
+        'region' => 'disabled',
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
   }
   return $fields;
 }
