@@ -1,11 +1,26 @@
 # Changelog
 
-## [1.8.0](https://github.com/openeuropa/oe_authentication/tree/1.8.0) (2022-07-29)
+## [1.9.0](https://github.com/openeuropa/oe_authentication/tree/1.9.0) (2022-09-16)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.8.0...1.9.0)
+
+**Closed issues:**
+
+- Compatibility with symfony/http-foundation v4.4.44 [\#164](https://github.com/openeuropa/oe_authentication/issues/164)
+- Streamline the user sanitization function. [\#152](https://github.com/openeuropa/oe_authentication/issues/152)
+- Bulk Add EU Login Users by email [\#137](https://github.com/openeuropa/oe_authentication/issues/137)
+
+**Merged pull requests:**
+
+- OEL-1978: Unlock symfony/http-foundation [\#165](https://github.com/openeuropa/oe_authentication/pull/165) ([brummbar](https://github.com/brummbar))
+
+## [1.8.0](https://github.com/openeuropa/oe_authentication/tree/1.8.0) (2022-08-02)
 
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.7.0...1.8.0)
 
 **Merged pull requests:**
 
+- Prepare release 1.8.0. [\#163](https://github.com/openeuropa/oe_authentication/pull/163) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - EWPP-2358: Drupal 9.4 support. [\#162](https://github.com/openeuropa/oe_authentication/pull/162) ([yenyasinn](https://github.com/yenyasinn))
 
 ## [1.7.0](https://github.com/openeuropa/oe_authentication/tree/1.7.0) (2022-06-22)
