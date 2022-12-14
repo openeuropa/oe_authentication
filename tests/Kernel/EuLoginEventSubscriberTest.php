@@ -125,8 +125,8 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     // request is without 2fa and the second request will be made with forced
     // 2fa. Both request should return status 200.
     $this->mockHttpClient(
-      new Response('200', [], 'Success'),
-      new Response('200', [], 'Success'),
+      new Response(200, [], 'Success'),
+      new Response(200, [], 'Success'),
     );
     $this->container->get('http_kernel')->handle($request);
 
