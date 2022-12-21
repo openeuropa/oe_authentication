@@ -23,7 +23,7 @@ default:
               user registration: '/user/register'
   extensions:
     Drupal\MinkExtension:
-      goutte: ~
+      browserkit_http: ~
       ajax_timeout: 10
       browser_name: 'chrome'
       javascript_session: 'selenium2'
