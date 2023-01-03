@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.0](https://github.com/openeuropa/oe_authentication/tree/1.10.0) (2023-01-03)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.9.0...1.10.0)
+
+**Merged pull requests:**
+
+- EWPP-2912: Update to PHP 8.1. [\#168](https://github.com/openeuropa/oe_authentication/pull/168) ([22Alexandra](https://github.com/22Alexandra))
+
 ## [1.9.0](https://github.com/openeuropa/oe_authentication/tree/1.9.0) (2022-09-16)
 
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.8.0...1.9.0)
@@ -12,6 +20,7 @@
 
 **Merged pull requests:**
 
+- Prepare release 1.9.0. [\#167](https://github.com/openeuropa/oe_authentication/pull/167) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - OEL-1978: Unlock symfony/http-foundation [\#165](https://github.com/openeuropa/oe_authentication/pull/165) ([brummbar](https://github.com/brummbar))
 
 ## [1.8.0](https://github.com/openeuropa/oe_authentication/tree/1.8.0) (2022-08-02)
