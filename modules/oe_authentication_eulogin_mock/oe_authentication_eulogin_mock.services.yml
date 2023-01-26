@@ -8,4 +8,7 @@ services:
     arguments: ['@config.factory']
     tags:
       - { name: event_subscriber }
-
+  oe_authentication_eulogin_mock.cas_pre_redirect_event_subscriber:
+    class: Drupal\oe_authentication_eulogin_mock\EventSubscriber\CasPreRedirectSubscriber
+    tags:
+      - { name: event_subscriber }
