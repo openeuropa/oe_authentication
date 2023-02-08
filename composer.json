@@ -8,15 +8,15 @@
     "require": {
         "php": ">=8.0",
         "drupal/cas": "^2.1",
-        "drupal/core": "^9.4"
+        "drupal/core": "^9.5 || ^10"
     },
     "require-dev": {
         "composer/installers": "^1.11",
         "doctrine/lexer": "^1.2.3",
         "drupal/cas_mock_server": "^2",
         "drupal/config_devel": "^1.2",
-        "drupal/core-composer-scaffold": "^9.4",
-        "drupal/core-utility": "^9.4",
+        "drupal/core-composer-scaffold": "^9.5 || ^10",
+        "drupal/core-utility": "^9.5 || ^10",
         "drupal/drupal-extension": "dev-master",
         "drush/drush": "^11.1",
         "guzzlehttp/guzzle": "^7.0",
