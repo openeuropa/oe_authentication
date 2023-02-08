@@ -16,7 +16,6 @@
         "drupal/core-composer-scaffold": "^9.5 || ^10",
         "drupal/drupal-extension": "^5.0",
         "drush/drush": "^11.1",
-        "guzzlehttp/guzzle": "^7.0",
         "mikey179/vfsstream": "^1.6.10",
         "openeuropa/behat-transformation-context": "^0.2",
         "openeuropa/code-review": "^2.0.0-alpha6",
@@ -55,13 +54,8 @@
             "build/themes/contrib/{$name}": ["type:drupal-theme"]
         },
         "_readme": [
-            "Use master branch of drupal/drupal-extension to replace fabpot/goutte with behat/mink-browserkit-driver.",
             "Explicit minimum version requirement of symfony/phpunit-bridge to replace drupal/core-dev testing classes and traits.",
-            "Explicit minimum version requirement of mikey179/vfsstream due to lower versions missing return type on vfsStreamDirectory::getIterator() method.",
-            "Explicit minimum version requirement of guzzlehttp/guzzle due to lower versions missing return type on CookieJar::getIterator() and CookieJar::count() methods.",
-            "Explicit minimum version requirement of symfony packages due to lower versions missing return type on various methods being incompatible with PHP 8.1 parent methods.",
-            "Explicit minimum version requirement of masterminds/html5 due to lower versions passing NULL parameters instead of string when calling DOMImplementation::createDocument() method.",
-            "Explicit minimum version requirement of doctrine/lexer due to lower versions throwing an annotation exception for CasProtectedUserFieldConstraint."
+            "Explicit minimum version requirement of mikey179/vfsstream due to lower versions missing return type on vfsStreamDirectory::getIterator() method. To remove when drupal/core-dev is reinstated."
         ],
         "drupal-scaffold": {
             "locations": {
