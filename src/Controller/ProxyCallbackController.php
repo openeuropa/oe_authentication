@@ -69,7 +69,7 @@ class ProxyCallbackController extends CASProxyCallbackController {
 
     // Check the method of the request.
     if ($current_request->getRealMethod() !== 'POST') {
-      return new Response(t('The Request should use the POST method'), 400);
+      return new Response('The Request should use the POST method', 400);
     }
 
     $pgt_id = $current_request->request->get('pgtId');
@@ -78,11 +78,11 @@ class ProxyCallbackController extends CASProxyCallbackController {
     // Check for both a pgtIou and pgtId parameter.
     // If either is not present, inform EULogin Server of an error.
     if (!isset($pgt_id) && !isset($pgt_iou)) {
-      return new Response(t('Missing necessary parameters'), 400);
+      return new Response('Missing necessary parameters', 400);
     }
 
     if ($this->checkPgtMapping($pgt_iou, $pgt_id)) {
-      return new Response(t('Parameters already in use'), 400);
+      return new Response('Parameters already in use', 400);
     }
 
     // Store the pgtIou and pgtId in the database for later use.
