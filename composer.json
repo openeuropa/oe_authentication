@@ -17,6 +17,7 @@
         "drupal/drupal-extension": "^5.0",
         "drush/drush": "^11.1",
         "guzzlehttp/guzzle": "^7.0",
+        "mikey179/vfsstream": "^1.6.10",
         "openeuropa/behat-transformation-context": "^0.2",
         "openeuropa/code-review": "^2.0.0-alpha6",
         "openeuropa/task-runner-drupal-project-symlink": "^1.0-beta6",
