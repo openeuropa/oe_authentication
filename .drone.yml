@@ -76,9 +76,10 @@ pipeline:
       status: failure
 
 matrix:
-  CORE_VERSION:
-    - 9
-    - 10
-  PHP_VERSION:
-    - 8.0
-    - 8.1
+  include:
+    - CORE_VERSION: 9
+      PHP_VERSION: 8.0
+    - CORE_VERSION: 9
+      PHP_VERSION: 8.1
+    - CORE_VERSION: 10
+      PHP_VERSION: 8.1
