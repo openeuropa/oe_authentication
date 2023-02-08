@@ -42,24 +42,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --2
-      - composer install --ansi --no-suggest --no-progress
-    when:
-      matrix:
-        COMPOSER_BOUNDARY: highest
-
-  composer-update-lowest:
-    group: prepare-lowest
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    commands:
-      # @todo remove "composer install" step once the following issue is fixed.
-      # @link https://webgate.ec.europa.eu/CITnet/jira/browse/OPENEUROPA-1234
-      - composer self-update --2
-      - composer update --prefer-lowest --prefer-stable --ansi --no-progress
-    when:
-      matrix:
-        COMPOSER_BOUNDARY: lowest
+      - composer require drupal/core ^${CORE_VERSION} --update-with-all-dependencies --ansi --no-suggest --no-progress
 
   site-install:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
@@ -93,9 +76,9 @@ pipeline:
       status: failure
 
 matrix:
-  COMPOSER_BOUNDARY:
-    - lowest
-    - highest
+  CORE_VERSION:
+    - 9
+    - 10
   PHP_VERSION:
     - 8.0
     - 8.1
