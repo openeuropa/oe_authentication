@@ -14,11 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 class ProxyCallbackTest extends KernelTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'oe_authentication',
     'system',
     'user',
