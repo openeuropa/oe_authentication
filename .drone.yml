@@ -42,7 +42,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --2
-      - composer require drupal/core ^${CORE_VERSION} --update-with-all-dependencies --ansi --no-progress
+      - composer require drupal/core:^${CORE_VERSION} drupal/core-composer-scaffold:^${CORE_VERSION} --update-with-all-dependencies --ansi --no-progress --no-interaction
 
   site-install:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
