@@ -8,12 +8,12 @@
     "require": {
         "php": ">=8.0",
         "drupal/cas": "^2.1",
-        "drupal/core": "^9.5 || ^10"
+        "drupal/core": "^9.4 || ^10"
     },
     "require-dev": {
         "composer/installers": "^1.11",
         "drupal/cas_mock_server": "^2.0.1",
-        "drupal/core-composer-scaffold": "^9.5 || ^10",
+        "drupal/core-composer-scaffold": "^9.4 || ^10",
         "drupal/drupal-extension": "^5.0",
         "drush/drush": "^11.1",
         "mikey179/vfsstream": "^1.6.10",
@@ -55,7 +55,7 @@
         },
         "_readme": [
             "Explicit minimum version requirement of symfony/phpunit-bridge to replace drupal/core-dev testing classes and traits.",
-            "Explicit minimum version requirement of mikey179/vfsstream due to lower versions missing return type on vfsStreamDirectory::getIterator() method. To remove when drupal/core-dev is reinstated."
+            "Explicit requirement of mikey179/vfsstream to remove when drupal/core-dev is reinstated."
         ],
         "drupal-scaffold": {
             "locations": {
