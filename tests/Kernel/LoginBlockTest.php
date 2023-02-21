@@ -15,11 +15,9 @@ use Symfony\Component\DomCrawler\Crawler;
 class LoginBlockTest extends KernelTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'block',
     'oe_authentication',
     'system',

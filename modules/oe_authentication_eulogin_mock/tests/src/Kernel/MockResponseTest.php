@@ -35,7 +35,6 @@ class MockResponseTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installSchema('system', ['key_value_expire']);
     $this->installConfig(['cas', 'cas_mock_server', 'oe_authentication']);
   }
 

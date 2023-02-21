@@ -42,24 +42,7 @@ pipeline:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
       - composer self-update --2
-      - composer install --ansi --no-suggest --no-progress
-    when:
-      matrix:
-        COMPOSER_BOUNDARY: highest
-
-  composer-update-lowest:
-    group: prepare-lowest
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
-    volumes:
-      - /cache/${DRONE_REPO_NAME}:/cache
-    commands:
-      # @todo remove "composer install" step once the following issue is fixed.
-      # @link https://webgate.ec.europa.eu/CITnet/jira/browse/OPENEUROPA-1234
-      - composer self-update --2
-      - composer update --prefer-lowest --prefer-stable --ansi --no-progress
-    when:
-      matrix:
-        COMPOSER_BOUNDARY: lowest
+      - composer require drupal/core:~${CORE_VERSION} drupal/core-composer-scaffold:~${CORE_VERSION} --update-with-all-dependencies --ansi --no-progress --no-interaction
 
   site-install:
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
@@ -67,19 +50,19 @@ pipeline:
       - while ! mysqladmin ping -h mysql --silent; do sleep 1; done
       - ./vendor/bin/run drupal:site-install
 
-  test-grumphp:
+  grumphp:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/grumphp run
 
-  test-phpunit:
+  phpunit:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/phpunit
 
-  test-behat:
+  behat:
     group: test
     image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
     commands:
@@ -93,9 +76,10 @@ pipeline:
       status: failure
 
 matrix:
-  COMPOSER_BOUNDARY:
-    - lowest
-    - highest
-  PHP_VERSION:
-    - 8.0
-    - 8.1
+  include:
+    - CORE_VERSION: 9.4.0
+      PHP_VERSION: 8.0
+    - CORE_VERSION: 9.4.0
+      PHP_VERSION: 8.1
+    - CORE_VERSION: 10.0
+      PHP_VERSION: 8.1
