@@ -1,7 +1,14 @@
 # Changelog
 
-## [1.10.0](https://github.com/openeuropa/oe_authentication/tree/1.10.0) (2023-01-03)
+## [1.11.0](https://github.com/openeuropa/oe_authentication/tree/1.11.0) (2023-02-21)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.10.0...1.11.0)
 
+**Merged pull requests:**
+
+- EWPP-2984: Drupal 10 compatibility. [\#171](https://github.com/openeuropa/oe_authentication/pull/171) ([brummbar](https://github.com/brummbar))
+- EWPP-2946: Fix force login redirect which is caheable by varnish. [\#170](https://github.com/openeuropa/oe_authentication/pull/170) ([sergepavle](https://github.com/sergepavle))
+
+## [1.10.0](https://github.com/openeuropa/oe_authentication/tree/1.10.0) (2023-01-03)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.9.0...1.10.0)
 
 **Merged pull requests:**
