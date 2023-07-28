@@ -45,7 +45,10 @@ class UserSanitizeCommandTest extends BrowserTestBase {
     ]);
 
     $this->drush('sql:sanitize');
-    $expected = 'The following operations will be performed:' . PHP_EOL . PHP_EOL;
+    $expected = 'The following operations will be performed:' . PHP_EOL;
+    // An extra newline is added when the command is executed with Drupal 9.x.
+    // @todo Remove when support for Drupal 9.x is dropped.
+    $expected .= version_compare(\Drupal::VERSION, '10.0.0', '<') ? PHP_EOL : '';
     $expected .= '* Truncate sessions table.' . PHP_EOL;
     $expected .= '* Sanitize text fields associated with users.' . PHP_EOL;
     $expected .= '* Sanitize user passwords.' . PHP_EOL;
