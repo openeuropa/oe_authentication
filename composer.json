@@ -61,6 +61,11 @@
             "locations": {
                 "web-root": "./build"
             }
+        },
+        "drush": {
+            "services": {
+                "drush.services.yml": "^11"
+            }
         }
     },
     "config": {
