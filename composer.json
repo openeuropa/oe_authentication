@@ -15,7 +15,7 @@
         "drupal/cas_mock_server": "^2.0.1",
         "drupal/core-composer-scaffold": "^9.4 || ^10",
         "drupal/drupal-extension": "^5.0",
-        "drush/drush": "^11.1",
+        "drush/drush": "^11.1 || ^12",
         "mikey179/vfsstream": "^1.6.10",
         "openeuropa/behat-transformation-context": "^0.2",
         "openeuropa/code-review": "^2.0.0-alpha6",
