@@ -11,10 +11,10 @@ use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\oe_authentication\CasProcessor;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\oe_authentication\CasProcessor;
 
 /**
  * Event subscriber for CAS module events.

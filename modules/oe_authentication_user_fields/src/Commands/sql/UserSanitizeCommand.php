@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\oe_authentication_user_fields\Commands\sql;
 
+use Consolidation\AnnotatedCommand\CommandData;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drush\Commands\DrushCommands;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
-use Consolidation\AnnotatedCommand\CommandData;
 use Symfony\Component\Console\Input\InputInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Sanitizes the user fields related data.
