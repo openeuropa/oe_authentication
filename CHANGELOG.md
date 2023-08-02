@@ -1,6 +1,17 @@
-# Changelog
+# Change Log
 
-## [1.11.0](https://github.com/openeuropa/oe_authentication/tree/1.11.0) (2023-02-21)
+## [1.12.0](https://github.com/openeuropa/oe_authentication/tree/1.12.0) (2023-08-02)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.11.0...1.12.0)
+
+**Closed issues:**
+
+- Latest version of oe\_authentication is not compatible with drupal 9.4 [\#166](https://github.com/openeuropa/oe_authentication/issues/166)
+
+**Merged pull requests:**
+
+- EWPP-3512: drush.services.yml is mandatory with Drush 12. [\#174](https://github.com/openeuropa/oe_authentication/pull/174) ([brummbar](https://github.com/brummbar))
+
+## [1.11.0](https://github.com/openeuropa/oe_authentication/tree/1.11.0) (2023-02-22)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.10.0...1.11.0)
 
 **Merged pull requests:**
