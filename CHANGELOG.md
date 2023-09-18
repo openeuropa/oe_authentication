@@ -1,6 +1,19 @@
-# Change Log
+# Changelog
+
+## [1.13.0](https://github.com/openeuropa/oe_authentication/tree/1.13.0) (2023-09-18)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.12.0...1.13.0)
+
+**Closed issues:**
+
+- Replace heavy, proprietary mock CAS server with a lightweight and open source solution [\#57](https://github.com/openeuropa/oe_authentication/issues/57)
+
+**Merged pull requests:**
+
+- Update cas version. [\#176](https://github.com/openeuropa/oe_authentication/pull/176) ([nagyad](https://github.com/nagyad))
 
 ## [1.12.0](https://github.com/openeuropa/oe_authentication/tree/1.12.0) (2023-08-02)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.11.0...1.12.0)
 
 **Closed issues:**
@@ -9,21 +22,26 @@
 
 **Merged pull requests:**
 
+- Release 1.12.0 changelog. [\#175](https://github.com/openeuropa/oe_authentication/pull/175) ([22Alexandra](https://github.com/22Alexandra))
 - EWPP-3512: drush.services.yml is mandatory with Drush 12. [\#174](https://github.com/openeuropa/oe_authentication/pull/174) ([brummbar](https://github.com/brummbar))
 
 ## [1.11.0](https://github.com/openeuropa/oe_authentication/tree/1.11.0) (2023-02-22)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.10.0...1.11.0)
 
 **Merged pull requests:**
 
+- Prepare changelog for release 1.11.0 [\#172](https://github.com/openeuropa/oe_authentication/pull/172) ([brummbar](https://github.com/brummbar))
 - EWPP-2984: Drupal 10 compatibility. [\#171](https://github.com/openeuropa/oe_authentication/pull/171) ([brummbar](https://github.com/brummbar))
 - EWPP-2946: Fix force login redirect which is caheable by varnish. [\#170](https://github.com/openeuropa/oe_authentication/pull/170) ([sergepavle](https://github.com/sergepavle))
 
 ## [1.10.0](https://github.com/openeuropa/oe_authentication/tree/1.10.0) (2023-01-03)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.9.0...1.10.0)
 
 **Merged pull requests:**
 
+- Prepare release 1.10.0. [\#169](https://github.com/openeuropa/oe_authentication/pull/169) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - EWPP-2912: Update to PHP 8.1. [\#168](https://github.com/openeuropa/oe_authentication/pull/168) ([22Alexandra](https://github.com/22Alexandra))
 
 ## [1.9.0](https://github.com/openeuropa/oe_authentication/tree/1.9.0) (2022-09-16)
@@ -331,7 +349,7 @@
 
 ## [0.1.0](https://github.com/openeuropa/oe_authentication/tree/0.1.0) (2018-06-19)
 
-[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/a00b8cccbde9eab85cd5ddbd3b95223781029bb3...0.1.0)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/f5d7ca1bfa88b3c657ece1cb6fd26df9f807dcf1...0.1.0)
 
 **Merged pull requests:**
 
