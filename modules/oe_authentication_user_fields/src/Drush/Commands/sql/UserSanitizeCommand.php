@@ -2,19 +2,23 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\oe_authentication_user_fields\Commands\sql;
+namespace Drupal\oe_authentication_user_fields\Drush\Commands\sql;
 
 use Consolidation\AnnotatedCommand\CommandData;
+use Consolidation\AnnotatedCommand\Hooks\HookManager;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
+use Drush\Drupal\Commands\sql\SanitizeCommands;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Sanitizes the user fields related data.
  */
-class UserSanitizeCommand extends DrushCommands implements SanitizePluginInterface {
+final class UserSanitizeCommand extends DrushCommands implements SanitizePluginInterface {
 
   /**
    * The entity type manager.
@@ -45,12 +49,24 @@ class UserSanitizeCommand extends DrushCommands implements SanitizePluginInterfa
   }
 
   /**
-   * Sanitize the user data from the DB.
+   * Returns a new instance.
    *
-   * @hook post-command sql-sanitize
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The Drupal container.
    *
-   * @inheritdoc
+   * @return static
    */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('database')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[CLI\Hook(type: HookManager::POST_COMMAND_HOOK, target: SanitizeCommands::SANITIZE)]
   public function sanitize($result, CommandData $commandData) {
     $this->connection->update('users_field_data')
       ->expression('field_oe_firstname', 'CONCAT(:fn_dummy_string, uid)', [
@@ -74,12 +90,9 @@ class UserSanitizeCommand extends DrushCommands implements SanitizePluginInterfa
   }
 
   /**
-   * Sets the output message.
-   *
-   * @hook on-event sql-sanitize-confirms
-   *
-   * @inheritdoc
+   * {@inheritdoc}
    */
+  #[CLI\Hook(type: HookManager::ON_EVENT, target: SanitizeCommands::CONFIRMS)]
   public function messages(&$messages, InputInterface $input) {
     $messages[] = dt('Sanitise user fields.');
   }
