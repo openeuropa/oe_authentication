@@ -56,7 +56,8 @@
         },
         "_readme": [
             "Explicit minimum version requirement of symfony/phpunit-bridge to replace drupal/core-dev testing classes and traits.",
-            "Explicit requirement of mikey179/vfsstream to remove when drupal/core-dev is reinstated."
+            "Explicit requirement of mikey179/vfsstream to remove when drupal/core-dev is reinstated.",
+            "Explicit requirement of nikic/php-parser ^4 as later versions are not compatible with grumphp @see https://github.com/phpro/grumphp/issues/1119"
         ],
         "drupal-scaffold": {
             "locations": {
