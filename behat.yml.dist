@@ -30,6 +30,30 @@ default:
       base_url: "${drupal.base_url}"
       selenium2:
         wd_host: '${selenium.host}:${selenium.port}/wd/hub'
+        capabilities:
+          browser: chrome
+          nativeEvents: true
+          marionette: true
+          browserName: chrome
+          version: '*'
+          extra_capabilities:
+            chromeOptions:
+              w3c: false
+              args:
+                - '--no-sandbox'
+                - '--start-maximized'
+                - '--disable-gpu'
+                - '--window-size=1440,900'
+                - '--disable-dev-shm-usage'
+                - '--disable-setuid-sandbox'
+                - '--disable-web-security'
+                - '--DNS-prefetch-disable'
+                - '--disable-translate'
+                - '--ignore-certificate-errors'
+                - '--test-type'
+                - '--disable-extensions'
+                - '--incognito'
+                - '--disable-infobars'
     Drupal\DrupalExtension:
       api_driver: "drupal"
       drupal:
