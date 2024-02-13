@@ -5,7 +5,7 @@
  * Post update functions for OE Authentication module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * Customize error messages that refer to CAS.
