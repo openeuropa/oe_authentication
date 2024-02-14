@@ -6,17 +6,18 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "drupal/cas": "^2.2",
-        "drupal/core": "^9.4 || ^10"
+        "drupal/core": "^10"
     },
     "require-dev": {
         "composer/installers": "^1.11",
         "drupal/cas_mock_server": "^2.0.1",
-        "drupal/core-composer-scaffold": "^9.4 || ^10",
+        "drupal/core-composer-scaffold": "^10",
         "drupal/drupal-extension": "^5.0",
-        "drush/drush": "^11.1 || ^12",
+        "drush/drush": "^12",
         "mikey179/vfsstream": "^1.6.10",
+        "nikic/php-parser": "^4",
         "openeuropa/behat-transformation-context": "^0.2",
         "openeuropa/code-review": "^2.0.0-alpha6",
         "openeuropa/task-runner-drupal-project-symlink": "^1.0-beta6",
@@ -55,16 +56,12 @@
         },
         "_readme": [
             "Explicit minimum version requirement of symfony/phpunit-bridge to replace drupal/core-dev testing classes and traits.",
-            "Explicit requirement of mikey179/vfsstream to remove when drupal/core-dev is reinstated."
+            "Explicit requirement of mikey179/vfsstream to remove when drupal/core-dev is reinstated.",
+            "Explicit requirement of nikic/php-parser ^4 as later versions are not compatible with grumphp @see https://github.com/phpro/grumphp/issues/1119"
         ],
         "drupal-scaffold": {
             "locations": {
                 "web-root": "./build"
-            }
-        },
-        "drush": {
-            "services": {
-                "drush.services.yml": "^11"
             }
         }
     },

@@ -5,7 +5,7 @@
  * OpenEuropa Authentication install file.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\cas\Service\CasUserManager;
 use Drupal\Core\Field\BaseFieldDefinition;
