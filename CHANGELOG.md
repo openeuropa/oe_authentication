@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.14.0](https://github.com/openeuropa/oe_authentication/tree/1.14.0) (2024-02-14)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.13.0...1.14.0)
+
+**Closed issues:**
+
+- ECAS new user login and registration not working [\#180](https://github.com/openeuropa/oe_authentication/issues/180)
+
+**Merged pull requests:**
+
+- EWPP-3969: Add Drupal 10.2.x and PHP 8.2 to matrix., drop support for Drush 11. [\#181](https://github.com/openeuropa/oe_authentication/pull/181) ([brummbar](https://github.com/brummbar))
+
 ## [1.13.0](https://github.com/openeuropa/oe_authentication/tree/1.13.0) (2023-09-18)
 
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.12.0...1.13.0)
@@ -10,6 +22,7 @@
 
 **Merged pull requests:**
 
+- Prepare release 1.13.0. [\#177](https://github.com/openeuropa/oe_authentication/pull/177) ([imanoleguskiza](https://github.com/imanoleguskiza))
 - Update cas version. [\#176](https://github.com/openeuropa/oe_authentication/pull/176) ([nagyad](https://github.com/nagyad))
 
 ## [1.12.0](https://github.com/openeuropa/oe_authentication/tree/1.12.0) (2023-08-02)
