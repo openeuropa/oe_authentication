@@ -146,8 +146,8 @@ Feature: Login through OE Authentication
     And I fill in "Password" with "dragon_tattoo"
     And I press the "Login!" button
     Then I should be on the homepage
-    And I should see "Your account is blocked or has not been activated. Please contact a site administrator."
     And I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
+    And I should see "In the meantime, a welcome message with further instructions has been sent to your email address."
     And I should see the link "Log in"
 
   @cleanup:user
