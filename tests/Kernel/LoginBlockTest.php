@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\oe_authentication\Kernel;
 
-use Drupal\Core\Url;
+use Drupal\Core\Link;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\user\Entity\User;
-use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Test login block rendering.
@@ -50,12 +49,11 @@ class LoginBlockTest extends KernelTestBase {
     $build = $plugin_block->build();
     $block = (string) $renderer->renderRoot($build);
 
-    $crawler = new Crawler($block);
+    $link = Link::createFromRoute('Log in', 'user.login')->toRenderable();
+    $expected_link = (string) $renderer->renderRoot($link);
 
     // Make sure the login link is present.
-    $link = $crawler->filter('a');
-    $this->assertEquals(t('Log in'), $link->text());
-    $this->assertEquals(Url::fromRoute('user.login')->toString(), $link->attr('href'));
+    $this->assertEquals($expected_link, $block);
 
     // Create a user to login.
     $user1 = User::create([
@@ -72,12 +70,10 @@ class LoginBlockTest extends KernelTestBase {
     // Render the block again.
     $build = $plugin_block->build();
     $block = (string) $renderer->renderRoot($build);
-
+    $link = Link::createFromRoute('Log out', 'user.logout')->toRenderable();
+    $expected_link = (string) $renderer->renderRoot($link);
     // Asserts if the text changed, and log out text is now present.
-    $crawler = new Crawler($block);
-    $link = $crawler->filter('a');
-    $this->assertEquals(t('Log out'), $link->text());
-    $this->assertEquals(Url::fromRoute('user.logout')->toString(), $link->attr('href'));
+    $this->assertEquals($expected_link, $block);
   }
 
 }
