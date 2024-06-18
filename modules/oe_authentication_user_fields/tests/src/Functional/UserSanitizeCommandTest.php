@@ -44,6 +44,9 @@ class UserSanitizeCommandTest extends BrowserTestBase {
       'field_oe_organisation' => 'Lantern',
     ]);
 
+    // We need to write in session table to trigger the table creation.
+    \Drupal::service('session_handler.storage')->write('some-id', 'serialized-session-data');
+
     $this->drush('sql:sanitize');
     $expected = 'The following operations will be performed:' . PHP_EOL;
     $expected .= '* Truncate sessions table.' . PHP_EOL;
