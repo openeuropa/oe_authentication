@@ -1,7 +1,13 @@
-# Changelog
+# Change Log
+
+## [1.15.0](https://github.com/openeuropa/oe_authentication/tree/1.15.0) (2024-06-21)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.14.0...1.15.0)
+
+**Merged pull requests:**
+
+- OEL-3026: Update to Drupal 10.3 [\#186](https://github.com/openeuropa/oe_authentication/pull/186) ([AaronGilMartinez](https://github.com/AaronGilMartinez))
 
 ## [1.14.0](https://github.com/openeuropa/oe_authentication/tree/1.14.0) (2024-02-14)
-
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.13.0...1.14.0)
 
 **Closed issues:**
@@ -10,6 +16,7 @@
 
 **Merged pull requests:**
 
+- Release-1.14.0: Update changelog. [\#182](https://github.com/openeuropa/oe_authentication/pull/182) ([nagyad](https://github.com/nagyad))
 - EWPP-3969: Add Drupal 10.2.x and PHP 8.2 to matrix., drop support for Drush 11. [\#181](https://github.com/openeuropa/oe_authentication/pull/181) ([brummbar](https://github.com/brummbar))
 
 ## [1.13.0](https://github.com/openeuropa/oe_authentication/tree/1.13.0) (2023-09-18)
