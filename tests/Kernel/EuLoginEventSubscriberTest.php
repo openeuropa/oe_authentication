@@ -54,6 +54,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
     $this->installConfig(['cas', 'cas_mock_server', 'oe_authentication']);
+    $this->installEntitySchema('path_alias');
   }
 
   /**
