@@ -33,3 +33,12 @@ function oe_authentication_post_update_00003() {
   \Drupal::configFactory()->getEditable('oe_authentication.settings')
     ->set('force_2fa', FALSE)->save();
 }
+
+/**
+ * Set the auto_register_follow_registration_policy setting.
+ */
+function oe_authentication_post_update_00004(): void {
+  \Drupal::configFactory()->getEditable('cas.settings')
+    ->set('user_accounts.auto_register_follow_registration_policy', TRUE)
+    ->save();
+}
