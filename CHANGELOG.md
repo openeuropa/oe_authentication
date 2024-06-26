@@ -1,13 +1,24 @@
-# Change Log
+# Changelog
+
+## [1.16.0](https://github.com/openeuropa/oe_authentication/tree/1.16.0) (2024-06-26)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.15.0...1.16.0)
+
+**Merged pull requests:**
+
+- EWPP-4349: Use new config from cas v2.3. [\#185](https://github.com/openeuropa/oe_authentication/pull/185) ([nagyad](https://github.com/nagyad))
 
 ## [1.15.0](https://github.com/openeuropa/oe_authentication/tree/1.15.0) (2024-06-21)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.14.0...1.15.0)
 
 **Merged pull requests:**
 
+- Prepare changelog for release 1.15.0. [\#187](https://github.com/openeuropa/oe_authentication/pull/187) ([brummbar](https://github.com/brummbar))
 - OEL-3026: Update to Drupal 10.3 [\#186](https://github.com/openeuropa/oe_authentication/pull/186) ([AaronGilMartinez](https://github.com/AaronGilMartinez))
 
 ## [1.14.0](https://github.com/openeuropa/oe_authentication/tree/1.14.0) (2024-02-14)
+
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.13.0...1.14.0)
 
 **Closed issues:**
@@ -369,7 +380,7 @@
 
 ## [0.1.0](https://github.com/openeuropa/oe_authentication/tree/0.1.0) (2018-06-19)
 
-[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/f5d7ca1bfa88b3c657ece1cb6fd26df9f807dcf1...0.1.0)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/a00b8cccbde9eab85cd5ddbd3b95223781029bb3...0.1.0)
 
 **Merged pull requests:**
 
