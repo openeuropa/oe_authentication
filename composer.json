@@ -7,7 +7,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.2",
-        "drupal/cas": "^2.3",
+        "drupal/cas": "^3.0",
         "drupal/core": "^10 || ^11"
     },
     "require-dev": {
