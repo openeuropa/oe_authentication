@@ -50,10 +50,10 @@ class UserSanitizeCommandTest extends BrowserTestBase {
     $this->drush('sql:sanitize');
     $expected = 'The following operations will be performed:' . PHP_EOL;
     $expected .= '* Truncate sessions table.' . PHP_EOL;
-    $expected .= '* Sanitize text fields associated with users.' . PHP_EOL;
     $expected .= '* Sanitize user passwords.' . PHP_EOL;
     $expected .= '* Sanitize user emails.' . PHP_EOL;
     $expected .= '* Preserve user emails and passwords for the specified roles.' . PHP_EOL;
+    $expected .= '* Sanitize text fields associated with users.' . PHP_EOL;
     $expected .= '* Sanitise user fields.';
     $this->assertOutputEquals($expected);
 
