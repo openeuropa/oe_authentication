@@ -59,7 +59,7 @@ class ProxyCallbackController extends CASProxyCallbackController {
    * This function stores the incoming PGTIOU and pgtId parameters so that
    * the incoming response from the EULogin Server can be looked up.
    */
-  public function callback() {
+  public function callback(): Response {
     $config = $this->configFactory->get('oe_authentication.settings');
     if ($config->get('protocol') !== 'eulogin') {
       parent::callback();
@@ -111,7 +111,7 @@ class ProxyCallbackController extends CASProxyCallbackController {
    * @return bool
    *   Return TRUE is present in the database.
    */
-  protected function checkPgtMapping($pgt_iou, $pgt_id) {
+  protected function checkPgtMapping($pgt_iou, $pgt_id): bool {
     $result = $this->connection->select('cas_pgt_storage')
       ->fields('cas_pgt_storage', ['pgt_iou', 'pgt'])
       ->condition('pgt_iou', $pgt_iou)
