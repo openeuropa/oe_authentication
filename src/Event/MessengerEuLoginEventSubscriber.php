@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\oe_authentication\Event;
 
 use Drupal\cas\Event\CasPreRegisterEvent;
-use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -45,7 +44,7 @@ class MessengerEuLoginEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [];
-    $events[CasHelper::EVENT_PRE_REGISTER] = ['showUserMessage', -100];
+    $events[CasPreRegisterEvent::class] = ['showUserMessage', -100];
     return $events;
   }
 
