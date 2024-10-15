@@ -8,6 +8,6 @@ Feature: Manage users
     Given I am logged in as a user with the "administer users" permissions
     When I visit my user page
     And I click "Edit"
-    And I tap "Cancel account"
+    And I click "Cancel account"
     Then I should see "Disable the account and keep its content."
     And I should not see "Delete the account and its content."
