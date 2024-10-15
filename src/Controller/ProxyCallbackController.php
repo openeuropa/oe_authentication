@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\oe_authentication\Controller;
 
-use Drupal\cas\Controller\ProxyCallbackController as CASProxyCallbackController;
-use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
+use Drupal\cas\Controller\ProxyCallbackController as CASProxyCallbackController;
+use Drupal\cas\Service\CasHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
