@@ -19,7 +19,7 @@
         "mikey179/vfsstream": "^1.6.10",
         "nikic/php-parser": "^4",
         "openeuropa/behat-transformation-context": "^0.2",
-        "openeuropa/code-review": "3.x-dev",
+        "openeuropa/code-review-drupal": "*",
         "openeuropa/task-runner-drupal-project-symlink": "^1.0-beta6",
         "phpspec/prophecy-phpunit": "^2",
         "symfony/phpunit-bridge": "^6.2"
@@ -47,6 +47,10 @@
         {
             "type": "git",
             "url": "https://github.com/openeuropa/DrupalDriver.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/openeuropa/code-review-drupal.git"
         }
     ],
     "extra": {
@@ -77,7 +81,8 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "drupal/core-composer-scaffold": true,
             "phpro/grumphp": true,
-            "phpro/grumphp-shim": true
+            "phpro/grumphp-shim": true,
+            "phpstan/extension-installer": true
         }
     }
 }
