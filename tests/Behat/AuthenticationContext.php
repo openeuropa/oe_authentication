@@ -78,13 +78,9 @@ class AuthenticationContext extends RawDrupalContext {
    *   Thrown when the user with the given name does not exist.
    */
   public function blockUser(string $username): void {
-    $users = \Drupal::entityTypeManager()
-      ->getStorage('user')
-      ->loadByProperties([
-        'name' => $username,
-      ]);
     /** @var \Drupal\user\Entity\User $user */
-    $user = $users ? reset($users) : FALSE;
+    $user = user_load_by_name($username);
+
     if ($user) {
       $user->block();
       $user->save();

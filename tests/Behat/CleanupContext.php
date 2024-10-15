@@ -63,6 +63,7 @@ class CleanupContext extends RawDrupalContext {
       $test_entity_ids = array_diff($current_ids, $ids);
 
       if ($test_entity_ids) {
+        // @phpstan-ignore-next-line
         $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
         $storage->delete($storage->loadMultiple($test_entity_ids));
       }
@@ -100,6 +101,7 @@ class CleanupContext extends RawDrupalContext {
    *   An array of entity IDs.
    */
   protected function getAllEntityIdsOfType(string $entity_type): array {
+    // @phpstan-ignore-next-line
     return \Drupal::entityTypeManager()->getStorage($entity_type)->getQuery()->accessCheck(FALSE)->execute();
   }
 
