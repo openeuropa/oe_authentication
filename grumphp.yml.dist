@@ -2,7 +2,7 @@ imports:
   - { resource: ./vendor/openeuropa/code-review-drupal/dist/oe-component-conventions.yml }
 grumphp:
   tasks:
-     phpparser:
+    phpparser:
       ignore_patterns:
         - vendor/
   git_hook_variables:
