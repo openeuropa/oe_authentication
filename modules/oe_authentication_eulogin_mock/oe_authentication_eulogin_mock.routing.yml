@@ -13,4 +13,3 @@ oe_authentication_eulogin_mock.register:
     _title: 'Register'
   requirements:
     _access: 'TRUE'
-

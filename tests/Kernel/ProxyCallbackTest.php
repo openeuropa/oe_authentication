@@ -29,7 +29,7 @@ class ProxyCallbackTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->installConfig(['system', 'user']);
+    $this->installConfig(['system', 'user', 'cas']);
     $this->installEntitySchema('user');
     $this->installSchema('system', ['sequences']);
     $this->installSchema('cas', ['cas_pgt_storage']);

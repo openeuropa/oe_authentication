@@ -78,13 +78,9 @@ class AuthenticationContext extends RawDrupalContext {
    *   Thrown when the user with the given name does not exist.
    */
   public function blockUser(string $username): void {
-    $users = \Drupal::entityTypeManager()
-      ->getStorage('user')
-      ->loadByProperties([
-        'name' => $username,
-      ]);
     /** @var \Drupal\user\Entity\User $user */
-    $user = $users ? reset($users) : FALSE;
+    $user = user_load_by_name($username);
+
     if ($user) {
       $user->block();
       $user->save();
@@ -145,20 +141,6 @@ class AuthenticationContext extends RawDrupalContext {
   public function allowExternalUsers(): void {
     // Set the assurance level to allow also external users to login.
     $this->configContext->setConfig('oe_authentication.settings', 'assurance_level', 'LOW');
-  }
-
-  /**
-   * Clicks/presses a link or button.
-   *
-   * "Cancel account" in Drupal 9.3 is a button, but in Drupal 9.4 is a link.
-   *
-   * @todo can be removed after Drupal 9.3 support is dropped.
-   *
-   * @When I tap :label
-   */
-  public function tapElement($label): void {
-    $element = $this->getSession()->getPage()->find('xpath', "//a[text()='$label']|//input[@value='$label']");
-    $element->click();
   }
 
 }

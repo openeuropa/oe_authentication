@@ -6,7 +6,6 @@ namespace Drupal\oe_authentication_user_fields\EventSubscriber;
 
 use Drupal\cas\Event\CasPostLoginEvent;
 use Drupal\cas\Event\CasPreRegisterEvent;
-use Drupal\cas\Service\CasHelper;
 use Drupal\oe_authentication_user_fields\EuLoginAttributesHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -20,8 +19,8 @@ class EuLoginAttributesToUserFieldsSubscriber implements EventSubscriberInterfac
    */
   public static function getSubscribedEvents() {
     return [
-      CasHelper::EVENT_POST_LOGIN => 'updateUserData',
-      CasHelper::EVENT_PRE_REGISTER => 'processUserProperties',
+      CasPostLoginEvent::class => 'updateUserData',
+      CasPreRegisterEvent::class => 'processUserProperties',
     ];
   }
 
