@@ -32,7 +32,7 @@ function oe_authentication_install(): void {
       ->set('user_accounts.auto_register_follow_registration_policy', TRUE)
       // We need to add a default email domain so that we can trigger
       // the appropriate event to handle emails.
-      ->set('user_accounts.email_assignment_strategy', EmailAssignment::Standard)
+      ->set('user_accounts.email_assignment_strategy', EmailAssignment::Standard->value)
       ->set('user_accounts.email_hostname', 'example.com')
       ->set('login_link_enabled', TRUE)
       ->set('login_link_label', 'EU Login')
