@@ -6,16 +6,16 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.1",
         "drupal/cas": "^3.0",
-        "drupal/core": "^11"
+        "drupal/core": "^10.3 || ^11"
     },
     "require-dev": {
         "composer/installers": "^1.11",
         "drupal/cas_mock_server": "^2.0.1",
-        "drupal/core-composer-scaffold": "^11",
+        "drupal/core-composer-scaffold": "^10.3 || ^11",
         "drupal/drupal-extension": "^5.0",
-        "drush/drush": "^13",
+        "drush/drush": "^12 || ^13",
         "mikey179/vfsstream": "^1.6.10",
         "nikic/php-parser": "^4",
         "openeuropa/behat-transformation-context": "^0.2",
