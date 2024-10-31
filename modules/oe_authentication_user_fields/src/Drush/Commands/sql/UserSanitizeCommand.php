@@ -16,8 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Sanitizes the user fields related data.
- *
- * @phpstan-ignore-next-line
  */
 final class UserSanitizeCommand extends DrushCommands implements SanitizePluginInterface {
 
