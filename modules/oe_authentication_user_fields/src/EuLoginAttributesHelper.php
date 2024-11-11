@@ -18,6 +18,7 @@ class EuLoginAttributesHelper {
     'field_oe_lastname' => 'lastName',
     'field_oe_department' => 'departmentNumber',
     'field_oe_organisation' => 'domain',
+    'field_oe_ldap_groups' => 'groups',
   ];
 
   /**

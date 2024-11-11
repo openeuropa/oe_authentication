@@ -83,6 +83,12 @@ final class UserSanitizeCommand extends DrushCommands implements SanitizePluginI
       ])
       ->execute();
 
+    $this->connection->update('user__field_oe_ldap_groups')
+      ->expression('field_oe_ldap_groups_value', ':fn_dummy_string', [
+        ':fn_dummy_string' => 'LDAP group',
+      ])
+      ->execute();
+
     // Make sure that we don't have sensitive data of users in the cache.
     $this->entityTypeManager->getStorage('user')->resetCache();
 

@@ -7,8 +7,8 @@
 
 declare(strict_types=1);
 
-use Drupal\cas\Service\CasUserManager;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\cas\Service\CasUserManager;
 
 /**
  * Implements hook_install().

@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * OpenEuropa Authentication user fields install file.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+
+/**
+ * Create the user LDAP group field.
+ */
+function oe_authentication_user_fields_update_10000(array &$sandbox) {
+  $definitions = \Drupal::service('entity.last_installed_schema.repository')->getLastInstalledFieldStorageDefinitions('user');
+  if (isset($definitions['field_oe_ldap_groups'])) {
+    return 'The User entity already has an ldap_groups field';
+  }
+
+  $update_manager = \Drupal::entityDefinitionUpdateManager();
+
+  $field = BaseFieldDefinition::create('string')
+    ->setLabel('LDAP groups')
+    ->setDescription('The LDAP groups the user belongs to')
+    ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+    ->setSettings([
+      'default_value' => '',
+      'max_length' => 255,
+    ])
+    ->setDisplayOptions('form', [
+      'weight' => 11,
+      'region' => 'content',
+    ]);
+  $update_manager->installFieldStorageDefinition('field_oe_ldap_groups', 'user', 'oe_authentication_user_fields', $field);
+}
