@@ -1,0 +1,8 @@
+name: OE Authentication Corporate Roles
+description: Automatic corporate roles assigned to users
+package: OpenEuropa
+type: module
+core_version_requirement: ^10
+dependencies:
+  - cas:cas
+  - oe_authentication:oe_authentication

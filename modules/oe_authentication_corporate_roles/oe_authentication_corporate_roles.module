@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * OpenEuropa Authentication Corporate Roles module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * If we are not saving the user as part of automatic corporate role
+ * assignment, set the roles on the manual roles field. But only do so if there
+ * is a change on the roles.
+ */
+function oe_authentication_corporate_roles_user_presave(UserInterface $user) {
+  if (isset($user->automatic_corporate_roles)) {
+    return;
+  }
+
+  $original = $user->original;
+  if (!$original instanceof UserInterface) {
+    // It means the user is new so we can set the manual roles.
+    $user->set('oe_manual_roles', $user->getRoles(TRUE));
+    return;
+  }
+
+  // Check if there is a difference between the original roles and the new ones.
+  $original_roles = $original->getRoles(TRUE);
+  $new_roles = $user->getRoles(TRUE);
+
+  if ($original_roles !== $new_roles) {
+    $user->set('oe_manual_roles', $user->getRoles(TRUE));
+  }
+
+}
