@@ -7,10 +7,10 @@ Feature: Login through OE Authentication
 
   Background:
     Given CAS users:
-      | Username    | E-mail                            | Password           | First name | Last name | Department    | Organisation |
-      | chucknorris | texasranger@chucknorris.com.eu    | Qwerty098          | Chuck      | Norris    | DIGIT.A.3.001 | eu.europa.ec |
-      | jb007       | 007@mi6.eu                        | shaken_not_stirred | James      | Bond      | DIGIT.A.3.001 | external     |
-      | lissa       | Lisbeth.SALANDER@ext.ec.europa.eu | dragon_tattoo      | Lisbeth    | Salander  |               |              |
+      | Username    | E-mail                            | Password           | First name | Last name | Department    | Organisation | Groups             |
+      | chucknorris | texasranger@chucknorris.com.eu    | Qwerty098          | Chuck      | Norris    | DIGIT.A.3.001 | eu.europa.ec |                    |
+      | jb007       | 007@mi6.eu                        | shaken_not_stirred | James      | Bond      | DIGIT.A.3.001 | external     | COMM_ONE, COMM_TWO |
+      | lissa       | Lisbeth.SALANDER@ext.ec.europa.eu | dragon_tattoo      | Lisbeth    | Salander  |               |              |                    |
 
   @cleanup:user
   Scenario: Login/Logout with eCAS mockup server of internal users
@@ -75,6 +75,8 @@ Feature: Login through OE Authentication
     And the "Last Name" field should contain "BOND"
     And the "Department" field should contain "DIGIT.A.3.001"
     And the "Organisation" field should contain "external"
+    And the "LDAP groups (value 1)" field should contain "COMM_ONE"
+    And the "LDAP groups (value 2)" field should contain "COMM_TWO"
 
     When I click "Log out"
     # Redirected to the Ecas mockup server.

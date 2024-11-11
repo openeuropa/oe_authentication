@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\oe_authentication\Controller;
 
-use Drupal\cas\CasServerConfig;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Url;
+use Drupal\cas\CasServerConfig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\oe_authentication\Event;
 
-use Drupal\cas\Event\CasPreRegisterEvent;
-use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\cas\Event\CasPreRegisterEvent;
+use Drupal\cas\Service\CasHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
