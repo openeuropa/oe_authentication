@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.oe_manual_roles
+  module:
+    - user
+third_party_settings: { }
+id: user.user.oe_manual_roles
+field_name: oe_manual_roles
+entity_type: user
+bundle: user
+label: 'Manual roles'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:user_role'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference
