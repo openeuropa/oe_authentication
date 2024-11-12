@@ -7,6 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\oe_authentication_corporate_roles\Entity\CorporateRolesMapping;
+use Drupal\user\Entity\Role;
 use Drupal\user\UserInterface;
 
 /**
@@ -32,8 +35,172 @@ function oe_authentication_corporate_roles_user_presave(UserInterface $user) {
   $original_roles = $original->getRoles(TRUE);
   $new_roles = $user->getRoles(TRUE);
 
-  if ($original_roles !== $new_roles) {
-    $user->set('oe_manual_roles', $user->getRoles(TRUE));
+  if ($original_roles === $new_roles) {
+    // If the roles are the same, we bail out.
+    return;
   }
 
+  // Determine if there are any roles that have been assigned automatically to
+  // the user, and if there are, do not include them in the ones that are being
+  // set as manual.
+  $automatic_roles = [];
+  foreach ($user->get('oe_corporate_roles_mappings')->referencedEntities() as $mapping) {
+    $automatic_roles = array_merge($automatic_roles, $mapping->get('roles'));
+  }
+  $automatic_roles = array_unique(array_values($automatic_roles));
+  $new_roles = array_filter($new_roles, function ($role) use ($automatic_roles) {
+    return !in_array($role, $automatic_roles);
+  });
+
+  $user->set('oe_manual_roles', $new_roles);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ *
+ * When a new mapping is created, we need to find all the users that match it
+ * and update their roles to whatever it was mapped. We also store a reference
+ * to the mapping on the user entity.
+ */
+function oe_authentication_corporate_roles_corporate_roles_mapping_insert(CorporateRolesMapping $mapping) {
+  $users = \Drupal::service('oe_authentication_corporate_roles.mapping_lookup')->getMatchingUsers($mapping);
+
+  if (!$users) {
+    \Drupal::messenger()->addStatus(t('No users were found matching these conditions.'));
+
+    return;
+  }
+
+  foreach ($users as $user) {
+    $mapping->updateUserRoles($user);
+    $user->automatic_corporate_roles = TRUE;
+    $user->save();
+  }
+
+  \Drupal::messenger()->addStatus(t('@count users have had their roles updated.', ['@count' => count($users)]));
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * When a mapping is updated, we need to do multiple steps:
+ * - we need to load all the users that reference the mapping and remove their
+ * roles. This is because the mapping may have changed and the conditions don't
+ * apply anymore.
+ * - we need to load all the users that match the conditions and set the roles.
+ * The same as we do in insert hook.
+ */
+function oe_authentication_corporate_roles_corporate_roles_mapping_update(CorporateRolesMapping $mapping) {
+  // Find all the users that are already mapped and clear their roles.
+  $users = \Drupal::service('oe_authentication_corporate_roles.mapping_lookup')->getUsersWithMapping($mapping);
+  // We need to use the original to know what roles it had before it was
+  // changed.
+  $original = $mapping->original;
+  foreach ($users as $user) {
+    // Remove the mapping roles.
+    $original->removeMappingRoles($user);
+    // We also need to remove the reference to the current mapping.
+    $original->removeMappingReference($user);
+  }
+
+  // Now, find the users that match.
+  $matched_users = \Drupal::service('oe_authentication_corporate_roles.mapping_lookup')->getMatchingUsers($mapping);
+
+  // Save all the users from the previous array that are not found in this
+  // list of matched users. This is because for those, the conditions no longer
+  // match and they need to be saved as-is, after having their roles cleared.
+  foreach ($users as $user) {
+    if (!isset($matched_users[$user->id()])) {
+      $user->automatic_corporate_roles = TRUE;
+      $user->save();
+    }
+  }
+
+  foreach ($matched_users as $user) {
+    $mapping->updateUserRoles($user);
+    $user->automatic_corporate_roles = TRUE;
+    $user->save();
+  }
+
+  \Drupal::messenger()->addStatus(t('@count users have had their roles updated.', ['@count' => count($matched_users)]));
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function oe_authentication_corporate_roles_corporate_roles_mapping_delete(CorporateRolesMapping $mapping) {
+  // When we delete a mapping, ensure we load all the users that are mapped
+  // and clear their roles.
+  $ids = \Drupal::entityTypeManager()->getStorage('user')->getQuery()
+    ->condition('oe_corporate_roles_mappings', $mapping->id())
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!$ids) {
+    \Drupal::messenger()->addStatus(t('No users were updated for with the deletion of this mapping.'));
+  }
+
+  $users = \Drupal::entityTypeManager()->getStorage('user')->loadMultiple($ids);
+
+  foreach ($users as $user) {
+    // Remove the mapping roles.
+    $mapping->removeMappingRoles($user);
+    // Remove the reference to the current mapping.
+    $mapping->removeMappingReference($user);
+    $user->automatic_corporate_roles = TRUE;
+    $user->save();
+  }
+
+  \Drupal::messenger()->addStatus(t('@count users have had their roles updated.', ['@count' => count($users)]));
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function oe_authentication_corporate_roles_form_user_form_alter(array &$form, FormStateInterface $form_state) {
+  if (!isset($form['account']['roles']['#access'])) {
+    return;
+  }
+
+  if (!$form['account']['roles']['#access']) {
+    return;
+  }
+
+  /** @var \Drupal\user\UserInterface $user */
+  $user = $form_state->getBuildInfo()['callback_object']->getEntity();
+
+  $automatic_roles = [];
+  $mapping_links = [];
+  foreach ($user->get('oe_corporate_roles_mappings')->referencedEntities() as $mapping) {
+    $automatic_roles = array_merge($automatic_roles, $mapping->get('roles'));
+    $mapping_link = $mapping->toLink(rel: 'edit-form')->toRenderable();
+    $mapping_links[] = $mapping_link;
+  }
+  $automatic_roles = array_unique(array_values($automatic_roles));
+  if (!$automatic_roles) {
+    return;
+  }
+
+  $roles = Role::loadMultiple($automatic_roles);
+  $labels = [];
+  foreach ($roles as $role) {
+    $labels[] = $role->label();
+  }
+
+  $mappings_list = [
+    '#theme' => 'item_list',
+    '#items' => $mapping_links,
+  ];
+
+  $roles_list = [
+    '#theme' => 'item_list',
+    '#items' => $labels,
+  ];
+
+  $message = t('<p>The following roles:</p>@roles<p>have been assigned to the user automatically via the Corporate role mapping(s):</p> @mappings <p>If you manually remove those roles, they will be added back the next time the user logs in.</p>', [
+    '@roles' => \Drupal::service('renderer')->renderRoot($roles_list),
+    '@mappings' => \Drupal::service('renderer')->renderRoot($mappings_list),
+  ]);
+
+  \Drupal::messenger()->addWarning($message);
 }

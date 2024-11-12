@@ -1,0 +1,20 @@
+oe_authentication_corporate_roles.corporate_roles_mapping.*:
+  type: config_entity
+  label: Corporate roles mapping
+  mapping:
+    id:
+      type: string
+      label: ID
+    label:
+      type: label
+      label: Label
+    uuid:
+      type: string
+    matching_value_type:
+      type: string
+    value:
+      type: string
+    roles:
+      type: sequence
+      sequence:
+        type: string
