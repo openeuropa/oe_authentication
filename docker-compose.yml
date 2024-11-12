@@ -27,7 +27,6 @@ services:
   selenium:
     image: selenium/standalone-chrome:4.1.3-20220405
     environment:
-      - DISPLAY=:99
       - SCREEN_WIDTH=1280
       - SCREEN_HEIGHT=800
       - VNC_NO_PASSWORD=1

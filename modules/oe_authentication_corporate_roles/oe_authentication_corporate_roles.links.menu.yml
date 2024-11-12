@@ -1,0 +1,5 @@
+entity.corporate_roles_mapping.overview:
+  title: Corporate role mappings
+  parent: user.admin_index
+  description: 'List of corporate roles mappings.'
+  route_name: entity.corporate_roles_mapping.collection
