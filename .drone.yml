@@ -81,5 +81,5 @@ matrix:
       PHP_VERSION: 8.2
     - CORE_VERSION: 10.3.0
       PHP_VERSION: 8.3
-    - CORE_VERSION: 11
+    - CORE_VERSION: 11.0
       PHP_VERSION: 8.3
