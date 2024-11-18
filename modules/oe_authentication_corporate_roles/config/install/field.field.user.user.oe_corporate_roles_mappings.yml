@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.oe_corporate_roles_mappings
+  module:
+    - user
+id: user.user.oe_corporate_roles_mappings
+field_name: oe_corporate_roles_mappings
+entity_type: user
+bundle: user
+label: 'Corporate roles mappings'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:corporate_roles_mapping'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

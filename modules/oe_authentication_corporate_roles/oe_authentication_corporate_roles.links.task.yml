@@ -1,0 +1,5 @@
+entity.corporate_roles_mapping.collection:
+  title: 'Corporate roles mappings'
+  route_name: entity.corporate_roles_mapping.collection
+  base_route: entity.user.collection
+  weight: 10
