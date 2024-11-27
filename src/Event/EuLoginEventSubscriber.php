@@ -46,7 +46,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new self(
+    return new static(
       $container->get('config.factory'),
     );
   }

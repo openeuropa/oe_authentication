@@ -32,7 +32,7 @@ class RegisterController extends ControllerBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new self(
+    return new static(
       $container->get('config.factory')
     );
   }

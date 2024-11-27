@@ -1,6 +1,0 @@
-# Drop this file one we drop support for Drupal 10.
-parameters:
-    level: 1
-    ignoreErrors:
-    		-
-    			identifier: class.implementsDeprecatedInterface

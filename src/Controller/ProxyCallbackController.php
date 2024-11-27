@@ -45,7 +45,7 @@ class ProxyCallbackController extends CASProxyCallbackController {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new self(
+    return new static(
       $container->get('database'),
       $container->get('request_stack'),
       $container->get('cas.helper'),
