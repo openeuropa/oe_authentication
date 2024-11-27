@@ -19,7 +19,7 @@
         "mikey179/vfsstream": "^1.6.10",
         "nikic/php-parser": "^4",
         "openeuropa/behat-transformation-context": "^0.2",
-        "openeuropa/code-review-drupal": "*",
+        "openeuropa/code-review-drupal": "dev-EWPP-4665",
         "openeuropa/task-runner-drupal-project-symlink": "^1.0-beta6",
         "phpspec/prophecy-phpunit": "^2",
         "symfony/phpunit-bridge": "^6.2"
