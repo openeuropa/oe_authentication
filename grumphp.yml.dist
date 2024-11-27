@@ -7,3 +7,6 @@ grumphp:
         - vendor/
   git_hook_variables:
     EXEC_GRUMPHP_COMMAND: 'docker-compose exec -T web'
+
+parameters:
+  tasks.phpstan.configuration: phpstan.neon.dist
