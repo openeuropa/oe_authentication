@@ -20,7 +20,7 @@
         "nikic/php-parser": "^4",
         "openeuropa/behat-transformation-context": "^0.2",
         "openeuropa/code-review-drupal": "^1.0.0-alpha",
-        "openeuropa/task-runner-drupal-project-symlink": "^1.0-beta6",
+        "openeuropa/task-runner-drupal-project-symlink": "^1.0",
         "phpspec/prophecy-phpunit": "^2",
         "symfony/phpunit-bridge": "^6.2"
     },
