@@ -5,7 +5,8 @@ Feature: Register through OE Authentication
   I need to be able to go to the registration URL
 
   Scenario: Register
-    Given I am an anonymous user
+    Given the site is configured to make users blocked on creation
+    And I am an anonymous user
     When I visit "the user registration page"
     # Redirected to the Ecas mockup server.
     Then I should see "Create an account"
