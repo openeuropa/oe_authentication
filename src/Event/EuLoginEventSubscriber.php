@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\oe_authentication\Event;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cas\Event\CasPostValidateEvent;
 use Drupal\cas\Event\CasPreRedirectEvent;
 use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
-use Drupal\cas\Service\CasHelper;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\oe_authentication\CasProcessor;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -60,13 +59,14 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     $events = [];
-    $events[CasHelper::EVENT_PRE_REGISTER] = [
+    $events[CasPreRegisterEvent::class] = [
       ['checkUserMailExists', 1000],
       ['processUserProperties'],
     ];
-    $events[CasHelper::EVENT_PRE_REDIRECT] = 'forceTwoFactorAuthentication';
-    $events[CasHelper::EVENT_POST_VALIDATE] = 'processCasAttributes';
-    $events[CasHelper::EVENT_PRE_VALIDATE] = 'alterValidationPath';
+    $events[CasPreRedirectEvent::class] = 'forceTwoFactorAuthentication';
+    $events[CasPostValidateEvent::class] = 'processCasAttributes';
+    $events[CasPreValidateEvent::class] = 'alterValidationPath';
+
     return $events;
   }
 

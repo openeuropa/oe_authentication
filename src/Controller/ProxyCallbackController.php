@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\oe_authentication\Controller;
 
-use Drupal\cas\Controller\ProxyCallbackController as CASProxyCallbackController;
-use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
+use Drupal\cas\Controller\ProxyCallbackController as CASProxyCallbackController;
+use Drupal\cas\Service\CasHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,7 +59,7 @@ class ProxyCallbackController extends CASProxyCallbackController {
    * This function stores the incoming PGTIOU and pgtId parameters so that
    * the incoming response from the EULogin Server can be looked up.
    */
-  public function callback() {
+  public function callback(): Response {
     $config = $this->configFactory->get('oe_authentication.settings');
     if ($config->get('protocol') !== 'eulogin') {
       parent::callback();

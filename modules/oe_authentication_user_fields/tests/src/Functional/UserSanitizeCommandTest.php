@@ -47,7 +47,7 @@ class UserSanitizeCommandTest extends BrowserTestBase {
     // We need to write in session table to trigger the table creation.
     \Drupal::service('session_handler.storage')->write('some-id', 'serialized-session-data');
 
-    $this->drush('sql:sanitize');
+    $version = $this->drushMajorVersion();
     $expected = 'The following operations will be performed:' . PHP_EOL;
     $expected .= '* Truncate sessions table.' . PHP_EOL;
     $expected .= '* Sanitize text fields associated with users.' . PHP_EOL;
@@ -55,6 +55,18 @@ class UserSanitizeCommandTest extends BrowserTestBase {
     $expected .= '* Sanitize user emails.' . PHP_EOL;
     $expected .= '* Preserve user emails and passwords for the specified roles.' . PHP_EOL;
     $expected .= '* Sanitise user fields.';
+
+    if ($version > 12) {
+      $expected = 'The following operations will be performed:' . PHP_EOL;
+      $expected .= '* Sanitize user passwords.' . PHP_EOL;
+      $expected .= '* Sanitize user emails.' . PHP_EOL;
+      $expected .= '* Preserve user emails and passwords for the specified roles.' . PHP_EOL;
+      $expected .= '* Sanitize text fields associated with users.' . PHP_EOL;
+      $expected .= '* Truncate sessions table.' . PHP_EOL;
+      $expected .= '* Sanitise user fields.';
+    }
+
+    $this->drush('sql:sanitize');
     $this->assertOutputEquals($expected);
 
     $user = \Drupal::entityTypeManager()->getStorage('user')->load($user->id());

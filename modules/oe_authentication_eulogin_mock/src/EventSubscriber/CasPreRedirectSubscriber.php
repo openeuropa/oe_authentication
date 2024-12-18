@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\oe_authentication_eulogin_mock\EventSubscriber;
 
 use Drupal\cas\Event\CasPreRedirectEvent;
-use Drupal\cas\Service\CasHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -32,7 +31,7 @@ class CasPreRedirectSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      CasHelper::EVENT_PRE_REDIRECT => ['onCasPreRedirect'],
+      CasPreRedirectEvent::class => ['onCasPreRedirect'],
     ];
   }
 

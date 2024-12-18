@@ -10,7 +10,6 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
-use Drush\Drupal\Commands\sql\SanitizeCommands;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -66,7 +65,7 @@ final class UserSanitizeCommand extends DrushCommands implements SanitizePluginI
   /**
    * {@inheritdoc}
    */
-  #[CLI\Hook(type: HookManager::POST_COMMAND_HOOK, target: SanitizeCommands::SANITIZE)]
+  #[CLI\Hook(type: HookManager::POST_COMMAND_HOOK, target: 'sql:sanitize')]
   public function sanitize($result, CommandData $commandData) {
     $this->connection->update('users_field_data')
       ->expression('field_oe_firstname', 'CONCAT(:fn_dummy_string, uid)', [
@@ -92,9 +91,10 @@ final class UserSanitizeCommand extends DrushCommands implements SanitizePluginI
   /**
    * {@inheritdoc}
    */
-  #[CLI\Hook(type: HookManager::ON_EVENT, target: SanitizeCommands::CONFIRMS)]
+  #[CLI\Hook(type: HookManager::ON_EVENT, target: 'sql-sanitize-confirms')]
   public function messages(&$messages, InputInterface $input) {
     $messages[] = dt('Sanitise user fields.');
+    return $messages;
   }
 
 }
