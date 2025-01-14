@@ -9,7 +9,7 @@ Feature: Login through OE Authentication
     Given CAS users:
       | Username    | E-mail                            | Password           | First name | Last name | Department    | Organisation | Groups             |
       | chucknorris | texasranger@chucknorris.com.eu    | Qwerty098          | Chuck      | Norris    | DIGIT.A.3.001 | eu.europa.ec |                    |
-      | jb007       | 007@mi6.eu                        | shaken_not_stirred | James      | Bond      | DIGIT.A.3.001 | external     | COMM_ONE, COMM_TWO |
+      | jb007       | 007@mi6.eu                        | shaken_not_stirred | James      | Bond      | DIGIT.A.3.001 | eu.europa.ec | COMM_ONE, COMM_TWO |
       | lissa       | Lisbeth.SALANDER@ext.ec.europa.eu | dragon_tattoo      | Lisbeth    | Salander  |               |              |                    |
 
   @cleanup:user
@@ -74,7 +74,7 @@ Feature: Login through OE Authentication
     Then the "First Name" field should contain "James"
     And the "Last Name" field should contain "BOND"
     And the "Department" field should contain "DIGIT.A.3.001"
-    And the "Organisation" field should contain "external"
+    And the "Organisation" field should contain "eu.europa.ec"
     And the "LDAP groups (value 1)" field should contain "COMM_ONE"
     And the "LDAP groups (value 2)" field should contain "COMM_TWO"
 

@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - oe_authentication_corporate_roles
+    - user
+id: user.oe_corporate_roles_mappings
+field_name: oe_corporate_roles_mappings
+entity_type: user
+type: entity_reference
+settings:
+  target_type: corporate_roles_mapping
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

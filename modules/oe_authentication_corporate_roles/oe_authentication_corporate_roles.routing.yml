@@ -1,0 +1,31 @@
+entity.corporate_roles_mapping.collection:
+  path: '/admin/people/corporate-roles-mapping'
+  defaults:
+    _entity_list: 'corporate_roles_mapping'
+    _title: 'Corporate roles mapping configuration'
+  requirements:
+    _permission: 'manage corporate roles'
+
+entity.corporate_roles_mapping.add_form:
+  path: '/admin/people/corporate_roles_mapping/add'
+  defaults:
+    _entity_form: 'corporate_roles_mapping.add'
+    _title: 'Add a corporate roles mapping'
+  requirements:
+    _permission: 'manage corporate roles'
+
+entity.corporate_roles_mapping.edit_form:
+  path: '/admin/people/corporate-roles-mapping/{corporate_roles_mapping}'
+  defaults:
+    _entity_form: 'corporate_roles_mapping.edit'
+    _title: 'Edit a corporate roles mapping'
+  requirements:
+    _permission: 'manage corporate roles'
+
+entity.corporate_roles_mapping.delete_form:
+  path: '/admin/people/corporate-roles-mapping/{corporate_roles_mapping}/delete'
+  defaults:
+    _entity_form: 'corporate_roles_mapping.delete'
+    _title: 'Delete a corporate roles mapping'
+  requirements:
+    _permission: 'manage corporate roles'
