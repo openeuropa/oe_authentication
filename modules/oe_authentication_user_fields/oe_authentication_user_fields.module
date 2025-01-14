@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -40,6 +41,12 @@ function oe_authentication_user_fields_entity_base_field_info(EntityTypeInterfac
       'name' => t('Organisation'),
       'description' => t("User's organisation."),
     ],
+    '11' => [
+      'machine_name' => 'field_oe_ldap_groups',
+      'name' => t('LDAP groups'),
+      'description' => t("The LDAP groups the user belongs to."),
+      'multiple' => TRUE,
+    ],
   ];
 
   $fields = [];
@@ -55,6 +62,10 @@ function oe_authentication_user_fields_entity_base_field_info(EntityTypeInterfac
         'weight' => $weight,
         'region' => 'content',
       ]);
+
+    if (isset($field['multiple']) === TRUE) {
+      $fields[$field['machine_name']]->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
+    }
   }
   return $fields;
 }

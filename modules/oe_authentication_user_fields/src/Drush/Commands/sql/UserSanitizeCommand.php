@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\oe_authentication_user_fields\Drush\Commands\sql;
 
+use Drush\Attributes\Hook;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\Hooks\HookManager;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -65,7 +65,7 @@ final class UserSanitizeCommand extends DrushCommands implements SanitizePluginI
   /**
    * {@inheritdoc}
    */
-  #[CLI\Hook(type: HookManager::POST_COMMAND_HOOK, target: 'sql:sanitize')]
+  #[Hook(type: HookManager::POST_COMMAND_HOOK, target: 'sql:sanitize')]
   public function sanitize($result, CommandData $commandData) {
     $this->connection->update('users_field_data')
       ->expression('field_oe_firstname', 'CONCAT(:fn_dummy_string, uid)', [
@@ -82,6 +82,12 @@ final class UserSanitizeCommand extends DrushCommands implements SanitizePluginI
       ])
       ->execute();
 
+    $this->connection->update('user__field_oe_ldap_groups')
+      ->expression('field_oe_ldap_groups_value', ':fn_dummy_string', [
+        ':fn_dummy_string' => 'LDAP group',
+      ])
+      ->execute();
+
     // Make sure that we don't have sensitive data of users in the cache.
     $this->entityTypeManager->getStorage('user')->resetCache();
 
@@ -91,7 +97,7 @@ final class UserSanitizeCommand extends DrushCommands implements SanitizePluginI
   /**
    * {@inheritdoc}
    */
-  #[CLI\Hook(type: HookManager::ON_EVENT, target: 'sql-sanitize-confirms')]
+  #[Hook(type: HookManager::ON_EVENT, target: 'sql-sanitize-confirms')]
   public function messages(&$messages, InputInterface $input) {
     $messages[] = dt('Sanitise user fields.');
     return $messages;
