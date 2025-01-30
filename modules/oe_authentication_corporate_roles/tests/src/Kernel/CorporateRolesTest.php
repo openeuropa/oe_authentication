@@ -322,6 +322,14 @@ class CorporateRolesTest extends KernelTestBase {
     $mappings = $lookup_service->getMappingsForUser($user);
     $this->assertCount(1, $mappings);
     $this->assertEquals(['a'], array_keys($mappings));
+
+    // Use multiple LDAP groups.
+    $user->set('field_oe_ldap_groups', ['COMM_NINE', 'COMM_ONE']);
+    $user->set('field_oe_department', NULL);
+    $user->save();
+    $mappings = $lookup_service->getMappingsForUser($user);
+    $this->assertCount(1, $mappings);
+    $this->assertEquals(['a'], array_keys($mappings));
   }
 
   /**

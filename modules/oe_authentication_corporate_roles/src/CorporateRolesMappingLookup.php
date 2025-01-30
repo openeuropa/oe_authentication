@@ -116,7 +116,7 @@ class CorporateRolesMappingLookup {
 
     if (!$user->get('field_oe_ldap_groups')->isEmpty()) {
       $ldap_group_condition = $query->andConditionGroup();
-      $ldap_group_condition->condition('value', $user->get('field_oe_ldap_groups')->value);
+      $ldap_group_condition->condition('value', array_column($user->get('field_oe_ldap_groups')->getValue(), 'value'), 'IN');
       $ldap_group_condition->condition('matching_value_type', CorporateRolesMapping::LDAP_GROUP);
       $or_group->condition($ldap_group_condition);
     }
