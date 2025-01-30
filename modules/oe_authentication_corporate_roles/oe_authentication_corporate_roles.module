@@ -122,7 +122,19 @@ function oe_authentication_corporate_roles_corporate_roles_mapping_update(Corpor
     $user->save();
   }
 
+  // Keep track of the users for which roles have been removed but not added
+  // any new or any back.
+  $removed = [];
+  foreach ($users as $uid => $user) {
+    if (!isset($matched_users[$uid])) {
+      $removed[] = $user;
+    }
+  }
+
   \Drupal::messenger()->addStatus(t('@count users have had their roles updated.', ['@count' => count($matched_users)]));
+  if ($removed) {
+    \Drupal::messenger()->addStatus(t('@count users have had their roles removed.', ['@count' => count($removed)]));
+  }
 }
 
 /**
