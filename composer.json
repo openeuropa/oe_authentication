@@ -36,6 +36,8 @@
     "autoload-dev": {
         "psr-4": {
             "Drupal\\Tests\\oe_authentication\\": "./tests/",
+            "Drupal\\Tests\\oe_authentication_user_fields\\": "./modules/oe_authentication_user_fields/tests/src",
+            "Drupal\\Tests\\oe_authentication_corporate_roles\\": "./modules/oe_authentication_corporate_roles/tests/src",
             "Drupal\\Tests\\cas_mock_server\\": "./build/modules/contrib/cas_mock_server/tests/src/"
         }
     },
@@ -80,7 +82,8 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "drupal/core-composer-scaffold": true,
             "phpro/grumphp-shim": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "phpro/grumphp": false
         }
     }
 }

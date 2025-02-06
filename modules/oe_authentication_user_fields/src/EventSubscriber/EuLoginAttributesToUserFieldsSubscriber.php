@@ -34,6 +34,9 @@ class EuLoginAttributesToUserFieldsSubscriber implements EventSubscriberInterfac
     $properties = EuLoginAttributesHelper::convertEuLoginAttributesToFieldValues($event->getCasPropertyBag()->getAttributes());
     $account = $event->getAccount();
     foreach ($properties as $name => $value) {
+      if (is_array($value)) {
+        $value = array_values($value);
+      }
       $account->set($name, $value);
     }
     $account->save();

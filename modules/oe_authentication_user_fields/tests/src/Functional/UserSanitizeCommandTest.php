@@ -35,6 +35,10 @@ class UserSanitizeCommandTest extends BrowserTestBase {
       'field_oe_lastname' => 'Garrett',
       'field_oe_department' => 'Needless',
       'field_oe_organisation' => 'Beam',
+      'field_oe_ldap_groups' => [
+        'Test 1',
+        'Test 2',
+      ],
     ]);
 
     $user2 = $this->createUser([], NULL, FALSE, [
@@ -42,6 +46,10 @@ class UserSanitizeCommandTest extends BrowserTestBase {
       'field_oe_lastname' => 'Thorley',
       'field_oe_department' => 'Green',
       'field_oe_organisation' => 'Lantern',
+      'field_oe_ldap_groups' => [
+        'User 1 group',
+        'User 2 group',
+      ],
     ]);
 
     // We need to write in session table to trigger the table creation.
@@ -74,12 +82,20 @@ class UserSanitizeCommandTest extends BrowserTestBase {
     $this->assertEquals('Last Name ' . $user->id(), $user->get('field_oe_lastname')->value);
     $this->assertEquals('Department ' . $user->id(), $user->get('field_oe_department')->value);
     $this->assertEquals('Organisation ' . $user->id(), $user->get('field_oe_organisation')->value);
+    $this->assertEquals([
+      'LDAP group',
+      'LDAP group',
+    ], array_column($user->get('field_oe_ldap_groups')->getValue(), 'value'));
 
     $user2 = \Drupal::entityTypeManager()->getStorage('user')->load($user2->id());
     $this->assertEquals('First Name ' . $user2->id(), $user2->get('field_oe_firstname')->value);
     $this->assertEquals('Last Name ' . $user2->id(), $user2->get('field_oe_lastname')->value);
     $this->assertEquals('Department ' . $user2->id(), $user2->get('field_oe_department')->value);
     $this->assertEquals('Organisation ' . $user2->id(), $user2->get('field_oe_organisation')->value);
+    $this->assertEquals([
+      'LDAP group',
+      'LDAP group',
+    ], array_column($user2->get('field_oe_ldap_groups')->getValue(), 'value'));
   }
 
 }

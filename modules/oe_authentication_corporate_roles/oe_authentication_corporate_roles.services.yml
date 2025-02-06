@@ -1,0 +1,9 @@
+services:
+  oe_authentication_corporate_roles.mapping_lookup:
+    class: Drupal\oe_authentication_corporate_roles\CorporateRolesMappingLookup
+    arguments: ['@entity_type.manager']
+  oe_authentication_corporate_roles.event_subscriber:
+    class: Drupal\oe_authentication_corporate_roles\EventSubscriber\EuLoginSubscriber
+    arguments: ['@oe_authentication_corporate_roles.mapping_lookup']
+    tags:
+      - { name: event_subscriber }

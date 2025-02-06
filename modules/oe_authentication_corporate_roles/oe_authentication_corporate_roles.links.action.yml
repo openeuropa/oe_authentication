@@ -1,0 +1,5 @@
+entity.corporate_roles_mapping.add_form:
+  route_name: 'entity.corporate_roles_mapping.add_form'
+  title: 'Add corporate roles mapping'
+  appears_on:
+    - entity.corporate_roles_mapping.collection
