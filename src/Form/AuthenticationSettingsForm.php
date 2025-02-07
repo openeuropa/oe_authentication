@@ -106,6 +106,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
     $form['condition_tabs'] = [
       '#type' => 'vertical_tabs',
       '#title' => $this->t('Two-factor authentication conditions'),
+      '#description' => $this->t('Two-factor authentication will be required to log in <strong>only if at least one condition</strong> successfully matches the account that is attempting to log in. Conditions apply only if two-factor authentication is enabled.'),
       '#parents' => ['condition_tabs'],
       '#states' => [
         'visible' => [
