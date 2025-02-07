@@ -107,6 +107,11 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       '#type' => 'vertical_tabs',
       '#title' => $this->t('Two-factor authentication conditions'),
       '#parents' => ['condition_tabs'],
+      '#states' => [
+        'visible' => [
+          ':input[name="force_2fa"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     $defaults = $this->config(static::CONFIG_NAME)->get('2fa_conditions') ?? [];
@@ -170,6 +175,33 @@ class AuthenticationSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $force_2fa = (bool) $form_state->getValue('force_2fa');
+    $this->config(static::CONFIG_NAME)
+      ->set('protocol', $form_state->getValue('protocol'))
+      ->set('register_path', $form_state->getValue('register_path'))
+      ->set('validation_path', $form_state->getValue('validation_path'))
+      ->set('assurance_level', $form_state->getValue('assurance_level'))
+      ->set('ticket_types', $form_state->getValue('ticket_types'))
+      ->set('force_2fa', $force_2fa)
+      // If 2FA is disabled, clear up any existing condition configuration.
+      ->set('2fa_conditions', $force_2fa ? $this->collect2FaConditionsConfiguration($form, $form_state) : [])
+      ->save();
+
+    parent::submitForm($form, $form_state);
+  }
+
+  /**
+   * Collects the configuration from the 2FA condition plugins.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return array
+   *   The condition plugins configuration.
+   */
+  protected function collect2FaConditionsConfiguration(array $form, FormStateInterface $form_state): array {
     $collection = new ConditionPluginCollection($this->conditionManager);
     foreach ($form_state->getValue('2fa_conditions') as $condition_id => $values) {
       // Allow the condition to submit the form.
@@ -183,17 +215,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       $collection->addInstanceId($condition_id, $condition_configuration);
     }
 
-    $this->config(static::CONFIG_NAME)
-      ->set('protocol', $form_state->getValue('protocol'))
-      ->set('register_path', $form_state->getValue('register_path'))
-      ->set('validation_path', $form_state->getValue('validation_path'))
-      ->set('assurance_level', $form_state->getValue('assurance_level'))
-      ->set('ticket_types', $form_state->getValue('ticket_types'))
-      ->set('force_2fa', (bool) $form_state->getValue('force_2fa'))
-      ->set('2fa_conditions', $collection->getConfiguration())
-      ->save();
-
-    parent::submitForm($form, $form_state);
+    return $collection->getConfiguration();
   }
 
   /**
