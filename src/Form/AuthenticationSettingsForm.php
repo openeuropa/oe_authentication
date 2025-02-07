@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Drupal\oe_authentication\Form;
 
 use Drupal\Component\Plugin\Definition\ContextAwarePluginDefinitionInterface;
+use Drupal\Core\Condition\ConditionPluginCollection;
 use Drupal\Core\Executable\ExecutableManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\SubformState;
 use Drupal\Core\Plugin\Context\EntityContext;
 use Drupal\Core\Plugin\FilteredPluginManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -151,7 +153,36 @@ class AuthenticationSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    foreach ($form_state->getValue('2fa_conditions') as $condition_id => $values) {
+      // Allow the condition to validate the form.
+      $condition = $form_state->get(['2fa_conditions', $condition_id]);
+      $condition->validateConfigurationForm(
+        $form['2fa_conditions'][$condition_id],
+        SubformState::createForSubform($form['2fa_conditions'][$condition_id], $form, $form_state),
+      );
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $collection = new ConditionPluginCollection($this->conditionManager);
+    foreach ($form_state->getValue('2fa_conditions') as $condition_id => $values) {
+      // Allow the condition to submit the form.
+      $condition = $form_state->get(['2fa_conditions', $condition_id]);
+      $condition->submitConfigurationForm(
+        $form['2fa_conditions'][$condition_id],
+        SubformState::createForSubform($form['2fa_conditions'][$condition_id], $form, $form_state),
+      );
+
+      $condition_configuration = $condition->getConfiguration();
+      $collection->addInstanceId($condition_id, $condition_configuration);
+    }
+
     $this->config(static::CONFIG_NAME)
       ->set('protocol', $form_state->getValue('protocol'))
       ->set('register_path', $form_state->getValue('register_path'))
@@ -159,7 +190,9 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       ->set('assurance_level', $form_state->getValue('assurance_level'))
       ->set('ticket_types', $form_state->getValue('ticket_types'))
       ->set('force_2fa', (bool) $form_state->getValue('force_2fa'))
+      ->set('2fa_conditions', $collection->getConfiguration())
       ->save();
+
     parent::submitForm($form, $form_state);
   }
 
