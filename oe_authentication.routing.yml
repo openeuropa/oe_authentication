@@ -1,3 +1,11 @@
+oe_authentication.login:
+  path: '/eulogin'
+  defaults:
+    _controller: '\Drupal\cas\Controller\ForceLoginController::forceLogin'
+  requirements:
+    _access: 'TRUE'
+  options:
+    _maintenance_access: TRUE
 oe_authentication.settings:
   path: '/admin/config/system/oe_authentication'
   defaults:
