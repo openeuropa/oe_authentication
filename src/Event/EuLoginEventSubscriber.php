@@ -112,7 +112,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   public function forceTwoFactorAuthentication(CasPreRedirectEvent $event): void {
     if ($this->configFactory->get('oe_authentication.settings')->get('force_2fa')) {
       $data = $event->getCasRedirectData();
-      $data->setParameter('acceptStrengths', 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS');
+      $data->setParameter('authenticationLevel', 'MEDIUM');
     }
   }
 
@@ -149,7 +149,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       'groups' => '*',
     ];
     if ($config->get('force_2fa')) {
-      $params['acceptStrengths'] = 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS';
+      $params['authenticationLevel'] = 'MEDIUM';
     }
     $event->addParameters($params);
   }
