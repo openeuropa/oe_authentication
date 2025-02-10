@@ -42,3 +42,12 @@ function oe_authentication_post_update_00004(): void {
     ->set('user_accounts.auto_register_follow_registration_policy', TRUE)
     ->save();
 }
+
+/**
+ * Set the restrict_user_delete_cancel_methods to TRUE as default.
+ */
+function oe_authentication_post_update_00005(): void {
+  \Drupal::configFactory()->getEditable('oe_authentication.settings')
+    ->set('restrict_user_delete_cancel_methods', TRUE)
+    ->save();
+}
