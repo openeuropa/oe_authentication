@@ -1,15 +1,15 @@
 services:
   oe_authentication.route_subscriber:
-    class: \Drupal\oe_authentication\Routing\RouteSubscriber
+    class: Drupal\oe_authentication\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
   oe_authentication.event_subscriber:
-    class: \Drupal\oe_authentication\Event\EuLoginEventSubscriber
+    class: Drupal\oe_authentication\Event\EuLoginEventSubscriber
     tags:
       - { name: event_subscriber }
     arguments: ['@config.factory']
   oe_authentication.messenger.event_subscriber:
-    class: \Drupal\oe_authentication\Event\MessengerEuLoginEventSubscriber
+    class: Drupal\oe_authentication\Event\MessengerEuLoginEventSubscriber
     tags:
       - { name: event_subscriber }
     arguments: ['@messenger']
