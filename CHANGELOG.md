@@ -1,10 +1,18 @@
 # Change Log
 
+## [1.18.0](https://github.com/openeuropa/oe_authentication/tree/1.18.0) (2025-02-11)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.17.0...1.18.0)
+
+**Merged pull requests:**
+
+- Epic EWPP-4910: Corporate global user groups. [\#195](https://github.com/openeuropa/oe_authentication/pull/195) ([upchuk](https://github.com/upchuk))
+
 ## [1.17.0](https://github.com/openeuropa/oe_authentication/tree/1.17.0) (2025-01-20)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.16.0...1.17.0)
 
 **Merged pull requests:**
 
+- Release-1.17.0: Update changelog. [\#196](https://github.com/openeuropa/oe_authentication/pull/196) ([nagyad](https://github.com/nagyad))
 - OEL-3187: Upgrade to Drupal 11 [\#190](https://github.com/openeuropa/oe_authentication/pull/190) ([drishu](https://github.com/drishu))
 
 ## [1.16.0](https://github.com/openeuropa/oe_authentication/tree/1.16.0) (2024-06-26)
