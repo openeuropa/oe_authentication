@@ -22,7 +22,6 @@ class SettingsFormTest extends BrowserTestBase {
    */
   protected static $modules = [
     'oe_authentication_test',
-    'user',
   ];
 
   /**
