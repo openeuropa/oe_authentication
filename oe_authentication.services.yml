@@ -13,3 +13,16 @@ services:
     tags:
       - { name: event_subscriber }
     arguments: ['@messenger']
+  oe_authentication.subscriber.two_factor_authentication:
+    class: Drupal\oe_authentication\Event\TwoFactorAuthenticationEventSubscriber
+    arguments:
+      - '@config.factory'
+      - '@plugin.manager.condition'
+      - '@context.handler'
+      - '@logger.channel.oe_authentication'
+      - '@cas.helper'
+    tags:
+      - { name: event_subscriber }
+  logger.channel.oe_authentication:
+    parent: logger.channel_base
+    arguments: ['oe_authentication']
