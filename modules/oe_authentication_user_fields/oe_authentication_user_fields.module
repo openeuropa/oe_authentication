@@ -51,6 +51,19 @@ function oe_authentication_user_fields_entity_base_field_info(EntityTypeInterfac
 
   $fields = [];
   foreach ($custom_fields as $weight => $field) {
+    if ($field['machine_name'] === 'field_oe_ldap_groups' && !\Drupal::database()->schema()->tableExists('user__field_oe_ldap_groups') && \Drupal::database()->schema()->fieldExists('users_field_data', 'field_oe_organisation')) {
+      // Looks hacky but there are some very narrow edge cases in which when
+      // running the update hooks, the container builder instantiates some
+      // services, which, in their construct methods load a user entity. And
+      // when they do, exceptions are gonna be thrown because the table field
+      // doesn't exist yet. The interesting thing is that not in all cases this
+      // happens.
+      // The condition above essentially checks if we are in a state in which
+      // the site has the other fields and not yet the LDAP groups field. In
+      // which case it means we are talking about an update path.
+      continue;
+    }
+
     $fields[$field['machine_name']] = BaseFieldDefinition::create('string')
       ->setLabel($field['name'])
       ->setDescription($field['description'])
