@@ -6,7 +6,6 @@ namespace Drupal\oe_authentication\Form;
 
 use Drupal\Component\Plugin\Definition\ContextAwarePluginDefinitionInterface;
 use Drupal\Core\Condition\ConditionPluginCollection;
-use Drupal\Core\Executable\ExecutableManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
@@ -27,10 +26,10 @@ class AuthenticationSettingsForm extends ConfigFormBase {
   /**
    * The condition manager.
    *
-   * @var \Drupal\Core\Executable\ExecutableManagerInterface&\Drupal\Core\Plugin\FilteredPluginManagerInterface
+   * @var \Drupal\Core\Plugin\FilteredPluginManagerInterface
    * @phpstan-ignore property.uninitializedReadonly
    */
-  protected readonly ExecutableManagerInterface&FilteredPluginManagerInterface $conditionManager;
+  protected readonly FilteredPluginManagerInterface $conditionManager;
 
   /**
    * {@inheritdoc}
