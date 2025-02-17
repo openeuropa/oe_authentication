@@ -68,7 +68,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     $request = Request::create(Url::fromRoute('user.login')->toString(TRUE)->getGeneratedUrl());
     $response = $this->container->get('http_kernel')->handle($request);
     $this->assertEquals(302, $response->getStatusCode());
-    $redirect_string = 'acceptStrengths';
+    $redirect_string = 'authenticationLevel';
     $this->assertStringNotContainsString($redirect_string, $response->getContent());
 
     // Set the config to force 2fa and redo the request to assert the params.
@@ -76,7 +76,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     $request = Request::create(Url::fromRoute('user.login')->toString(TRUE)->getGeneratedUrl());
     $response = $this->container->get('http_kernel')->handle($request);
     $this->assertEquals(302, $response->getStatusCode());
-    $redirect_string = 'Redirecting to https:/login?acceptStrengths=PASSWORD_MOBILE_APP%2CPASSWORD_SOFTWARE_TOKEN%2CPASSWORD_SMS&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login';
+    $redirect_string = 'Redirecting to https:/login?authenticationLevel=MEDIUM&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login';
     $this->assertStringContainsString($redirect_string, $response->getContent());
   }
 
@@ -164,7 +164,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
       'ticketTypes' => 'SERVICE,PROXY',
       'userDetails' => 'true',
       'groups' => '*',
-      'acceptStrengths' => 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS',
+      'authenticationLevel' => 'MEDIUM',
     ];
     $this->assertSame($expected, $result);
   }
