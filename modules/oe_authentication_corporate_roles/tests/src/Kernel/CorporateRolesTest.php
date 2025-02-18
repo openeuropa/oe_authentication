@@ -22,6 +22,8 @@ class CorporateRolesTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'cas',
+    'externalauth',
     'oe_authentication',
     'oe_authentication_corporate_roles',
     'oe_authentication_user_fields',
