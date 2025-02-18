@@ -7,9 +7,12 @@ namespace Drupal\oe_authentication_test\Plugin\Condition;
 use Drupal\Core\Condition\Attribute\Condition;
 use Drupal\Core\Condition\ConditionPluginBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\EntityContextDefinition;
+use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a test condition that requires a user as context.
@@ -24,9 +27,26 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
     ),
   ],
 )]
-class UserTestCondition extends ConditionPluginBase {
+class UserTestCondition extends ConditionPluginBase implements ContainerFactoryPluginInterface {
 
   use StringTranslationTrait;
+
+  /**
+   * The state interface.
+   *
+   * @phpstan-ignore property.uninitializedReadonly
+   */
+  protected readonly StateInterface $state;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    $instance = new static($configuration, $plugin_id, $plugin_definition);
+    $instance->state = $container->get('state');
+
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -48,7 +68,14 @@ class UserTestCondition extends ConditionPluginBase {
    * {@inheritdoc}
    */
   public function evaluate() {
-    return (bool) $this->configuration['example'];
+    if ($this->state->get('oe_authentication_user_test.crash_me')) {
+      throw new \Exception('Crashing the plugin.');
+    }
+
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $this->getContextValue('user');
+
+    return $user->getAccountName() === $this->state->get('oe_authentication_user_test.account_name');
   }
 
   /**
