@@ -33,7 +33,7 @@ class UserTestCondition extends ConditionPluginBase {
    */
   public function defaultConfiguration() {
     return [
-      'enabled' => FALSE,
+      'example' => FALSE,
     ] + parent::defaultConfiguration();
   }
 
@@ -48,17 +48,19 @@ class UserTestCondition extends ConditionPluginBase {
    * {@inheritdoc}
    */
   public function evaluate() {
-    return (bool) $this->configuration['enabled'];
+    return (bool) $this->configuration['example'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['enabled'] = [
+    // A configuration entry, used only to test the saving of condition
+    // configuration.
+    $form['example'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Enabled'),
-      '#default_value' => $this->configuration['enabled'],
+      '#title' => $this->t('Example configuration option'),
+      '#default_value' => $this->configuration['example'],
     ];
 
     $form['invalid'] = [
@@ -84,7 +86,7 @@ class UserTestCondition extends ConditionPluginBase {
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $this->configuration['enabled'] = $form_state->getValue('enabled');
+    $this->configuration['example'] = $form_state->getValue('example');
 
     parent::submitConfigurationForm($form, $form_state);
   }
