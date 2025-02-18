@@ -110,7 +110,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    *   The triggered event.
    */
   public function forceTwoFactorAuthentication(CasPreRedirectEvent $event): void {
-    if ($this->configFactory->get('oe_authentication.settings')->get('force_2fa')) {
+    if ($this->isTwoFactorAuthenticationEnforced()) {
       $data = $event->getCasRedirectData();
       $data->setParameter('acceptStrengths', 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS');
     }
@@ -148,10 +148,26 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       'userDetails' => 'true',
       'groups' => '*',
     ];
-    if ($config->get('force_2fa')) {
+    if ($this->isTwoFactorAuthenticationEnforced()) {
       $params['acceptStrengths'] = 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS';
     }
     $event->addParameters($params);
+  }
+
+  /**
+   * Returns if the two-factor authentication is forced for all users.
+   *
+   * @return bool
+   *   Whether the 2FA is forced for all users.
+   */
+  protected function isTwoFactorAuthenticationEnforced(): bool {
+    $configuration = $this->configFactory->get('oe_authentication.settings');
+
+    // Two-factor authentication is enforced when the related setting is
+    // activated and no plugins are configured. If any plugin is configured,
+    // the system verifies the use of a two-factor authentication method
+    // in EU Login before finalising the user login procedure.
+    return $configuration->get('force_2fa') && empty($configuration->get('2fa_conditions'));
   }
 
 }
