@@ -69,12 +69,20 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
     }
 
     $config = $this->configFactory->get('oe_authentication.settings');
-    $conditions_configuration = $config->get('2fa_conditions');
-    // If 2FA is enabled and conditions are specified, evaluate if the login
-    // requires 2FA.
-    if ($config->get('force_2fa') && !empty($conditions_configuration)) {
-      $this->evaluateConditions($event, $conditions_configuration);
+    // If forced 2FA is disabled, there is no extra validation needed.
+    if (!$config->get('force_2fa')) {
+      return;
     }
+
+    $conditions_configuration = $config->get('2fa_conditions');
+    // If no conditions are present, the 2FA should have been enforced on EU
+    // Login side, but didn't happen.
+    if (empty($conditions_configuration)) {
+      $event->cancelLogin($this->t('You are required to log in using a two-factor authentication method.'));
+      return;
+    }
+
+    $this->evaluateConditions($event, $conditions_configuration);
   }
 
   /**
