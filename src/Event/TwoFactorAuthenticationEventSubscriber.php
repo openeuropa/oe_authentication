@@ -73,14 +73,14 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
   }
 
   /**
-   * Evaluates the configured conditions.
+   * Cancels the login if any of the configured conditions matches.
    *
    * @param \Drupal\cas\Event\CasPreLoginEvent $event
    *   The pre-login event.
-   * @param mixed $conditions_configuration
+   * @param array[] $conditions_configuration
    *   The conditions' configuration.
    */
-  protected function evaluateConditions(CasPreLoginEvent $event, mixed $conditions_configuration): void {
+  protected function evaluateConditions(CasPreLoginEvent $event, array $conditions_configuration): void {
     $contexts = [
       'user' => EntityContext::fromEntity($event->getAccount()),
     ];
@@ -120,10 +120,10 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
    *   True if 2FA has been used, false otherwise.
    */
   protected function isLoginWithTwoFactorAuthentication(CasPreLoginEvent $event): bool {
-    return in_array($event->getCasPropertyBag()->getAttribute('authenticationLevel'), [
-      'MEDIUM',
-      'HIGH',
-    ]);
+    return in_array(
+      $event->getCasPropertyBag()->getAttribute('authenticationLevel'),
+      ['MEDIUM', 'HIGH'],
+    );
   }
 
 }
