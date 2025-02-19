@@ -4,3 +4,4 @@ validation_path: 'TicketValidationService'
 assurance_level: TOP
 ticket_types: SERVICE,PROXY
 force_2fa: false
+restrict_user_delete_cancel_methods: true
