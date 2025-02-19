@@ -161,7 +161,11 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    *   TRUE when 2FA is forced for all users, FALSE otherwise.
    */
   protected function isTwoFactorAuthenticationEnforced(): bool {
-    return $this->configFactory->get('oe_authentication.settings')->get('force_2fa');
+    // @todo Remove on next major. The config schema already forces this value
+    //   to be a boolean. But in previous checks, we were only expecting a
+    //   truthy value returned from the configuration. The return type of this
+    //   method would cause a crash if not a real boolean.
+    return (bool) $this->configFactory->get('oe_authentication.settings')->get('force_2fa');
   }
 
 }
