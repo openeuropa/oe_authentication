@@ -158,16 +158,10 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    * Returns if the two-factor authentication is forced for all users.
    *
    * @return bool
-   *   Whether the 2FA is forced for all users.
+   *   TRUE when 2FA is forced for all users, FALSE otherwise.
    */
   protected function isTwoFactorAuthenticationEnforced(): bool {
-    $configuration = $this->configFactory->get('oe_authentication.settings');
-
-    // Two-factor authentication is enforced when the related setting is
-    // activated and no plugins are configured. If any plugin is configured,
-    // the system verifies the use of a two-factor authentication method
-    // in EU Login before finalising the user login procedure.
-    return $configuration->get('force_2fa') && empty($configuration->get('2fa_conditions'));
+    return $this->configFactory->get('oe_authentication.settings')->get('force_2fa');
   }
 
 }

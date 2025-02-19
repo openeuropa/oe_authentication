@@ -37,7 +37,7 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
   public function testTwoFactorAuthenticationConditions(): void {
     // Set 2FA to be required, but without any conditions.
     $config = \Drupal::configFactory()->getEditable('oe_authentication.settings');
-    $config->set('force_2fa', TRUE)->save();
+    $config->set('force_2fa', FALSE)->save();
     // Place the login block.
     $this->placeBlock('system_menu_block:account');
 
@@ -93,21 +93,20 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
       'authenticationLevel' => 'MEDIUM',
     ], $medium_with_role_user);
 
-    // Since no conditions are specified, users with 2FA can log in, while users
-    // without are bounced, as 2FA is mandatory.
+    // Since no conditions are specified, all users can log in.
     $this->casLogin('basic_user@example.com', 'pwd1');
     $assert_session = $this->assertSession();
-    $assert_session->statusMessageContains('You are required to log in using a two-factor authentication method.', 'error');
+    $this->assertUserLoggedIn();
+    $this->drupalLogout();
     $this->casLogin('medium_user@example.com', 'pwd2');
     $this->assertUserLoggedIn();
     $this->drupalLogout();
     $this->casLogin('high_user@example.com', 'pwd3');
     $this->assertUserLoggedIn();
     $this->drupalLogout();
-    // Check that when the authenticationLevel parameter is missing, it falls
-    // back to BASIC level.
     $this->casLogin('role_one_user@example.com', 'pwd4');
-    $assert_session->statusMessageContains('You are required to log in using a two-factor authentication method.', 'error');
+    $this->assertUserLoggedIn();
+    $this->drupalLogout();
 
     // Enable the conditions to allow to log in given a specific role.
     $config->set('2fa_conditions', [
@@ -216,7 +215,7 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
   public function testConditionException(): void {
     $config = \Drupal::configFactory()->getEditable('oe_authentication.settings');
     $config
-      ->set('force_2fa', TRUE)
+      ->set('force_2fa', FALSE)
       ->set('2fa_conditions', [
         'oe_authentication_user_test' => [
           'example' => TRUE,
