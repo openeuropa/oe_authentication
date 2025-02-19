@@ -54,9 +54,9 @@ class SettingsFormTest extends BrowserTestBase {
       $user_role_condition_wrapper->findAll('css', 'input[name^="2fa_conditions[user_role][roles]"]'),
     ));
 
-    // 2FA setting needs to be enabled or condition configuration won't be
+    // 2FA setting needs to be disabled or condition configuration won't be
     // saved.
-    $assert_session->fieldExists('Force two factor authentication')->check();
+    $assert_session->fieldExists('Force two factor authentication')->uncheck();
 
     // Test that validation is trigger for plugin forms.
     $test_condition_wrapper->checkField('Do not click this');
@@ -119,8 +119,8 @@ class SettingsFormTest extends BrowserTestBase {
     $assert_session->checkboxChecked('Authenticated user', $user_role_condition_wrapper);
     $assert_session->checkboxNotChecked('Negate', $user_role_condition_wrapper);
 
-    // Disabling the 2FA will clean all the condition settings.
-    $assert_session->fieldExists('Force two factor authentication')->uncheck();
+    // Enabling the 2FA will clean all the condition settings.
+    $assert_session->fieldExists('Force two factor authentication')->check();
     $assert_session->buttonExists('Save configuration')->press();
     $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
     $this->refreshVariables();

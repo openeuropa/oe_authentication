@@ -79,7 +79,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     $redirect_string = 'Redirecting to https:/login?acceptStrengths=PASSWORD_MOBILE_APP%2CPASSWORD_SOFTWARE_TOKEN%2CPASSWORD_SMS&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login';
     $this->assertStringContainsString($redirect_string, $response->getContent());
 
-    // Configure a 2FA condition.
+    // Conditions do not impact the forcing of 2FA.
     $config->set('2fa_conditions', [
       'user_role' => [
         'id' => 'user_role',
@@ -89,7 +89,11 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
         ],
       ],
     ])->save();
-    // Two-factor should not be enforced during redirect.
+    $response = $this->container->get('http_kernel')->handle(clone $request);
+    $this->assertEquals(302, $response->getStatusCode());
+    $this->assertStringContainsString($redirect_string, $response->getContent());
+
+    $config->set('force_2fa', FALSE)->save();
     $response = $this->container->get('http_kernel')->handle(clone $request);
     $this->assertEquals(302, $response->getStatusCode());
     $this->assertStringNotContainsString('acceptStrengths', $response->getContent());
@@ -143,6 +147,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
       new Response(200, [], 'Success'),
       new Response(200, [], 'Success'),
       new Response(200, [], 'Success'),
+      new Response(200, [], 'Success'),
     );
     $this->container->get('http_kernel')->handle(clone $request);
 
@@ -177,7 +182,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     ];
     $this->assertSame($expected, $result);
 
-    // Configure a 2FA condition.
+    // Conditions do not impact the forcing of 2FA.
     $config->set('2fa_conditions', [
       'user_role' => [
         'id' => 'user_role',
@@ -191,7 +196,13 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     $this->container->get('http_kernel')->handle(clone $request);
     $last_request = end($this->history)['request'];
     parse_str($last_request->getUri()->getQuery(), $result);
+    $this->assertSame($expected, $result);
+
+    $config->set('force_2fa', FALSE)->save();
     unset($expected['acceptStrengths']);
+    $this->container->get('http_kernel')->handle(clone $request);
+    $last_request = end($this->history)['request'];
+    parse_str($last_request->getUri()->getQuery(), $result);
     $this->assertSame($expected, $result);
   }
 
