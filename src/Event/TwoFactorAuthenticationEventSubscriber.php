@@ -11,7 +11,6 @@ use Drupal\Core\Executable\ExecutableManagerInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Plugin\Context\EntityContext;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
-use Drupal\Core\Plugin\FilteredPluginManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Utility\Error;
 use Psr\Log\LoggerInterface;
@@ -29,7 +28,7 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
-   * @param \Drupal\Core\Executable\ExecutableManagerInterface&\Drupal\Core\Plugin\FilteredPluginManagerInterface $conditionManager
+   * @param \Drupal\Core\Executable\ExecutableManagerInterface $conditionManager
    *   The condition manager.
    * @param \Drupal\Core\Plugin\Context\ContextHandlerInterface $contextHandler
    *   The context handler.
@@ -40,7 +39,7 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
    */
   public function __construct(
     protected ConfigFactoryInterface $configFactory,
-    protected ExecutableManagerInterface&FilteredPluginManagerInterface $conditionManager,
+    protected ExecutableManagerInterface $conditionManager,
     protected ContextHandlerInterface $contextHandler,
     protected LoggerInterface $logger,
     protected CasHelper $casHelper,
