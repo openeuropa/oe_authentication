@@ -110,7 +110,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    *   The triggered event.
    */
   public function forceTwoFactorAuthentication(CasPreRedirectEvent $event): void {
-    if ($this->configFactory->get('oe_authentication.settings')->get('force_2fa')) {
+    if ($this->isTwoFactorAuthenticationEnforced()) {
       $data = $event->getCasRedirectData();
       $data->setParameter('acceptStrengths', 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS');
     }
@@ -148,10 +148,24 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       'userDetails' => 'true',
       'groups' => '*',
     ];
-    if ($config->get('force_2fa')) {
+    if ($this->isTwoFactorAuthenticationEnforced()) {
       $params['acceptStrengths'] = 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS';
     }
     $event->addParameters($params);
+  }
+
+  /**
+   * Returns if the two-factor authentication is forced for all users.
+   *
+   * @return bool
+   *   TRUE when 2FA is forced for all users, FALSE otherwise.
+   */
+  protected function isTwoFactorAuthenticationEnforced(): bool {
+    // @todo Remove on next major. The config schema already forces this value
+    //   to be a boolean. But in previous checks, we were only expecting a
+    //   truthy value returned from the configuration. The return type of this
+    //   method would cause a crash if not a real boolean.
+    return (bool) $this->configFactory->get('oe_authentication.settings')->get('force_2fa');
   }
 
 }
