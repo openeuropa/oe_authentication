@@ -23,20 +23,6 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
 
   use StringTranslationTrait;
 
-  /**
-   * Creates a new instance of this class.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config factory.
-   * @param \Drupal\Core\Executable\ExecutableManagerInterface $conditionManager
-   *   The condition manager.
-   * @param \Drupal\Core\Plugin\Context\ContextHandlerInterface $contextHandler
-   *   The context handler.
-   * @param \Psr\Log\LoggerInterface $logger
-   *   The logger for oe_authentication.
-   * @param \Drupal\cas\Service\CasHelper $casHelper
-   *   The CAS helper service.
-   */
   public function __construct(
     protected readonly ConfigFactoryInterface $configFactory,
     protected readonly ExecutableManagerInterface $conditionManager,
