@@ -38,11 +38,11 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
    *   The CAS helper service.
    */
   public function __construct(
-    protected ConfigFactoryInterface $configFactory,
-    protected ExecutableManagerInterface $conditionManager,
-    protected ContextHandlerInterface $contextHandler,
-    protected LoggerInterface $logger,
-    protected CasHelper $casHelper,
+    protected readonly ConfigFactoryInterface $configFactory,
+    protected readonly ExecutableManagerInterface $conditionManager,
+    protected readonly ContextHandlerInterface $contextHandler,
+    protected readonly LoggerInterface $logger,
+    protected readonly CasHelper $casHelper,
   ) {}
 
   /**
