@@ -61,8 +61,17 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
     // If 2FA is set to be enforced for all users, it should have been applied
     // already on EU Login side. But something happened, and it wasn't applied
     // to this login attempt.
+    // This has not been enforced in the past, and we cannot change this
+    // behaviour in a minor.
+    // @todo In the next major, consider cancelling the login altogether.
     if ($config->get('force_2fa')) {
-      $event->cancelLogin($this->t('You are required to log in using a two-factor authentication method.'));
+      $this->logger->warning(
+        $this->t('Two-factor authentication is enforced, but user @uid was logged in without 2FA (authenticationLevel: %level)',
+          [
+            '@uid' => $event->getAccount()->id(),
+            '%level' => $event->getCasPropertyBag()->getAttribute('authenticationLevel') ?? 'NULL',
+          ],
+        ));
       return;
     }
 
