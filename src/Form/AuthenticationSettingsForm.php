@@ -109,11 +109,11 @@ class AuthenticationSettingsForm extends ConfigFormBase {
     $form['condition_tabs'] = [
       '#type' => 'vertical_tabs',
       '#title' => $this->t('Two-factor authentication conditions'),
-      '#description' => $this->t('Two-factor authentication will be required to log in <strong>only if at least one condition</strong> successfully matches the account that is attempting to log in. Conditions apply only if two-factor authentication is enabled.'),
+      '#description' => $this->t('Two-factor authentication will be required to log in <strong>only if at least one condition</strong> successfully matches the account that is attempting to log in. Conditions apply only if two-factor authentication is <strong>NOT</strong> enabled.'),
       '#parents' => ['condition_tabs'],
       '#states' => [
         'visible' => [
-          ':input[name="force_2fa"]' => ['checked' => TRUE],
+          ':input[name="force_2fa"]' => ['checked' => FALSE],
         ],
       ],
     ];
@@ -188,7 +188,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       ->set('ticket_types', $form_state->getValue('ticket_types'))
       ->set('force_2fa', $force_2fa)
       // If 2FA is disabled, clear up any existing condition configuration.
-      ->set('2fa_conditions', $force_2fa ? $this->collect2FaConditionsConfiguration($form, $form_state) : [])
+      ->set('2fa_conditions', $force_2fa ? [] : $this->collect2FaConditionsConfiguration($form, $form_state))
       ->save();
 
     parent::submitForm($form, $form_state);

@@ -42,7 +42,7 @@ class SettingsFormTest extends BrowserTestBase {
     [$test_condition_wrapper, $user_role_condition_wrapper] = $details;
     // The first condition plugin is the user test one.
     $this->assertEquals('User test condition', $assert_session->elementExists('css', 'summary', $test_condition_wrapper)->getText());
-    $this->assertFalse($assert_session->fieldExists('Enabled', $test_condition_wrapper)->isChecked());
+    $this->assertFalse($assert_session->fieldExists('Example configuration option', $test_condition_wrapper)->isChecked());
     // The second one is the user role core plugin.
     $this->assertEquals('User Role', $assert_session->elementExists('css', 'summary', $user_role_condition_wrapper)->getText());
     $this->assertEquals([
@@ -54,9 +54,9 @@ class SettingsFormTest extends BrowserTestBase {
       $user_role_condition_wrapper->findAll('css', 'input[name^="2fa_conditions[user_role][roles]"]'),
     ));
 
-    // 2FA setting needs to be enabled or condition configuration won't be
+    // 2FA setting needs to be disabled or condition configuration won't be
     // saved.
-    $assert_session->fieldExists('Force two factor authentication')->check();
+    $assert_session->fieldExists('Force two factor authentication')->uncheck();
 
     // Test that validation is trigger for plugin forms.
     $test_condition_wrapper->checkField('Do not click this');
@@ -75,7 +75,7 @@ class SettingsFormTest extends BrowserTestBase {
 
     // Set some configuration for the test plugin.
     $this->drupalGet('/admin/config/system/oe_authentication');
-    $test_condition_wrapper->checkField('Enabled');
+    $test_condition_wrapper->checkField('Example configuration option');
     $test_condition_wrapper->checkField('Negate');
     $assert_session->buttonExists('Save configuration')->press();
     $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
@@ -84,7 +84,7 @@ class SettingsFormTest extends BrowserTestBase {
     $config = \Drupal::config(AuthenticationSettingsForm::CONFIG_NAME);
     $this->assertEquals([
       'oe_authentication_user_test' => [
-        'enabled' => TRUE,
+        'example' => TRUE,
         'negate' => TRUE,
         'id' => 'oe_authentication_user_test',
       ],
@@ -99,7 +99,7 @@ class SettingsFormTest extends BrowserTestBase {
     $config = \Drupal::config(AuthenticationSettingsForm::CONFIG_NAME);
     $this->assertEquals([
       'oe_authentication_user_test' => [
-        'enabled' => TRUE,
+        'example' => TRUE,
         'negate' => TRUE,
         'id' => 'oe_authentication_user_test',
       ],
@@ -114,13 +114,13 @@ class SettingsFormTest extends BrowserTestBase {
 
     // Check that the configuration is loaded back correctly.
     $this->drupalGet('/admin/config/system/oe_authentication');
-    $assert_session->checkboxChecked('Enabled', $test_condition_wrapper);
+    $assert_session->checkboxChecked('Example configuration option', $test_condition_wrapper);
     $assert_session->checkboxChecked('Negate', $test_condition_wrapper);
     $assert_session->checkboxChecked('Authenticated user', $user_role_condition_wrapper);
     $assert_session->checkboxNotChecked('Negate', $user_role_condition_wrapper);
 
-    // Disabling the 2FA will clean all the condition settings.
-    $assert_session->fieldExists('Force two factor authentication')->uncheck();
+    // Enabling the 2FA will clean all the condition settings.
+    $assert_session->fieldExists('Force two factor authentication')->check();
     $assert_session->buttonExists('Save configuration')->press();
     $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
     $this->refreshVariables();

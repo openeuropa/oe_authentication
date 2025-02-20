@@ -1,6 +1,6 @@
 condition.plugin.oe_authentication_user_test:
   type: condition.plugin
   mapping:
-    enabled:
+    example:
       type: boolean
-      label: Enabled
+      label: An example configuration option.

@@ -7,9 +7,12 @@ namespace Drupal\oe_authentication_test\Plugin\Condition;
 use Drupal\Core\Condition\Attribute\Condition;
 use Drupal\Core\Condition\ConditionPluginBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\EntityContextDefinition;
+use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a test condition that requires a user as context.
@@ -24,16 +27,33 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
     ),
   ],
 )]
-class UserTestCondition extends ConditionPluginBase {
+class UserTestCondition extends ConditionPluginBase implements ContainerFactoryPluginInterface {
 
   use StringTranslationTrait;
+
+  /**
+   * The state interface.
+   *
+   * @phpstan-ignore property.uninitializedReadonly
+   */
+  protected readonly StateInterface $state;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    $instance = new static($configuration, $plugin_id, $plugin_definition);
+    $instance->state = $container->get('state');
+
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
     return [
-      'enabled' => FALSE,
+      'example' => FALSE,
     ] + parent::defaultConfiguration();
   }
 
@@ -48,17 +68,26 @@ class UserTestCondition extends ConditionPluginBase {
    * {@inheritdoc}
    */
   public function evaluate() {
-    return (bool) $this->configuration['enabled'];
+    if ($this->state->get('oe_authentication_user_test.crash_me')) {
+      throw new \Exception('Crashing the plugin.');
+    }
+
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $this->getContextValue('user');
+
+    return $user->getAccountName() === $this->state->get('oe_authentication_user_test.account_name');
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['enabled'] = [
+    // A configuration entry, used only to test the saving of condition
+    // configuration.
+    $form['example'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Enabled'),
-      '#default_value' => $this->configuration['enabled'],
+      '#title' => $this->t('Example configuration option'),
+      '#default_value' => $this->configuration['example'],
     ];
 
     $form['invalid'] = [
@@ -84,7 +113,7 @@ class UserTestCondition extends ConditionPluginBase {
    * {@inheritdoc}
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $this->configuration['enabled'] = $form_state->getValue('enabled');
+    $this->configuration['example'] = $form_state->getValue('example');
 
     parent::submitConfigurationForm($form, $form_state);
   }
