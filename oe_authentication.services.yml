@@ -21,6 +21,7 @@ services:
       - '@context.handler'
       - '@logger.channel.oe_authentication'
       - '@cas.helper'
+      - '@string_translation'
     tags:
       - { name: event_subscriber }
   logger.channel.oe_authentication:

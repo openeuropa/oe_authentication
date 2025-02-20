@@ -12,6 +12,7 @@ use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Plugin\Context\EntityContext;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Utility\Error;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -29,7 +30,10 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
     protected readonly ContextHandlerInterface $contextHandler,
     protected readonly LoggerInterface $logger,
     protected readonly CasHelper $casHelper,
-  ) {}
+    TranslationInterface $stringTranslation,
+  ) {
+    $this->stringTranslation = $stringTranslation;
+  }
 
   /**
    * {@inheritdoc}
