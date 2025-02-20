@@ -239,13 +239,16 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
    */
   protected function casLogin(string $email, string $password, array $query = []): void {
     $this->drupalGet(Url::fromRoute('cas.login', [], ['query' => $query]));
+    // The submit text is different from the default.
     $this->submitForm(['email' => $email, 'password' => $password], 'Login!');
   }
 
   /**
-   * Overrides the default logout method.
+   * {@inheritdoc}
    */
   protected function drupalLogout(): void {
+    // Compared to the parent method, we don't run assertions on the user form
+    // being loaded in the page.
     $this->drupalGet(Url::fromRoute('user.logout.confirm'));
     $assert_session = $this->assertSession();
     $assert_session->buttonExists('Log out')->press();
