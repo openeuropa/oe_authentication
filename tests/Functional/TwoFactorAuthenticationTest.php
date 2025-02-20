@@ -248,10 +248,13 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
    */
   protected function drupalLogout(): void {
     // Compared to the parent method, we don't run assertions on the user form
-    // being loaded in the page.
-    $this->drupalGet(Url::fromRoute('user.logout.confirm'));
+    // being loaded in the page. We instead check for a login link.
+    $destination = Url::fromRoute('user.page')->toString();
+    $this->drupalGet(Url::fromRoute('user.logout.confirm', options: ['query' => ['destination' => $destination]]));
     $assert_session = $this->assertSession();
     $assert_session->buttonExists('Log out')->press();
+    $this->assertUserNotLoggedIn();
+    $this->drupalResetSession();
   }
 
 }
