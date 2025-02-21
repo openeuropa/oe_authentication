@@ -90,6 +90,15 @@ class AuthenticationSettingsForm extends ConfigFormBase {
 
     $form['2fa_conditions'] = $this->buildTwoFactorConditionsInterface([], $form_state);
 
+    $form['message_login_2fa_required'] = [
+      '#type' => 'textfield',
+      '#size' => 128,
+      '#maxlength' => 254,
+      '#title' => $this->t('Message for login rejected: two-factor authentication required'),
+      '#description' => $this->t('This message is displayed when a login attempt is rejected because two-factor authentication is required but has not been used for the login attempt.'),
+      '#default_value' => $this->config(static::CONFIG_NAME)->get('message_login_2fa_required'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -187,8 +196,9 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       ->set('assurance_level', $form_state->getValue('assurance_level'))
       ->set('ticket_types', $form_state->getValue('ticket_types'))
       ->set('force_2fa', $force_2fa)
-      // If 2FA is disabled, clear up any existing condition configuration.
+      // If 2FA is enabled, clear up any existing condition configuration.
       ->set('2fa_conditions', $force_2fa ? [] : $this->collect2FaConditionsConfiguration($form, $form_state))
+      ->set('message_login_2fa_required', $form_state->getValue('message_login_2fa_required'))
       ->save();
 
     parent::submitForm($form, $form_state);
