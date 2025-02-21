@@ -28,3 +28,6 @@ oe_authentication.settings:
       sequence:
         type: condition.plugin.[id]
         label: 'Two-factor authentication condition'
+    message_login_2fa_required:
+      type: text
+      label: 'Error message for login denied: two-factor authentication required'
