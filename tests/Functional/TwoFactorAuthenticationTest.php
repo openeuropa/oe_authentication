@@ -207,6 +207,15 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
     $this->drupalLogout();
     $this->casLogin('basic_user@example.com', 'pwd1');
     $assert_session->statusMessageContains('You are required to log in using a two-factor authentication method.', 'error');
+
+    // Test that the 2FA required message can be customised.
+    $config
+      ->set('message_login_2fa_required', 'A custom message for the user.')
+      ->save();
+
+    $this->casLogin('role_one_user@example.com', 'pwd4');
+    $assert_session->statusMessageNotContains('You are required to log in using a two-factor authentication method.');
+    $assert_session->statusMessageContains('A custom message for the user.', 'error');
   }
 
   /**
