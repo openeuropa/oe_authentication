@@ -1,0 +1,6 @@
+services:
+  logger.oe_authentication_test:
+    public: false
+    class: Drupal\oe_authentication_test\TestLoggerDecorator
+    decorates: logger.channel.oe_authentication
+    arguments: ['@logger.oe_authentication_test.inner', '@state']

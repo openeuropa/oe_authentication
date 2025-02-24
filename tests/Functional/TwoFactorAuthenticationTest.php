@@ -8,6 +8,7 @@ use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\cas\Traits\CasTestTrait;
 use Drupal\user\Entity\Role;
+use Psr\Log\LogLevel;
 
 /**
  * Tests two-factor authentication.
@@ -242,6 +243,10 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
     ], $basic_user);
     $this->casLogin('basic_user@example.com', 'pwd1');
     $this->assertSession()->statusMessageContains('There was a problem validating your login, please contact a site administrator.', 'error');
+
+    $log_messages = \Drupal::state()->get('oe_authentication_test.log_messages', []);
+    $this->assertCount(1, $log_messages[LogLevel::ERROR]);
+    $this->assertStringStartsWith('Exception: Crashing the plugin. in Drupal\oe_authentication_test\Plugin\Condition\UserTestCondition->evaluate()', $log_messages[LogLevel::ERROR][0]);
   }
 
   /**
