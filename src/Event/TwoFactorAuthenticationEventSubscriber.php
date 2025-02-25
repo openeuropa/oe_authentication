@@ -82,7 +82,14 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
     catch (\Throwable $exception) {
       // If any exception happens, we cannot trust the login attempt anymore.
       // Use the default error message from the CAS module.
-      Error::logException($this->logger, $exception);
+      Error::logException(
+        $this->logger,
+        $exception,
+        'An exception occurred when evaluating 2FA conditions for account with uid @uid. ' . Error::DEFAULT_ERROR_MESSAGE,
+        [
+          '@uid' => $event->getAccount()->id(),
+        ],
+      );
       $event->cancelLogin($this->casHelper->getMessage('error_handling.message_validation_failure'));
     }
   }

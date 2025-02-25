@@ -246,7 +246,10 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
 
     $log_messages = \Drupal::state()->get('oe_authentication_test.log_messages', []);
     $this->assertCount(1, $log_messages[LogLevel::ERROR]);
-    $this->assertStringStartsWith('Exception: Crashing the plugin. in Drupal\oe_authentication_test\Plugin\Condition\UserTestCondition->evaluate()', $log_messages[LogLevel::ERROR][0]);
+    $this->assertStringStartsWith(
+      "An exception occurred when evaluating 2FA conditions for account with uid {$basic_user->id()}. Exception: Crashing the plugin. in Drupal\\oe_authentication_test\\Plugin\\Condition\\UserTestCondition->evaluate()",
+      $log_messages[LogLevel::ERROR][0],
+    );
   }
 
   /**
