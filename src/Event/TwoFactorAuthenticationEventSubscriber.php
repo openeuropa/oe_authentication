@@ -66,13 +66,10 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
     // behaviour in a minor.
     // @todo In the next major, consider cancelling the login altogether.
     if ($config->get('force_2fa')) {
-      $this->logger->warning(
-        $this->t('Two-factor authentication is enforced, but user @uid was logged in without 2FA (authenticationLevel: %level)',
-          [
-            '@uid' => $event->getAccount()->id(),
-            '%level' => $event->getCasPropertyBag()->getAttribute('authenticationLevel') ?? 'NULL',
-          ],
-        ));
+      $this->logger->warning('Two-factor authentication is enforced, but user @uid was logged in without 2FA (authenticationLevel: %level)', [
+        '@uid' => $event->getAccount()->id(),
+        '%level' => $event->getCasPropertyBag()->getAttribute('authenticationLevel') ?? 'NULL',
+      ]);
       return;
     }
 
