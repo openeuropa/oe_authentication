@@ -42,3 +42,13 @@ function oe_authentication_post_update_00004(): void {
     ->set('user_accounts.auto_register_follow_registration_policy', TRUE)
     ->save();
 }
+
+/**
+ * Set default values for 2FA conditions and related message.
+ */
+function oe_authentication_post_update_00006(): void {
+  \Drupal::configFactory()->getEditable('oe_authentication.settings')
+    ->set('2fa_conditions', [])
+    ->set('message_login_2fa_required', 'You are required to log in using a two-factor authentication method.')
+    ->save();
+}

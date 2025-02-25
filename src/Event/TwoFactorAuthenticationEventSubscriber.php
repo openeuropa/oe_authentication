@@ -14,6 +14,7 @@ use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Utility\Error;
+use Drupal\user\UserInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -65,62 +66,73 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
     // behaviour in a minor.
     // @todo In the next major, consider cancelling the login altogether.
     if ($config->get('force_2fa')) {
-      $this->logger->warning(
-        $this->t('Two-factor authentication is enforced, but user @uid was logged in without 2FA (authenticationLevel: %level)',
-          [
-            '@uid' => $event->getAccount()->id(),
-            '%level' => $event->getCasPropertyBag()->getAttribute('authenticationLevel') ?? 'NULL',
-          ],
-        ));
+      $this->logger->warning('Two-factor authentication is enforced, but user @uid was logged in without 2FA (authenticationLevel: %level)', [
+        '@uid' => $event->getAccount()->id(),
+        '%level' => $event->getCasPropertyBag()->getAttribute('authenticationLevel') ?? 'NULL',
+      ]);
       return;
     }
 
-    $conditions_configuration = $config->get('2fa_conditions');
-    // If no conditions are present, all users can freely log in with any
-    // method.
-    if (empty($conditions_configuration)) {
-      return;
+    $conditions_configuration = $config->get('2fa_conditions') ?? [];
+    try {
+      if ($this->isTwoFactorAuthenticationRequiredForUser($event->getAccount(), $conditions_configuration)) {
+        $event->cancelLogin($config->get('message_login_2fa_required'));
+      }
     }
-
-    $this->evaluateConditions($event, $conditions_configuration);
+    catch (\Throwable $exception) {
+      // If any exception happens, we cannot trust the login attempt anymore.
+      // Use the default error message from the CAS module.
+      Error::logException(
+        $this->logger,
+        $exception,
+        'An exception occurred when evaluating 2FA conditions for account with uid @uid. ' . Error::DEFAULT_ERROR_MESSAGE,
+        [
+          '@uid' => $event->getAccount()->id(),
+        ],
+      );
+      $event->cancelLogin($this->casHelper->getMessage('error_handling.message_validation_failure'));
+    }
   }
 
   /**
-   * Cancels the login if any of the configured conditions matches.
+   * Returns if two-factor authentication is required for a user account.
    *
-   * @param \Drupal\cas\Event\CasPreLoginEvent $event
-   *   The pre-login event.
+   * @param \Drupal\user\UserInterface $user
+   *   The user account being logged in.
    * @param array[] $conditions_configuration
    *   The conditions' configuration.
+   *
+   * @return bool
+   *   TRUE if 2FA should be required for this account login, FALSE otherwise.
+   *
+   * @throws \Throwable
+   *   The method does not catch any exceptions thrown during plugin execution.
    */
-  protected function evaluateConditions(CasPreLoginEvent $event, array $conditions_configuration): void {
+  protected function isTwoFactorAuthenticationRequiredForUser(UserInterface $user, array $conditions_configuration): bool {
+    // If no conditions are present, 2FA is not required.
+    if (empty($conditions_configuration)) {
+      return FALSE;
+    }
+
     $contexts = [
-      'user' => EntityContext::fromEntity($event->getAccount()),
+      'user' => EntityContext::fromEntity($user),
     ];
 
     foreach ($conditions_configuration as $id => $configuration) {
-      try {
-        /** @var \Drupal\Core\Condition\ConditionInterface $plugin */
-        $plugin = $this->conditionManager->createInstance($id, $configuration);
-        if ($plugin instanceof ContextAwarePluginInterface) {
-          $this->contextHandler->applyContextMapping($plugin, $contexts);
-        }
-
-        // Reject the login as soon as a condition plugin matches the user
-        // account.
-        if ($this->conditionManager->execute($plugin)) {
-          $event->cancelLogin($this->t('You are required to log in using a two-factor authentication method.'));
-          break;
-        }
+      /** @var \Drupal\Core\Condition\ConditionInterface $plugin */
+      $plugin = $this->conditionManager->createInstance($id, $configuration);
+      if ($plugin instanceof ContextAwarePluginInterface) {
+        $this->contextHandler->applyContextMapping($plugin, $contexts);
       }
-      catch (\Throwable $exception) {
-        // If any exception happens, we cannot trust the login attempt anymore.
-        // Use the default error message from the CAS module.
-        Error::logException($this->logger, $exception);
-        $event->cancelLogin($this->casHelper->getMessage('error_handling.message_validation_failure'));
-        break;
+
+      // Reject the login as soon as a condition plugin matches the user
+      // account.
+      if ($this->conditionManager->execute($plugin)) {
+        return TRUE;
       }
     }
+
+    return FALSE;
   }
 
   /**

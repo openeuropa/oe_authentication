@@ -8,6 +8,7 @@ use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\cas\Traits\CasTestTrait;
 use Drupal\user\Entity\Role;
+use Psr\Log\LogLevel;
 
 /**
  * Tests two-factor authentication.
@@ -122,7 +123,8 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
     // The user account that matches the condition above is required to log in
     // with a 2FA method.
     $this->casLogin('role_one_user@example.com', 'pwd4');
-    $assert_session->statusMessageContains('You are required to log in using a two-factor authentication method.', 'error');
+    $default_2fa_required_message = 'You are required to log in using a two-factor authentication method.';
+    $assert_session->statusMessageContains($default_2fa_required_message, 'error');
     // Users that used a 2FA authentication method can always log in.
     $this->casLogin('medium_user@example.com', 'pwd2');
     $this->assertUserLoggedIn();
@@ -164,9 +166,9 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
     // Test that users that match at least one condition are required to use
     // 2FA.
     $this->casLogin('role_one_user@example.com', 'pwd4');
-    $assert_session->statusMessageContains('You are required to log in using a two-factor authentication method.', 'error');
+    $assert_session->statusMessageContains($default_2fa_required_message, 'error');
     $this->casLogin('role_two_user@example.com', 'pwd5');
-    $assert_session->statusMessageContains('You are required to log in using a two-factor authentication method.', 'error');
+    $assert_session->statusMessageContains($default_2fa_required_message, 'error');
     // Users that use a non-2FA authentication method and do not match the
     // conditions, are free to log in.
     $this->casLogin('basic_user@example.com', 'pwd1');
@@ -201,12 +203,21 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
     ])->save();
 
     $this->casLogin('role_one_user@example.com', 'pwd4');
-    $assert_session->statusMessageContains('You are required to log in using a two-factor authentication method.', 'error');
+    $assert_session->statusMessageContains($default_2fa_required_message, 'error');
     $this->casLogin('role_two_user@example.com', 'pwd5');
     $this->assertUserLoggedIn();
     $this->drupalLogout();
     $this->casLogin('basic_user@example.com', 'pwd1');
-    $assert_session->statusMessageContains('You are required to log in using a two-factor authentication method.', 'error');
+    $assert_session->statusMessageContains($default_2fa_required_message, 'error');
+
+    // Test that the 2FA required message can be customised.
+    $config
+      ->set('message_login_2fa_required', 'A custom message for the user.')
+      ->save();
+
+    $this->casLogin('role_one_user@example.com', 'pwd4');
+    $assert_session->statusMessageNotContains($default_2fa_required_message);
+    $assert_session->statusMessageContains('A custom message for the user.', 'error');
   }
 
   /**
@@ -232,6 +243,13 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
     ], $basic_user);
     $this->casLogin('basic_user@example.com', 'pwd1');
     $this->assertSession()->statusMessageContains('There was a problem validating your login, please contact a site administrator.', 'error');
+
+    $log_messages = \Drupal::state()->get('oe_authentication_test.log_messages', []);
+    $this->assertCount(1, $log_messages[LogLevel::ERROR]);
+    $this->assertStringStartsWith(
+      "An exception occurred when evaluating 2FA conditions for account with uid {$basic_user->id()}. Exception: Crashing the plugin. in Drupal\\oe_authentication_test\\Plugin\\Condition\\UserTestCondition->evaluate()",
+      $log_messages[LogLevel::ERROR][0],
+    );
   }
 
   /**
