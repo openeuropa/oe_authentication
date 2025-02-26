@@ -26,14 +26,9 @@ class AuthenticationSettingsForm extends ConfigFormBase {
   /**
    * The condition manager.
    *
-   * We need to ignore the PHPStan rule below because we are not adding the
-   * property initialisation in the constructor.
-   * This class should be only instantiated using the create() method.
-   *
    * @var \Drupal\Core\Plugin\FilteredPluginManagerInterface
-   * @phpstan-ignore property.uninitializedReadonly
    */
-  protected readonly FilteredPluginManagerInterface $conditionManager;
+  protected FilteredPluginManagerInterface $conditionManager;
 
   /**
    * {@inheritdoc}
