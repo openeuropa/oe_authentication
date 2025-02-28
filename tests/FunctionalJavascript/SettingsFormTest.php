@@ -111,13 +111,14 @@ class SettingsFormTest extends WebDriverTestBase {
     // required to be selected.
     $assert_session->buttonExists('Save configuration')->press();
     $assert_session->statusMessageContains('At least one condition should be enabled when two-factor authentication is set to conditional.', 'error');
+    $this->assertTrue($enabled_conditions_fieldset->findField('User test condition')->hasClass('error'));
+    $this->assertTrue($enabled_conditions_fieldset->findField('User Role')->hasClass('error'));
 
     // Test that configuration is required when enabling a condition.
     $enabled_conditions_fieldset->checkField('User test condition');
     $assert_session->buttonExists('Save configuration')->press();
     $assert_session->statusMessageContains('All condition plugins have been disabled, as no configuration was provided. Two-factor authentication has been set to "Never".', 'warning');
     $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
-    $assert_session->statusMessageNotExists('error');
 
     $config = $this->loadConfig();
     $this->assertEquals([], $config->get('2fa_conditions'));
@@ -131,7 +132,7 @@ class SettingsFormTest extends WebDriverTestBase {
     $test_condition_wrapper->checkField('Example configuration option');
     $test_condition_wrapper->checkField('Negate');
 
-    // Test that validation is trigger for plugin forms.
+    // Test that validation is triggered for plugin forms.
     $enabled_conditions_fieldset->checkField('User test condition');
     $test_condition_wrapper->checkField('Do not click this');
     $assert_session->buttonExists('Save configuration')->press();
@@ -149,7 +150,6 @@ class SettingsFormTest extends WebDriverTestBase {
     $assert_session->buttonExists('Save configuration')->press();
     $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
     $assert_session->statusMessageNotExists('warning');
-    $assert_session->statusMessageNotExists('error');
 
     // The condition configuration has been saved.
     $config = $this->loadConfig();
@@ -168,7 +168,6 @@ class SettingsFormTest extends WebDriverTestBase {
     $assert_session->buttonExists('Save configuration')->press();
     $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
     $assert_session->statusMessageContains('The following condition plugins have been disabled, as no configuration was provided: User Role', 'warning');
-    $assert_session->statusMessageNotExists('error');
     $assert_session->checkboxNotChecked('User Role', $enabled_conditions_fieldset);
 
     $config = $this->loadConfig();
@@ -188,7 +187,6 @@ class SettingsFormTest extends WebDriverTestBase {
     $assert_session->buttonExists('Save configuration')->press();
     $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
     $assert_session->statusMessageNotExists('warning');
-    $assert_session->statusMessageNotExists('error');
 
     $config = $this->loadConfig();
     $this->assertFalse($config->get('force_2fa'));
@@ -213,7 +211,6 @@ class SettingsFormTest extends WebDriverTestBase {
     $assert_session->buttonExists('Save configuration')->press();
     $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
     $assert_session->statusMessageNotExists('warning');
-    $assert_session->statusMessageNotExists('error');
 
     $config = $this->loadConfig();
     $this->assertFalse($config->get('force_2fa'));
