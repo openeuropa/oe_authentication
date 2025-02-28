@@ -26,14 +26,9 @@ class AuthenticationSettingsForm extends ConfigFormBase {
   /**
    * The condition manager.
    *
-   * We need to ignore the PHPStan rule below because we are not adding the
-   * property initialisation in the constructor.
-   * This class should be only instantiated using the create() method.
-   *
    * @var \Drupal\Core\Plugin\FilteredPluginManagerInterface
-   * @phpstan-ignore property.uninitializedReadonly
    */
-  protected readonly FilteredPluginManagerInterface $conditionManager;
+  protected FilteredPluginManagerInterface $conditionManager;
 
   /**
    * {@inheritdoc}
@@ -42,6 +37,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
     $instance = parent::create($container);
 
     $instance->conditionManager = $container->get('plugin.manager.condition');
+    $instance->messenger = $container->get('messenger');
 
     return $instance;
   }
@@ -57,38 +53,61 @@ class AuthenticationSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->config(static::CONFIG_NAME);
     $form['protocol'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Application authentication protocol'),
-      '#default_value' => $this->config(static::CONFIG_NAME)->get('protocol'),
+      '#default_value' => $config->get('protocol'),
     ];
     $form['register_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Application register path'),
-      '#default_value' => $this->config(static::CONFIG_NAME)->get('register_path'),
+      '#default_value' => $config->get('register_path'),
     ];
     $form['validation_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Application validation path'),
-      '#default_value' => $this->config(static::CONFIG_NAME)->get('validation_path'),
+      '#default_value' => $config->get('validation_path'),
     ];
     $form['assurance_level'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Application assurance levels'),
-      '#default_value' => $this->config(static::CONFIG_NAME)->get('assurance_level'),
+      '#default_value' => $config->get('assurance_level'),
     ];
     $form['ticket_types'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Application available ticket types'),
-      '#default_value' => $this->config(static::CONFIG_NAME)->get('ticket_types'),
-    ];
-    $form['force_2fa'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Force two factor authentication'),
-      '#default_value' => $this->config(static::CONFIG_NAME)->get('force_2fa'),
+      '#default_value' => $config->get('ticket_types'),
     ];
 
-    $form['2fa_conditions'] = $this->buildTwoFactorConditionsInterface([], $form_state);
+    $require_2fa = match ($config->get('force_2fa')) {
+      TRUE => 'always',
+      FALSE => empty($config->get('2fa_conditions')) ? 'never' : 'conditions',
+    };
+
+    $form['require_2fa'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Require two-factor authentication'),
+      '#options' => [
+        'never' => $this->t('Never'),
+        'always' => $this->t('Always'),
+        'conditions' => $this->t('Based on conditions'),
+      ],
+      '#default_value' => $require_2fa,
+    ];
+
+    $form['2fa_conditions'] = [
+      '#tree' => TRUE,
+      '#type' => 'details',
+      '#open' => TRUE,
+      '#title' => $this->t('Two-factor authentication conditions'),
+      '#states' => [
+        'visible' => [
+          ':input[name="require_2fa"]' => ['value' => 'conditions'],
+        ],
+      ],
+    ];
+    $form['2fa_conditions'] = $this->buildTwoFactorConditionsInterface($form['2fa_conditions'], $form_state);
 
     $form['message_login_2fa_required'] = [
       '#type' => 'textfield',
@@ -96,7 +115,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       '#maxlength' => 254,
       '#title' => $this->t('Message for login rejected: two-factor authentication required'),
       '#description' => $this->t('This message is displayed when a login attempt is rejected because two-factor authentication is required but has not been used for the login attempt.'),
-      '#default_value' => $this->config(static::CONFIG_NAME)->get('message_login_2fa_required'),
+      '#default_value' => $config->get('message_login_2fa_required'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -114,20 +133,29 @@ class AuthenticationSettingsForm extends ConfigFormBase {
    *   The interface sub-form array.
    */
   protected function buildTwoFactorConditionsInterface(array $form, FormStateInterface $form_state): array {
-    $form['#tree'] = TRUE;
-    $form['condition_tabs'] = [
-      '#type' => 'vertical_tabs',
-      '#title' => $this->t('Two-factor authentication conditions'),
-      '#description' => $this->t('Two-factor authentication will be required to log in <strong>only if at least one condition</strong> successfully matches the account that is attempting to log in. Conditions apply only if two-factor authentication is <strong>NOT</strong> enabled.'),
-      '#parents' => ['condition_tabs'],
-      '#states' => [
-        'visible' => [
-          ':input[name="force_2fa"]' => ['checked' => FALSE],
-        ],
+    $form['intro'] = [
+      '#type' => 'inline_template',
+      '#template' => '<p><small>{{ explanation }}</small></p><p><small>{{ warning }}</small></p>',
+      '#context' => [
+        'explanation' => $this->t('Two-factor authentication will be required to log in <strong>only if at least one condition</strong> is enabled and successfully matches the account that is attempting to log in.'),
+        'warning' => $this->t('Conditions are automatically disabled when <strong>no configuration is provided</strong>. This is necessary because conditions in their default configuration always evaluate to TRUE.'),
       ],
     ];
 
-    $defaults = $this->config(static::CONFIG_NAME)->get('2fa_conditions') ?? [];
+    $defaults = $this->config(static::CONFIG_NAME)->get('2fa_conditions');
+    $form['status'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Enabled conditions'),
+      '#options' => [],
+      '#default_value' => array_keys($defaults ?? []),
+    ];
+    $form['condition_tabs'] = [
+      '#type' => 'vertical_tabs',
+      '#title' => $this->t('Condition configuration'),
+      '#parents' => ['condition_tabs'],
+    ];
+    $form['settings'] = [];
+
     foreach ($this->getUserConditionDefinitions() as $condition_id => $definition) {
       /** @var \Drupal\Core\Condition\ConditionInterface $condition */
       $condition = $this->conditionManager->createInstance($condition_id, $defaults[$condition_id] ?? []);
@@ -136,7 +164,9 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       $condition_form['#type'] = 'details';
       $condition_form['#title'] = $condition->getPluginDefinition()['label'];
       $condition_form['#group'] = 'condition_tabs';
-      $form[$condition_id] = $condition_form;
+
+      $form['settings'][$condition_id] = $condition_form;
+      $form['status']['#options'][$condition_id] = $condition->getPluginDefinition()['label'];
     }
 
     return $form;
@@ -174,13 +204,19 @@ class AuthenticationSettingsForm extends ConfigFormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    foreach ($form_state->getValue('2fa_conditions') as $condition_id => $values) {
+    $enabled_conditions_ids = array_filter($form_state->getValue(['2fa_conditions', 'status']));
+    foreach ($enabled_conditions_ids as $condition_id) {
       // Allow the condition to validate the form.
       $condition = $form_state->get(['2fa_conditions', $condition_id]);
       $condition->validateConfigurationForm(
-        $form['2fa_conditions'][$condition_id],
-        SubformState::createForSubform($form['2fa_conditions'][$condition_id], $form, $form_state),
+        $form['2fa_conditions']['settings'][$condition_id],
+        SubformState::createForSubform($form['2fa_conditions']['settings'][$condition_id], $form, $form_state),
       );
+    }
+
+    // When the conditions mode is active, at least one condition must be set.
+    if (empty($enabled_conditions_ids) && $form_state->getValue('require_2fa') === 'conditions') {
+      $form_state->setError($form['2fa_conditions']['status'], $this->t('At least one condition should be enabled when two-factor authentication is set to conditional.'));
     }
   }
 
@@ -188,7 +224,18 @@ class AuthenticationSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $force_2fa = (bool) $form_state->getValue('force_2fa');
+    $force_2fa = FALSE;
+    $conditions_configuration = [];
+    switch ($form_state->getValue('require_2fa')) {
+      case 'always':
+        $force_2fa = TRUE;
+        break;
+
+      case 'conditions':
+        $conditions_configuration = $this->collect2FaConditionsConfiguration($form, $form_state);
+        break;
+    }
+
     $this->config(static::CONFIG_NAME)
       ->set('protocol', $form_state->getValue('protocol'))
       ->set('register_path', $form_state->getValue('register_path'))
@@ -196,8 +243,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       ->set('assurance_level', $form_state->getValue('assurance_level'))
       ->set('ticket_types', $form_state->getValue('ticket_types'))
       ->set('force_2fa', $force_2fa)
-      // If 2FA is enabled, clear up any existing condition configuration.
-      ->set('2fa_conditions', $force_2fa ? [] : $this->collect2FaConditionsConfiguration($form, $form_state))
+      ->set('2fa_conditions', $conditions_configuration)
       ->set('message_login_2fa_required', $form_state->getValue('message_login_2fa_required'))
       ->save();
 
@@ -216,20 +262,40 @@ class AuthenticationSettingsForm extends ConfigFormBase {
    *   The condition plugins configuration.
    */
   protected function collect2FaConditionsConfiguration(array $form, FormStateInterface $form_state): array {
+    $enabled_plugin_labels = [];
     $collection = new ConditionPluginCollection($this->conditionManager);
-    foreach ($form_state->getValue('2fa_conditions') as $condition_id => $values) {
+    $enabled_conditions_ids = array_filter($form_state->getValue(['2fa_conditions', 'status']));
+    foreach ($enabled_conditions_ids as $condition_id) {
       // Allow the condition to submit the form.
       $condition = $form_state->get(['2fa_conditions', $condition_id]);
       $condition->submitConfigurationForm(
-        $form['2fa_conditions'][$condition_id],
-        SubformState::createForSubform($form['2fa_conditions'][$condition_id], $form, $form_state),
+        $form['2fa_conditions']['settings'][$condition_id],
+        SubformState::createForSubform($form['2fa_conditions']['settings'][$condition_id], $form, $form_state),
       );
 
       $condition_configuration = $condition->getConfiguration();
       $collection->addInstanceId($condition_id, $condition_configuration);
+
+      // Keep the label of the plugin since we have it instantiated already.
+      $enabled_plugin_labels[$condition_id] = $condition->getPluginDefinition()['label'];
     }
 
-    return $collection->getConfiguration();
+    $configuration = $collection->getConfiguration();
+    // Warn the user for any condition that has been disabled.
+    $default_config_plugins = array_diff_key($enabled_plugin_labels, $configuration);
+    if (empty($configuration) && !empty($enabled_conditions_ids)) {
+      $this->messenger->addWarning('All condition plugins have been disabled, as no configuration was provided. Two-factor authentication has been set to "Never".');
+    }
+    elseif (!empty($default_config_plugins)) {
+      $this->messenger->addWarning($this->t(
+        'The following condition plugins have been disabled, as no configuration was provided: %plugins.',
+        [
+          '%plugins' => implode(', ', $default_config_plugins),
+        ],
+      ));
+    }
+
+    return $configuration;
   }
 
   /**
