@@ -224,14 +224,44 @@ class SettingsFormTest extends WebDriverTestBase {
       ],
     ], $config->get('2fa_conditions'));
 
+    // Test that "Always" and "Never" completely remove existing condition
+    // configuration.
     $always_radio->click();
     $assert_session->buttonExists('Save configuration')->press();
     $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
     $assert_session->statusMessageNotExists('warning');
-    $assert_session->statusMessageNotExists('error');
 
     $config = $this->loadConfig();
     $this->assertTrue($config->get('force_2fa'));
+    $this->assertEquals([], $config->get('2fa_conditions'));
+
+    // Re-enable a condition programmatically.
+    \Drupal::configFactory()
+      ->getEditable('oe_authentication.settings')
+      ->set('2fa_conditions', [
+        'user_role' => [
+          'id' => 'user_role',
+          'negate' => FALSE,
+          'roles' => [
+            'authenticated' => 'authenticated',
+          ],
+        ],
+      ])
+      ->set('force_2fa', FALSE)
+      ->save();
+
+    $this->drupalGet('/admin/config/system/oe_authentication');
+    $this->assertTrue($conditional_radio->isChecked());
+    $assert_session->checkboxChecked('User Role', $enabled_conditions_fieldset);
+    $assert_session->checkboxChecked('Authenticated user', $user_role_condition_wrapper);
+
+    $never_radio->click();
+    $assert_session->buttonExists('Save configuration')->press();
+    $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
+    $assert_session->statusMessageNotExists('warning');
+
+    $config = $this->loadConfig();
+    $this->assertFalse($config->get('force_2fa'));
     $this->assertEquals([], $config->get('2fa_conditions'));
   }
 
