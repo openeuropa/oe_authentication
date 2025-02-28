@@ -36,13 +36,13 @@ class SettingsFormTest extends WebDriverTestBase {
     $this->drupalGet('/admin/config/system/oe_authentication');
 
     $assert_session = $this->assertSession();
-    $use_2fa_fieldset = $assert_session->elementExists('named', ['fieldset', 'Use two-factor authentication']);
+    $use_2fa_fieldset = $assert_session->elementExists('named', ['fieldset', 'Require two-factor authentication']);
     $this->assertCount(3, $use_2fa_fieldset->findAll('css', 'input'));
     $never_radio = $assert_session->fieldExists('Never', $use_2fa_fieldset);
     $this->assertTrue($never_radio->isChecked());
     $always_radio = $assert_session->fieldExists('Always', $use_2fa_fieldset);
     $this->assertFalse($always_radio->isChecked());
-    $conditional_radio = $assert_session->fieldExists('Conditional', $use_2fa_fieldset);
+    $conditional_radio = $assert_session->fieldExists('Based on conditions', $use_2fa_fieldset);
     $this->assertFalse($conditional_radio->isChecked());
 
     $conditions_wrapper = $this->assertDetailsElementExists('Two-factor authentication conditions');
@@ -115,7 +115,7 @@ class SettingsFormTest extends WebDriverTestBase {
     // Test that configuration is required when enabling a condition.
     $enabled_conditions_fieldset->checkField('User test condition');
     $assert_session->buttonExists('Save configuration')->press();
-    $assert_session->statusMessageContains('All condition plugins have been disabled, as no configuration was provided. Two-factor authentication has been set to "never".', 'warning');
+    $assert_session->statusMessageContains('All condition plugins have been disabled, as no configuration was provided. Two-factor authentication has been set to "Never".', 'warning');
     $assert_session->statusMessageContains('The configuration options have been saved.', 'status');
     $assert_session->statusMessageNotExists('error');
 

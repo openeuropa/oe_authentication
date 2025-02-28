@@ -80,20 +80,20 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('ticket_types'),
     ];
 
-    $use_2fa = match ($config->get('force_2fa')) {
+    $require_2fa = match ($config->get('force_2fa')) {
       TRUE => 'always',
       FALSE => empty($config->get('2fa_conditions')) ? 'never' : 'conditions',
     };
 
-    $form['use_2fa'] = [
+    $form['require_2fa'] = [
       '#type' => 'radios',
-      '#title' => $this->t('Use two-factor authentication'),
+      '#title' => $this->t('Require two-factor authentication'),
       '#options' => [
         'never' => $this->t('Never'),
         'always' => $this->t('Always'),
-        'conditions' => $this->t('Conditional'),
+        'conditions' => $this->t('Based on conditions'),
       ],
-      '#default_value' => $use_2fa,
+      '#default_value' => $require_2fa,
     ];
 
     $form['2fa_conditions'] = [
@@ -103,7 +103,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Two-factor authentication conditions'),
       '#states' => [
         'visible' => [
-          ':input[name="use_2fa"]' => ['value' => 'conditions'],
+          ':input[name="require_2fa"]' => ['value' => 'conditions'],
         ],
       ],
     ];
@@ -204,8 +204,8 @@ class AuthenticationSettingsForm extends ConfigFormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $enabled_conditions = array_filter($form_state->getValue(['2fa_conditions', 'status']));
-    foreach ($enabled_conditions as $condition_id) {
+    $enabled_conditions_ids = array_filter($form_state->getValue(['2fa_conditions', 'status']));
+    foreach ($enabled_conditions_ids as $condition_id) {
       // Allow the condition to validate the form.
       $condition = $form_state->get(['2fa_conditions', $condition_id]);
       $condition->validateConfigurationForm(
@@ -215,7 +215,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
     }
 
     // When the conditions mode is active, at least one condition must be set.
-    if (empty($enabled_conditions) && $form_state->getValue('use_2fa') === 'conditions') {
+    if (empty($enabled_conditions_ids) && $form_state->getValue('require_2fa') === 'conditions') {
       $form_state->setError($form['2fa_conditions']['status'], $this->t('At least one condition should be enabled when two-factor authentication is set to conditional.'));
     }
   }
@@ -226,7 +226,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $force_2fa = FALSE;
     $conditions_configuration = [];
-    switch ($form_state->getValue('use_2fa')) {
+    switch ($form_state->getValue('require_2fa')) {
       case 'always':
         $force_2fa = TRUE;
         break;
@@ -262,10 +262,10 @@ class AuthenticationSettingsForm extends ConfigFormBase {
    *   The condition plugins configuration.
    */
   protected function collect2FaConditionsConfiguration(array $form, FormStateInterface $form_state): array {
-    $plugin_labels = [];
+    $enabled_plugin_labels = [];
     $collection = new ConditionPluginCollection($this->conditionManager);
-    $enabled_conditions = array_filter($form_state->getValue(['2fa_conditions', 'status']));
-    foreach ($enabled_conditions as $condition_id) {
+    $enabled_conditions_ids = array_filter($form_state->getValue(['2fa_conditions', 'status']));
+    foreach ($enabled_conditions_ids as $condition_id) {
       // Allow the condition to submit the form.
       $condition = $form_state->get(['2fa_conditions', $condition_id]);
       $condition->submitConfigurationForm(
@@ -277,15 +277,16 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       $collection->addInstanceId($condition_id, $condition_configuration);
 
       // Keep the label of the plugin since we have it instantiated already.
-      $plugin_labels[$condition_id] = $condition->getPluginDefinition()['label'];
+      $enabled_plugin_labels[$condition_id] = $condition->getPluginDefinition()['label'];
     }
 
     $configuration = $collection->getConfiguration();
-    $default_config_plugins = array_diff_key($plugin_labels, $configuration);
-    if (empty($configuration) && $default_config_plugins) {
-      $this->messenger->addWarning('All condition plugins have been disabled, as no configuration was provided. Two-factor authentication has been set to "never".');
+    // Warn the user for any condition that has been disabled.
+    $default_config_plugins = array_diff_key($enabled_plugin_labels, $configuration);
+    if (empty($configuration) && !empty($enabled_conditions_ids)) {
+      $this->messenger->addWarning('All condition plugins have been disabled, as no configuration was provided. Two-factor authentication has been set to "Never".');
     }
-    elseif ($default_config_plugins) {
+    elseif (!empty($default_config_plugins)) {
       $this->messenger->addWarning($this->t(
         'The following condition plugins have been disabled, as no configuration was provided: %plugins.',
         [
