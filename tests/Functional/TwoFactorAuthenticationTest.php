@@ -123,8 +123,7 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
     // The user account that matches the condition above is required to log in
     // with a 2FA method.
     $this->casLogin('role_one_user@example.com', 'pwd4');
-    $default_2fa_required_message = 'You are required to log in using a two-factor authentication method.';
-    $assert_session->statusMessageContains($default_2fa_required_message, 'error');
+    $this->assertTwoFactorAuthenticationRequiredMessage();
     // Users that used a 2FA authentication method can always log in.
     $this->casLogin('medium_user@example.com', 'pwd2');
     $this->assertUserLoggedIn();
@@ -166,9 +165,9 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
     // Test that users that match at least one condition are required to use
     // 2FA.
     $this->casLogin('role_one_user@example.com', 'pwd4');
-    $assert_session->statusMessageContains($default_2fa_required_message, 'error');
+    $this->assertTwoFactorAuthenticationRequiredMessage();
     $this->casLogin('role_two_user@example.com', 'pwd5');
-    $assert_session->statusMessageContains($default_2fa_required_message, 'error');
+    $this->assertTwoFactorAuthenticationRequiredMessage();
     // Users that use a non-2FA authentication method and do not match the
     // conditions, are free to log in.
     $this->casLogin('basic_user@example.com', 'pwd1');
@@ -203,12 +202,12 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
     ])->save();
 
     $this->casLogin('role_one_user@example.com', 'pwd4');
-    $assert_session->statusMessageContains($default_2fa_required_message, 'error');
+    $this->assertTwoFactorAuthenticationRequiredMessage();
     $this->casLogin('role_two_user@example.com', 'pwd5');
     $this->assertUserLoggedIn();
     $this->drupalLogout();
     $this->casLogin('basic_user@example.com', 'pwd1');
-    $assert_session->statusMessageContains($default_2fa_required_message, 'error');
+    $this->assertTwoFactorAuthenticationRequiredMessage();
 
     // Test that the 2FA required message can be customised.
     $config
@@ -216,7 +215,7 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
       ->save();
 
     $this->casLogin('role_one_user@example.com', 'pwd4');
-    $assert_session->statusMessageNotContains($default_2fa_required_message);
+    $assert_session->statusMessageNotContains('Your account is required to log in using a two-factor authentication method. Please log in again via this link.');
     $assert_session->statusMessageContains('A custom message for the user.', 'error');
   }
 
@@ -273,6 +272,30 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
     $assert_session->buttonExists('Log out')->press();
     $this->assertUserNotLoggedIn();
     $this->drupalResetSession();
+  }
+
+  /**
+   * Asserts the 2FA required message.
+   */
+  protected function assertTwoFactorAuthenticationRequiredMessage(): void {
+    $assert_session = $this->assertSession();
+    $selector = $assert_session->buildXPathQuery('//div[@data-drupal-messages]//div[(contains(@aria-label, :aria_label) or contains(@aria-labelledby, :type)) and contains(., :message)]', [
+      // Value of the 'aria-label' attribute, used in Stark.
+      ':aria_label' => 'Error message',
+      // Value of the 'aria-labelledby' attribute, used in Claro and Olivero.
+      ':type' => 'error',
+      ':message' => 'Your account is required to log in using a two-factor authentication method. Please log in again via this link.',
+    ]);
+    $message = $assert_session->elementExists('xpath', $selector);
+    $links = $message->findAll('named_exact', ['link', 'log in again via this link']);
+    $this->assertCount(1, $links);
+
+    $expected_login_url = Url::fromUri('internal:/eulogin', [
+      'query' => [
+        'force_2fa' => 1,
+      ],
+    ])->toString();
+    $this->assertEquals($expected_login_url, $links[0]->getAttribute('href'));
   }
 
 }

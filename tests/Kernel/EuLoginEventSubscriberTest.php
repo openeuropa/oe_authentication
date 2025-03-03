@@ -76,8 +76,8 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     $config->set('force_2fa', TRUE)->save();
     $response = $this->container->get('http_kernel')->handle(clone $request);
     $this->assertEquals(302, $response->getStatusCode());
-    $redirect_string = 'Redirecting to https:/login?acceptStrengths=PASSWORD_MOBILE_APP%2CPASSWORD_SOFTWARE_TOKEN%2CPASSWORD_SMS&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login';
-    $this->assertStringContainsString($redirect_string, $response->getContent());
+    $redirect_meta = '<meta http-equiv="refresh" content="0;url=\'https:/login?acceptStrengths=PASSWORD_MOBILE_APP%2CPASSWORD_SOFTWARE_TOKEN%2CPASSWORD_SMS&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login\'" />';
+    $this->assertStringContainsString($redirect_meta, $response->getContent());
 
     // Conditions do not impact the forcing of 2FA.
     $config->set('2fa_conditions', [
@@ -91,12 +91,39 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     ])->save();
     $response = $this->container->get('http_kernel')->handle(clone $request);
     $this->assertEquals(302, $response->getStatusCode());
-    $this->assertStringContainsString($redirect_string, $response->getContent());
+    $this->assertStringContainsString($redirect_meta, $response->getContent());
 
     $config->set('force_2fa', FALSE)->save();
     $response = $this->container->get('http_kernel')->handle(clone $request);
     $this->assertEquals(302, $response->getStatusCode());
     $this->assertStringNotContainsString('acceptStrengths', $response->getContent());
+
+    // The 2FA parameter is added if the page request has a "force_2fa" query
+    // parameter.
+    $request = Request::create(Url::fromRoute('user.login', options: [
+      'query' => [
+        'force_2fa' => TRUE,
+      ],
+    ])->toString(TRUE)->getGeneratedUrl());
+    $response = $this->container->get('http_kernel')->handle(clone $request);
+    $this->assertEquals(302, $response->getStatusCode());
+    $this->assertStringContainsString(
+      '<meta http-equiv="refresh" content="0;url=\'https:/login?acceptStrengths=PASSWORD_MOBILE_APP%2CPASSWORD_SOFTWARE_TOKEN%2CPASSWORD_SMS&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login%253Fforce_2fa%253D1%26force_2fa%3D1\'" />',
+      $response->getContent(),
+    );
+
+    // The parameter works also when used directly in the cas login route.
+    $request = Request::create(Url::fromRoute('cas.login', options: [
+      'query' => [
+        'force_2fa' => TRUE,
+      ],
+    ])->toString(TRUE)->getGeneratedUrl());
+    $response = $this->container->get('http_kernel')->handle(clone $request);
+    $this->assertEquals(302, $response->getStatusCode());
+    $this->assertStringContainsString(
+      '<meta http-equiv="refresh" content="0;url=\'https:/login?acceptStrengths=PASSWORD_MOBILE_APP%2CPASSWORD_SOFTWARE_TOKEN%2CPASSWORD_SMS&amp;service=http%3A//localhost/casservice%3Fforce_2fa%3D1\'" />',
+      $response->getContent(),
+    );
   }
 
   /**
@@ -132,7 +159,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     $session->start();
 
     // Returns the query string parameter from the last executed request.
-    $get_query_from_request = function () use ($session, $query): array {
+    $get_query_from_request = function () use ($session, &$query): array {
       $request = Request::create(Url::fromUri('base:/casservice', ['query' => $query])->toString());
       $request->setSession($session);
       $this->container->get('http_kernel')->handle($request);
@@ -144,10 +171,9 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     };
 
     // Now we mock the http-client, in order to mock a "valid" response for
-    // CasValidator class. The http_client should expect four requests, first
-    // request is without 2fa and the others will be made with forced 2fa.
-    // All request should return status 200.
+    // CasValidator class. The http_client should expect six requests.
     $this->mockHttpClient(
+      new Response(200, [], 'Success'),
       new Response(200, [], 'Success'),
       new Response(200, [], 'Success'),
       new Response(200, [], 'Success'),
@@ -189,6 +215,16 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
 
     $config->set('force_2fa', FALSE)->save();
     $this->assertSame($expected_query_without_2fa, $get_query_from_request());
+
+    // Test that when the "force_2fa" query parameter is present in the service
+    // URL, 2FA will be added to the validation.
+    // First, we reset the conditions value. The presence of conditions does
+    // not impact the force_2fa query parameter.
+    $config->set('2fa_conditions', [])->save();
+
+    $query['force_2fa'] = 1;
+    $expected_query_with_2fa['service'] = 'http://localhost/casservice?force_2fa=1';
+    $this->assertSame($expected_query_with_2fa, $get_query_from_request());
   }
 
   /**
