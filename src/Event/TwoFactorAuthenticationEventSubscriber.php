@@ -6,6 +6,8 @@ namespace Drupal\oe_authentication\Event;
 
 use Drupal\cas\Event\CasPreLoginEvent;
 use Drupal\cas\Service\CasHelper;
+use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Executable\ExecutableManagerInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
@@ -13,6 +15,7 @@ use Drupal\Core\Plugin\Context\EntityContext;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
+use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
 use Drupal\user\UserInterface;
 use Psr\Log\LoggerInterface;
@@ -76,7 +79,14 @@ class TwoFactorAuthenticationEventSubscriber implements EventSubscriberInterface
     $conditions_configuration = $config->get('2fa_conditions') ?? [];
     try {
       if ($this->isTwoFactorAuthenticationRequiredForUser($event->getAccount(), $conditions_configuration)) {
-        $event->cancelLogin($config->get('message_login_2fa_required'));
+        $event->cancelLogin(new FormattableMarkup(Xss::filter($config->get('message_login_2fa_required')), [
+          ':login' => Url::fromRoute('cas.login', options: [
+            'query' => [
+              // @see \Drupal\oe_authentication\Event\EuLoginEventSubscriber::forceTwoFactorAuthentication()
+              'force_2fa' => 1,
+            ],
+          ])->toString(),
+        ]));
       }
     }
     catch (\Throwable $exception) {
