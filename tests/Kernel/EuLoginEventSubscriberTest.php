@@ -102,7 +102,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     // parameter.
     $request = Request::create(Url::fromRoute('user.login', options: [
       'query' => [
-        'force_2fa' => TRUE,
+        'force_2fa' => 1,
       ],
     ])->toString(TRUE)->getGeneratedUrl());
     $response = $this->container->get('http_kernel')->handle(clone $request);
@@ -115,7 +115,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     // The parameter works also when used directly in the cas login route.
     $request = Request::create(Url::fromRoute('cas.login', options: [
       'query' => [
-        'force_2fa' => TRUE,
+        'force_2fa' => 1,
       ],
     ])->toString(TRUE)->getGeneratedUrl());
     $response = $this->container->get('http_kernel')->handle(clone $request);
