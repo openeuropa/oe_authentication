@@ -279,11 +279,9 @@ class TwoFactorAuthenticationTest extends BrowserTestBase {
    */
   protected function assertTwoFactorAuthenticationRequiredMessage(): void {
     $assert_session = $this->assertSession();
-    $selector = $assert_session->buildXPathQuery('//div[@data-drupal-messages]//div[(contains(@aria-label, :aria_label) or contains(@aria-labelledby, :type)) and contains(., :message)]', [
+    $selector = $assert_session->buildXPathQuery('//div[@data-drupal-messages]//div[contains(@aria-label, :aria_label) and contains(., :message)]', [
       // Value of the 'aria-label' attribute, used in Stark.
       ':aria_label' => 'Error message',
-      // Value of the 'aria-labelledby' attribute, used in Claro and Olivero.
-      ':type' => 'error',
       ':message' => 'Your account is required to log in using a two-factor authentication method. Please log in again via this link.',
     ]);
     $message = $assert_session->elementExists('xpath', $selector);
