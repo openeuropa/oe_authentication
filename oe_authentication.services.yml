@@ -7,7 +7,7 @@ services:
     class: Drupal\oe_authentication\Event\EuLoginEventSubscriber
     tags:
       - { name: event_subscriber }
-    arguments: ['@config.factory']
+    arguments: ['@config.factory', '@request_stack']
   oe_authentication.messenger.event_subscriber:
     class: Drupal\oe_authentication\Event\MessengerEuLoginEventSubscriber
     tags:

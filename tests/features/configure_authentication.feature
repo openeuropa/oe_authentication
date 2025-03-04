@@ -17,7 +17,7 @@ Feature: Authentication
     And the "Application assurance levels" field should contain "TOP"
     And the "Application available ticket types" field should contain "SERVICE,PROXY"
     # Note: 2FA fields are tested in \Drupal\Tests\oe_authentication\Functional\SettingsFormTest.
-    And the "Message for login rejected: two-factor authentication required" field should contain "You are required to log in using a two-factor authentication method."
+    And the "Message for login rejected: two-factor authentication required" field should contain "Your account is required to log in using a two-factor authentication method. Please <a href=\":login\">log in again via this link</a>."
 
     # Change the configuration values.
     When I fill in "Application authentication protocol" with "something"
