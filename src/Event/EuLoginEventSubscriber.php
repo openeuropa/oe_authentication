@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\oe_authentication\Event;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cas\Event\CasPostValidateEvent;
@@ -12,8 +13,8 @@ use Drupal\cas\Event\CasPreRegisterEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\oe_authentication\CasProcessor;
 use Drupal\user\UserInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Event subscriber for CAS module events.
@@ -33,22 +34,20 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
-   * Constructors the EuLoginEventSubscriber.
+   * The request stack.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config factory.
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
-  public function __construct(ConfigFactoryInterface $configFactory) {
-    $this->configFactory = $configFactory;
-  }
+  protected RequestStack $requestStack;
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('config.factory'),
-    );
+  public function __construct(ConfigFactoryInterface $configFactory, ?RequestStack $requestStack = NULL) {
+    $this->configFactory = $configFactory;
+    if ($requestStack === NULL) {
+      // phpcs:ignore Drupal.Semantics.FunctionTriggerError.TriggerErrorTextLayoutRelaxed
+      @trigger_error('Calling ' . __METHOD__ . '() without the $requestStack argument is deprecated in oe_authentication:1.x and will be required in oe_authentication:2.x.', E_USER_DEPRECATED);
+      $requestStack = \Drupal::requestStack();
+    }
+    $this->requestStack = $requestStack;
   }
 
   /**
@@ -110,9 +109,17 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    *   The triggered event.
    */
   public function forceTwoFactorAuthentication(CasPreRedirectEvent $event): void {
-    if ($this->configFactory->get('oe_authentication.settings')->get('force_2fa')) {
+    $config_forced_2fa = $this->configFactory->get('oe_authentication.settings')->get('force_2fa');
+    $request_forced_2fa = $this->requestStack->getCurrentRequest()->query->has('force_2fa');
+
+    if ($config_forced_2fa || $request_forced_2fa) {
       $data = $event->getCasRedirectData();
       $data->setParameter('acceptStrengths', 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS');
+
+      // Add a parameter to the service URL to add 2FA during ticket validation.
+      if ($request_forced_2fa) {
+        $data->setServiceParameter('force_2fa', 1);
+      }
     }
   }
 
@@ -148,7 +155,12 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       'userDetails' => 'true',
       'groups' => '*',
     ];
-    if ($config->get('force_2fa')) {
+
+    $service_url = UrlHelper::parse($event->getParameters()['service']);
+    // Add 2FA validation is 2FA is always required via config, or if it has
+    // been required for this request.
+    // @see ::forceTwoFactorAuthentication()
+    if ($config->get('force_2fa') || isset($service_url['query']['force_2fa'])) {
       $params['acceptStrengths'] = 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS';
     }
     $event->addParameters($params);
