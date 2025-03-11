@@ -1,10 +1,18 @@
 # Change Log
 
-## [1.18.0](https://github.com/openeuropa/oe_authentication/tree/1.18.0) (2025-02-11)
+## [1.18.1](https://github.com/openeuropa/oe_authentication/tree/1.18.1) (2025-03-11)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.18.0...1.18.1)
+
+**Merged pull requests:**
+
+- EWPP-4910: Prevent crash on release update hooks. [\#209](https://github.com/openeuropa/oe_authentication/pull/209) ([upchuk](https://github.com/upchuk))
+
+## [1.18.0](https://github.com/openeuropa/oe_authentication/tree/1.18.0) (2025-02-12)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.17.0...1.18.0)
 
 **Merged pull requests:**
 
+- Release-1.18.0: Update changelog. [\#207](https://github.com/openeuropa/oe_authentication/pull/207) ([nagyad](https://github.com/nagyad))
 - Epic EWPP-4910: Corporate global user groups. [\#195](https://github.com/openeuropa/oe_authentication/pull/195) ([upchuk](https://github.com/upchuk))
 
 ## [1.17.0](https://github.com/openeuropa/oe_authentication/tree/1.17.0) (2025-01-20)
