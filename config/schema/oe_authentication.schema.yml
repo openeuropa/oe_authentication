@@ -20,3 +20,6 @@ oe_authentication.settings:
     force_2fa:
       type: boolean
       label: 'Force two factor authentication'
+    authentication_roles:
+      type: sequence
+      label: 'Roles that are forced to login with 2FA.'
