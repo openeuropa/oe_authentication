@@ -116,3 +116,12 @@ function oe_authentication_update_8002(): void {
   // Install the new sub-module.
   \Drupal::service('module_installer')->install(['oe_authentication_user_fields']);
 }
+
+/**
+ * Set default value for 2FA authentication by role.
+ */
+function oe_authentication_update_8003(): void {
+  \Drupal::configFactory()->getEditable('oe_authentication.settings')
+    ->set('authentication_roles', [])
+    ->save();
+}

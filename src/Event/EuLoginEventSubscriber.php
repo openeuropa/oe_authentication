@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Drupal\oe_authentication\Event;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cas\Event\CasPostValidateEvent;
 use Drupal\cas\Event\CasPreRedirectEvent;
 use Drupal\cas\Event\CasPreRegisterEvent;
+use Drupal\cas\Event\CasPreUserLoadRedirectEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\oe_authentication\CasProcessor;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -33,13 +36,26 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
+   * Entity type manager dependency.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  /**
    * Constructors the EuLoginEventSubscriber.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
-  public function __construct(ConfigFactoryInterface $configFactory) {
+  public function __construct(
+    ConfigFactoryInterface $configFactory,
+    EntityTypeManagerInterface $entityTypeManager,
+  ) {
     $this->configFactory = $configFactory;
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -48,6 +64,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -66,6 +83,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     $events[CasPreRedirectEvent::class] = 'forceTwoFactorAuthentication';
     $events[CasPostValidateEvent::class] = 'processCasAttributes';
     $events[CasPreValidateEvent::class] = 'alterValidationPath';
+    $events[CasPreUserLoadRedirectEvent::class] = 'forceTwoFactorByRole';
 
     return $events;
   }
@@ -110,8 +128,9 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    *   The triggered event.
    */
   public function forceTwoFactorAuthentication(CasPreRedirectEvent $event): void {
-    if ($this->configFactory->get('oe_authentication.settings')->get('force_2fa')) {
-      $data = $event->getCasRedirectData();
+    $data = $event->getCasRedirectData();
+    if ($this->configFactory->get('oe_authentication.settings')->get('force_2fa')
+      || $data->getServiceParameter('force_2fa')) {
       $data->setParameter('acceptStrengths', 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS');
     }
   }
@@ -152,6 +171,44 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       $params['acceptStrengths'] = 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS';
     }
     $event->addParameters($params);
+  }
+
+  /**
+   * Ensures that 2FA is forced for certain roles, if configured.
+   *
+   * @param \Drupal\cas\Event\CasPreUserLoadRedirectEvent $event
+   *   Using the Cas Service controller dispatch handling.
+   */
+  public function forceTwoFactorByRole(CasPreUserLoadRedirectEvent $event) {
+    $authLevel = $event->getPropertyBag()->getAttribute('authenticationLevel');
+    $config = $this->configFactory->get('oe_authentication.settings');
+    if ($authLevel == 'BASIC'
+      && $rolesMfa = $config->get('authentication_roles')) {
+
+      $email = $event->getPropertyBag()->getAttribute('email');
+
+      $userEntityStorage = $this->entityTypeManager->getStorage('user');
+      /** @var \Drupal\user\Entity\User[] $userByEmail */
+      $userByEmail = $userEntityStorage->loadByProperties(['mail' => $email]);
+      if (!empty($userByEmail)) {
+        $user = end($userByEmail);
+        $roles = $user->getRoles();
+        if (!empty(array_intersect($rolesMfa, $roles))) {
+          // If the user logged in with a BASIC authentication method,
+          // redirect the user to log in with an MFA.
+          $event->stopPropagation();
+          $url = Url::fromRoute('cas.login',
+            options:
+            [
+              'query' => [
+                'force_2fa' => TRUE,
+              ],
+            ])->toString();
+          $redirect = new RedirectResponse($url);
+          $redirect->send();
+        }
+      }
+    }
   }
 
 }
