@@ -116,6 +116,27 @@ class AuthenticationContext extends RawDrupalContext {
   }
 
   /**
+   * Navigates to other user's page.
+   *
+   * @var string $username
+   *   The name of the user whose page is to be visited.
+   *
+   * @Given I visit the :user_name user page
+   *
+   * @throws \Exception
+   *   Thrown when the user with the given name does not exist.
+   */
+  public function visitUserPage(string $user_name): void {
+    $user = user_load_by_name($user_name);
+    if ($user === FALSE) {
+      throw new \Exception(sprintf('User with name %s could not be found.', $user_name));
+    }
+    /** @var \Drupal\Core\Url $url */
+    $url = $user->toUrl();
+    $this->visitPath($url->getInternalPath());
+  }
+
+  /**
    * Configures the the Drupal site so that users are active on creation.
    *
    * @Given the site is configured to make users active on creation
@@ -141,6 +162,30 @@ class AuthenticationContext extends RawDrupalContext {
   public function allowExternalUsers(): void {
     // Set the assurance level to allow also external users to login.
     $this->configContext->setConfig('oe_authentication.settings', 'assurance_level', 'LOW');
+  }
+
+  /**
+   * Configures oe_authentication module to allow to use user delete options.
+   *
+   * @Given the site is configured to not restrict user delete options
+   */
+  public function setConfigEnableDeleteUsersOptions(): void {
+    $this->configContext->setConfig('oe_authentication.settings', 'restrict_user_delete_cancel_methods', FALSE);
+  }
+
+  /**
+   * Logs in as superuser user using default credentials.
+   *
+   * @Given I am logged in as the superuser user
+   */
+  public function loginSuperuser(): void {
+    $user = (object) [
+      'uid' => 1,
+      'name' => 'admin',
+      'pass' => 'admin',
+    ];
+    // Login.
+    $this->login($user);
   }
 
 }
