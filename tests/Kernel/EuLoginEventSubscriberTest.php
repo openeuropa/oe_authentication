@@ -69,14 +69,15 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     $request = Request::create(Url::fromRoute('user.login')->toString(TRUE)->getGeneratedUrl());
     $response = $this->container->get('http_kernel')->handle(clone $request);
     $this->assertEquals(302, $response->getStatusCode());
-    $this->assertStringNotContainsString('acceptStrengths', $response->getContent());
+    $redirect_string = 'authenticationLevel';
+    $this->assertStringNotContainsString($redirect_string, $response->getContent());
 
     // Set the config to force 2fa and redo the request to assert the params.
     $config = $config_factory->getEditable('oe_authentication.settings');
     $config->set('force_2fa', TRUE)->save();
     $response = $this->container->get('http_kernel')->handle(clone $request);
     $this->assertEquals(302, $response->getStatusCode());
-    $redirect_meta = '<meta http-equiv="refresh" content="0;url=\'https:/login?acceptStrengths=PASSWORD_MOBILE_APP%2CPASSWORD_SOFTWARE_TOKEN%2CPASSWORD_SMS&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login\'" />';
+    $redirect_meta = '<meta http-equiv="refresh" content="0;url=\'https:/login?authenticationLevel=MEDIUM&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login\'" />';
     $this->assertStringContainsString($redirect_meta, $response->getContent());
 
     // Conditions do not impact the forcing of 2FA.
@@ -108,7 +109,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     $response = $this->container->get('http_kernel')->handle(clone $request);
     $this->assertEquals(302, $response->getStatusCode());
     $this->assertStringContainsString(
-      '<meta http-equiv="refresh" content="0;url=\'https:/login?acceptStrengths=PASSWORD_MOBILE_APP%2CPASSWORD_SOFTWARE_TOKEN%2CPASSWORD_SMS&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login%253Fforce_2fa%253D1%26force_2fa%3D1\'" />',
+      '<meta http-equiv="refresh" content="0;url=\'https:/login?authenticationLevel=MEDIUM&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login%253Fforce_2fa%253D1%26force_2fa%3D1\'" />',
       $response->getContent(),
     );
 
@@ -121,7 +122,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     $response = $this->container->get('http_kernel')->handle(clone $request);
     $this->assertEquals(302, $response->getStatusCode());
     $this->assertStringContainsString(
-      '<meta http-equiv="refresh" content="0;url=\'https:/login?acceptStrengths=PASSWORD_MOBILE_APP%2CPASSWORD_SOFTWARE_TOKEN%2CPASSWORD_SMS&amp;service=http%3A//localhost/casservice%3Fforce_2fa%3D1\'" />',
+      '<meta http-equiv="refresh" content="0;url=\'https:/login?authenticationLevel=MEDIUM&amp;service=http%3A//localhost/casservice%3Fforce_2fa%3D1\'" />',
       $response->getContent(),
     );
   }
@@ -197,7 +198,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
 
     // Assert the validation parameters.
     $expected_query_with_2fa = $expected_query_without_2fa + [
-      'acceptStrengths' => 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS',
+      'authenticationLevel' => 'MEDIUM',
     ];
     $this->assertSame($expected_query_with_2fa, $get_query_from_request());
 
