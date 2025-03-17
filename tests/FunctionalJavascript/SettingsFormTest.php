@@ -24,6 +24,7 @@ class SettingsFormTest extends WebDriverTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'condition_test',
     'oe_authentication_test',
   ];
 
@@ -263,6 +264,16 @@ class SettingsFormTest extends WebDriverTestBase {
     $config = $this->loadConfig();
     $this->assertFalse($config->get('force_2fa'));
     $this->assertEquals([], $config->get('2fa_conditions'));
+
+    // Since we rely on a test module from core, and we also test that the
+    // following plugins don't show in the UI, we won't detect if the plugins
+    // have been removed. Add a safety check to look for their existence.
+    // This doesn't prevent core from changing completely their context
+    // definitions, but that's more unlikely.
+    /** @var \Drupal\Component\Plugin\Discovery\DiscoveryInterface $condition_manager */
+    $condition_manager = \Drupal::service('plugin.manager.condition');
+    $this->assertTrue($condition_manager->hasDefinition('condition_test_optional_context'));
+    $this->assertTrue($condition_manager->hasDefinition('condition_test_dual_user'));
   }
 
   /**

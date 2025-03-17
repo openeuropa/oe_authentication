@@ -184,17 +184,28 @@ class AuthenticationSettingsForm extends ConfigFormBase {
     $definitions = $this->conditionManager->getFilteredDefinitions('oe_authentication_2fa', [$context]);
     // The ::getFilteredDefinitions() call above filters out plugins that match
     // the context definition, as well as plugins without any context definition
-    // required. We need to filter those out manually.
-    return array_filter($definitions, function ($definition) {
+    // required, and plugins with optional context definitions.
+    // We need to filter those out manually, and return only conditions that
+    // require one single user context.
+    return array_filter($definitions, function ($definition): bool {
       // @see \Drupal\Core\Plugin\Context\ContextHandler::getContextDefinitions()
       if ($definition instanceof ContextAwarePluginDefinitionInterface) {
-        return !empty($definition->getContextDefinitions());
+        $context_definitions = $definition->getContextDefinitions();
       }
-      if (is_array($definition) && isset($definition['context_definitions'])) {
-        return !empty($definition['context_definitions']);
+      elseif (is_array($definition) && isset($definition['context_definitions'])) {
+        $context_definitions = $definition['context_definitions'];
+      }
+      else {
+        return FALSE;
       }
 
-      return FALSE;
+      if (empty($context_definitions) || count($context_definitions) > 1) {
+        return FALSE;
+      }
+
+      // At this point the single context definition available is a user entity
+      // one. If it's required, the plugin is allowed.
+      return current($context_definitions)->isRequired();
     });
   }
 
