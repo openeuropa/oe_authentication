@@ -114,7 +114,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
 
     if ($config_forced_2fa || $request_forced_2fa) {
       $data = $event->getCasRedirectData();
-      $data->setParameter('acceptStrengths', 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS');
+      $data->setParameter('authenticationLevel', 'MEDIUM');
 
       // Add a parameter to the service URL to add 2FA during ticket validation.
       if ($request_forced_2fa) {
@@ -161,7 +161,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     // been required for this request.
     // @see ::forceTwoFactorAuthentication()
     if ($config->get('force_2fa') || isset($service_url['query']['force_2fa'])) {
-      $params['acceptStrengths'] = 'PASSWORD_MOBILE_APP,PASSWORD_SOFTWARE_TOKEN,PASSWORD_SMS';
+      $params['authenticationLevel'] = 'MEDIUM';
     }
     $event->addParameters($params);
   }
