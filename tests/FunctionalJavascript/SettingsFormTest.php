@@ -24,6 +24,7 @@ class SettingsFormTest extends WebDriverTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'condition_test',
     'oe_authentication_test',
   ];
 
@@ -263,6 +264,16 @@ class SettingsFormTest extends WebDriverTestBase {
     $config = $this->loadConfig();
     $this->assertFalse($config->get('force_2fa'));
     $this->assertEquals([], $config->get('2fa_conditions'));
+
+    // The following conditions are provided by the 'condition_test' module, but
+    // are not shown in the form, because they don't match the criteria.
+    // The assertions allow us to detect if the plugins get removed in a future
+    // version of Drupal core. They will not tell is if their context definition
+    // changes, but that is less likely.
+    /** @var \Drupal\Component\Plugin\Discovery\DiscoveryInterface $condition_manager */
+    $condition_manager = \Drupal::service('plugin.manager.condition');
+    $this->assertTrue($condition_manager->hasDefinition('condition_test_optional_context'));
+    $this->assertTrue($condition_manager->hasDefinition('condition_test_dual_user'));
   }
 
   /**
