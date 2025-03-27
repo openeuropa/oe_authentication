@@ -58,6 +58,12 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Force two factor authentication'),
       '#default_value' => $this->config(static::CONFIG_NAME)->get('force_2fa'),
     ];
+    $form['restrict_user_delete_cancel_methods'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Restrict access to user cancel methods that permanently delete the account'),
+      '#description' => $this->t('If enabled, only the super admin user (uid 1) will have access to these methods.'),
+      '#default_value' => $this->config(static::CONFIG_NAME)->get('restrict_user_delete_cancel_methods'),
+    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -72,6 +78,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       ->set('assurance_level', $form_state->getValue('assurance_level'))
       ->set('ticket_types', $form_state->getValue('ticket_types'))
       ->set('force_2fa', (bool) $form_state->getValue('force_2fa'))
+      ->set('restrict_user_delete_cancel_methods', (bool) $form_state->getValue('restrict_user_delete_cancel_methods'))
       ->save();
     parent::submitForm($form, $form_state);
   }

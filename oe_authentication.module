@@ -10,10 +10,17 @@ declare(strict_types=1);
 /**
  * Implements hook_user_cancel_methods_alter().
  *
- * Remove the option to delete users while keeping the option to block them.
+ * Conditionally removes the option to delete users.
  */
 function oe_authentication_user_cancel_methods_alter(&$methods) {
-  if (\Drupal::currentUser()->id() == 1) {
+  $current_user = \Drupal::currentUser();
+  $restrict_user_delete = \Drupal::configFactory()
+    ->get('oe_authentication.settings')
+    ->get('restrict_user_delete_cancel_methods') ?? TRUE;
+  // @todo The restriction should not check for UID 1 as it's bad practice. It
+  //   should either check for the user being an admin, or use a permission
+  //   based approach like the module drupal/user_cancel_methods_permissions.
+  if ($current_user->id() == 1 || $restrict_user_delete !== TRUE) {
     return;
   }
   $restricted_options = [
@@ -21,6 +28,8 @@ function oe_authentication_user_cancel_methods_alter(&$methods) {
     'user_cancel_delete',
   ];
   foreach ($restricted_options as $restricted_option) {
+    // @todo the 'access' property of the cancel methods should be used, rather
+    //   than removing the method altogether.
     unset($methods[$restricted_option]);
   }
 }
