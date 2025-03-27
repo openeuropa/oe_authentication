@@ -1,0 +1,7 @@
+name: OpenEuropa Authentication test module
+description: Support module for oe_authentication tests.
+type: module
+package: Testing
+core_version_requirement: '*'
+dependencies:
+  - oe_authentication:oe_authentication
