@@ -118,6 +118,13 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('message_login_2fa_required'),
     ];
 
+    $form['restrict_user_delete_cancel_methods'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Restrict access to user cancel methods that permanently delete the account'),
+      '#description' => $this->t('If enabled, only the super admin user (uid 1) will have access to these methods.'),
+      '#default_value' => $this->config(static::CONFIG_NAME)->get('restrict_user_delete_cancel_methods'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -256,6 +263,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
       ->set('force_2fa', $force_2fa)
       ->set('2fa_conditions', $conditions_configuration)
       ->set('message_login_2fa_required', $form_state->getValue('message_login_2fa_required'))
+      ->set('restrict_user_delete_cancel_methods', (bool) $form_state->getValue('restrict_user_delete_cancel_methods'))
       ->save();
 
     parent::submitForm($form, $form_state);

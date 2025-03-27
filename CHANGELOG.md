@@ -1,10 +1,18 @@
 # Change Log
 
+## [1.19.0](https://github.com/openeuropa/oe_authentication/tree/1.19.0) (2025-03-26)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.18.1...1.19.0)
+
+**Merged pull requests:**
+
+- OPES-1544: Replace authentication method outdated property. [\#199](https://github.com/openeuropa/oe_authentication/pull/199) ([AaronGilMartinez](https://github.com/AaronGilMartinez))
+
 ## [1.18.1](https://github.com/openeuropa/oe_authentication/tree/1.18.1) (2025-03-11)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.18.0...1.18.1)
 
 **Merged pull requests:**
 
+- Release-1.18.1: Update changelog. [\#218](https://github.com/openeuropa/oe_authentication/pull/218) ([nagyad](https://github.com/nagyad))
 - EWPP-4910: Prevent crash on release update hooks. [\#209](https://github.com/openeuropa/oe_authentication/pull/209) ([upchuk](https://github.com/upchuk))
 
 ## [1.18.0](https://github.com/openeuropa/oe_authentication/tree/1.18.0) (2025-02-12)

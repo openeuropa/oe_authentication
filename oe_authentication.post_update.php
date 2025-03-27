@@ -44,9 +44,18 @@ function oe_authentication_post_update_00004(): void {
 }
 
 /**
- * Set default values for 2FA conditions and related message.
+ * Set the restrict_user_delete_cancel_methods to TRUE as default.
  */
 function oe_authentication_post_update_00005(): void {
+  \Drupal::configFactory()->getEditable('oe_authentication.settings')
+    ->set('restrict_user_delete_cancel_methods', TRUE)
+    ->save();
+}
+
+/**
+ * Set default values for 2FA conditions and related message.
+ */
+function oe_authentication_post_update_00006(): void {
   \Drupal::configFactory()->getEditable('oe_authentication.settings')
     ->set('2fa_conditions', [])
     ->set('message_login_2fa_required', 'Your account is required to log in using a two-factor authentication method. Please <a href=":login">log in again via this link</a>.')
