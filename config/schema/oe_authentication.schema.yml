@@ -22,6 +22,9 @@ oe_authentication.settings:
     force_2fa:
       type: boolean
       label: 'Force two factor authentication'
+    restrict_user_delete_cancel_methods:
+      type: boolean
+      label: 'Restrict access to user cancel methods that permanently delete the account'
     2fa_conditions:
       type: sequence
       label: 'Two-factor authentication conditions'
