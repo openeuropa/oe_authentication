@@ -80,6 +80,37 @@ authenticate via CAS when they hit all or some of the pages on your site.
 
 See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
+### Proxy
+
+You can configure the module to "Initialize this client as a proxy" which allows
+authentication requests to 3rd party services (e.g. ePOETRY).
+
+```php
+$config['cas.settings']['proxy']['initialize'] = TRUE;
+```
+
+See the [Cas module](https://www.drupal.org/project/cas) for more information.
+
+### Two-factor authentication
+The module allows to configure if two-factor authentication (in short, 2FA) is required for users to login.
+It supports three modes:
+* _Never_: 2FA is never required for any registered user account.
+* _Always_: 2FA is always required for any registered user account. A 2FA authentication method will be enforced directly on EU Login.
+* _Based on conditions_: 2FA will be required only for user accounts that match one of the configured conditions. See below.
+
+**Two-factor authentication conditions**
+
+The conditions are validated after the user logged in via EU Login, and only if
+the login attempt was executed without using a 2FA authentication method.\
+If at least one of the configured condition matches the user account, the login
+attempt will be rejected.\
+A message will be shown to the user to re-login using a suitable method, together
+with a link that will allow to choose only suitable 2FA authentication methods on EU Login.
+
+The system will allow to configure any condition plugin (`\Drupal\Core\Condition\ConditionInterface`) that requires a user account as context.\
+The default condition available via Drupal core is the User Role condition (`\Drupal\user\Plugin\Condition\UserRole`).
+This condition can be configured with the roles that are required to use 2FA when logging in.
+
 ### SSL Verification Setting
 
 The EU Login Authentication server must be accessed over HTTPS and the drupal site will verify the SSL/TLS certificate
@@ -90,17 +121,6 @@ For development, you can configure the module to disable this verification:
 $config['cas.settings']['server']['verify'] = '2';
 ```
 _NOTE: DO NOT USE IN PRODUCTION!_
-
-See the [Cas module](https://www.drupal.org/project/cas) for more information.
-
-### Proxy
-
-You can configure the module to "Initialize this client as a proxy" which allows
-authentication requests to 3rd party services (e.g. ePOETRY).
-
-```php
-$config['cas.settings']['proxy']['initialize'] = TRUE;
-```
 
 See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
