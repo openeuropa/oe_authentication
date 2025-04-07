@@ -92,24 +92,24 @@ $config['cas.settings']['proxy']['initialize'] = TRUE;
 See the [Cas module](https://www.drupal.org/project/cas) for more information.
 
 ### Two-factor authentication
-The module allows to configure if two-factor authentication (in short, 2FA) is required for users to login.
+The module allows to configure if two-factor authentication (in short, 2FA) is required for users to log in.
 It supports three modes:
 * _Never_: 2FA is never required for any registered user account.
 * _Always_: 2FA is always required for any registered user account. A 2FA authentication method will be enforced directly on EU Login.
-* _Based on conditions_: 2FA will be required only for user accounts that match one of the configured conditions. See below.
+* _Based on conditions_: 2FA is required only for registered user accounts that match one of the configured conditions. See below.
 
 **Two-factor authentication conditions**
 
 The conditions are validated after the user logged in via EU Login, and only if
-the login attempt was executed without using a 2FA authentication method.\
-If at least one of the configured condition matches the user account, the login
-attempt will be rejected.\
-A message will be shown to the user to re-login using a suitable method, together
-with a link that will allow to choose only suitable 2FA authentication methods on EU Login.
+the login was executed without using a 2FA authentication method.\
+If at least one of the configured conditions evaluate successfully for the user account, the login
+to the website will be rejected.\
+A message will be shown to the user to log in again using a suitable method, together
+with a link that will allow to choose only 2FA authentication methods on EU Login.
 
 The system will allow to configure any condition plugin (`\Drupal\Core\Condition\ConditionInterface`) that requires a user account as context.\
 The default condition available via Drupal core is the User Role condition (`\Drupal\user\Plugin\Condition\UserRole`).
-This condition can be configured with the roles that are required to use 2FA when logging in.
+This condition can be configured with the roles that are required to use 2FA authentication methods in order to log in into the website.
 
 ### SSL Verification Setting
 
