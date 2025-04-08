@@ -65,19 +65,66 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
   public function test2faRedirectParameter(): void {
     $config_factory = $this->container->get('config.factory');
     $config_factory->getEditable('cas.settings')->set('forced_login.enabled', TRUE)->save();
+
     $request = Request::create(Url::fromRoute('user.login')->toString(TRUE)->getGeneratedUrl());
-    $response = $this->container->get('http_kernel')->handle($request);
+    $response = $this->container->get('http_kernel')->handle(clone $request);
     $this->assertEquals(302, $response->getStatusCode());
     $redirect_string = 'authenticationLevel';
     $this->assertStringNotContainsString($redirect_string, $response->getContent());
 
     // Set the config to force 2fa and redo the request to assert the params.
-    $config_factory->getEditable('oe_authentication.settings')->set('force_2fa', TRUE)->save();
-    $request = Request::create(Url::fromRoute('user.login')->toString(TRUE)->getGeneratedUrl());
-    $response = $this->container->get('http_kernel')->handle($request);
+    $config = $config_factory->getEditable('oe_authentication.settings');
+    $config->set('force_2fa', TRUE)->save();
+    $response = $this->container->get('http_kernel')->handle(clone $request);
     $this->assertEquals(302, $response->getStatusCode());
-    $redirect_string = 'Redirecting to https:/login?authenticationLevel=MEDIUM&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login';
-    $this->assertStringContainsString($redirect_string, $response->getContent());
+    $redirect_meta = '<meta http-equiv="refresh" content="0;url=\'https:/login?authenticationLevel=MEDIUM&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login\'" />';
+    $this->assertStringContainsString($redirect_meta, $response->getContent());
+
+    // Conditions do not impact the forcing of 2FA.
+    $config->set('2fa_conditions', [
+      'user_role' => [
+        'id' => 'user_role',
+        'negate' => FALSE,
+        'roles' => [
+          'authenticated' => 'authenticated',
+        ],
+      ],
+    ])->save();
+    $response = $this->container->get('http_kernel')->handle(clone $request);
+    $this->assertEquals(302, $response->getStatusCode());
+    $this->assertStringContainsString($redirect_meta, $response->getContent());
+
+    $config->set('force_2fa', FALSE)->save();
+    $response = $this->container->get('http_kernel')->handle(clone $request);
+    $this->assertEquals(302, $response->getStatusCode());
+    $this->assertStringNotContainsString('acceptStrengths', $response->getContent());
+
+    // The 2FA parameter is added if the page request has a "force_2fa" query
+    // parameter.
+    $request = Request::create(Url::fromRoute('user.login', options: [
+      'query' => [
+        'force_2fa' => 1,
+      ],
+    ])->toString(TRUE)->getGeneratedUrl());
+    $response = $this->container->get('http_kernel')->handle(clone $request);
+    $this->assertEquals(302, $response->getStatusCode());
+    $this->assertStringContainsString(
+      '<meta http-equiv="refresh" content="0;url=\'https:/login?authenticationLevel=MEDIUM&amp;service=http%3A//localhost/casservice%3Fdestination%3D/user/login%253Fforce_2fa%253D1%26force_2fa%3D1\'" />',
+      $response->getContent(),
+    );
+
+    // The parameter works also when used directly in the cas login route.
+    $request = Request::create(Url::fromRoute('cas.login', options: [
+      'query' => [
+        'force_2fa' => 1,
+      ],
+    ])->toString(TRUE)->getGeneratedUrl());
+    $response = $this->container->get('http_kernel')->handle(clone $request);
+    $this->assertEquals(302, $response->getStatusCode());
+    $this->assertStringContainsString(
+      '<meta http-equiv="refresh" content="0;url=\'https:/login?authenticationLevel=MEDIUM&amp;service=http%3A//localhost/casservice%3Fforce_2fa%3D1\'" />',
+      $response->getContent(),
+    );
   }
 
   /**
@@ -112,31 +159,30 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
     $session = $this->container->get('session');
     $session->start();
 
-    // Add the ticket to the options that will be passed to the URL request
-    // and add the session to the request we just made.
-    $options['query'] = $query;
-    $uri = '/casservice';
-    /** @var \Symfony\Component\HttpFoundation\Request $request */
-    $request = Request::create(Url::fromUri('base:' . $uri, $options)->toString());
-    $request->setSession($session);
+    // Returns the query string parameter from the last executed request.
+    $get_query_from_request = function () use ($session, &$query): array {
+      $request = Request::create(Url::fromUri('base:/casservice', ['query' => $query])->toString());
+      $request->setSession($session);
+      $this->container->get('http_kernel')->handle($request);
+      /** @var \Psr\Http\Message\RequestInterface $last_request */
+      $last_request = end($this->history)['request'];
+      parse_str($last_request->getUri()->getQuery(), $result);
+
+      return $result;
+    };
 
     // Now we mock the http-client, in order to mock a "valid" response for
-    // CasValidator class. The http_client should expect two requests, first
-    // request is without 2fa and the second request will be made with forced
-    // 2fa. Both request should return status 200.
+    // CasValidator class. The http_client should expect six requests.
     $this->mockHttpClient(
       new Response(200, [], 'Success'),
       new Response(200, [], 'Success'),
+      new Response(200, [], 'Success'),
+      new Response(200, [], 'Success'),
+      new Response(200, [], 'Success'),
     );
-    $this->container->get('http_kernel')->handle($request);
-
-    // Now we can take the query string from the request/response history and
-    // assert all the parameters.
-    $last_request = end($this->history)['request'];
-    parse_str($last_request->getUri()->getQuery(), $result);
 
     // Assert the validation parameters.
-    $expected = [
+    $expected_query_without_2fa = [
       'service' => 'http://localhost/casservice',
       'ticket' => 'ST-123456789',
       'assuranceLevel' => 'TOP',
@@ -144,29 +190,42 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
       'userDetails' => 'true',
       'groups' => '*',
     ];
-    $this->assertSame($expected, $result);
+    $this->assertSame($expected_query_without_2fa, $get_query_from_request());
 
     // Now force the two-factor authentication and create a new request to run.
-    $this->container->get('config.factory')->getEditable('oe_authentication.settings')->set('force_2fa', TRUE)->save();
-    $request = Request::create(Url::fromUri('base:' . $uri, $options)->toString());
-    $request->setSession($session);
-    $this->container->get('http_kernel')->handle($request);
-
-    // Assert again the parameters now with the 2fa parameter being there.
-    $last_request = end($this->history)['request'];
-    parse_str($last_request->getUri()->getQuery(), $result);
+    $config = $this->container->get('config.factory')->getEditable('oe_authentication.settings');
+    $config->set('force_2fa', TRUE)->save();
 
     // Assert the validation parameters.
-    $expected = [
-      'service' => 'http://localhost/casservice',
-      'ticket' => 'ST-123456789',
-      'assuranceLevel' => 'TOP',
-      'ticketTypes' => 'SERVICE,PROXY',
-      'userDetails' => 'true',
-      'groups' => '*',
+    $expected_query_with_2fa = $expected_query_without_2fa + [
       'authenticationLevel' => 'MEDIUM',
     ];
-    $this->assertSame($expected, $result);
+    $this->assertSame($expected_query_with_2fa, $get_query_from_request());
+
+    // Conditions do not impact the forcing of 2FA.
+    $config->set('2fa_conditions', [
+      'user_role' => [
+        'id' => 'user_role',
+        'negate' => FALSE,
+        'roles' => [
+          'authenticated' => 'authenticated',
+        ],
+      ],
+    ])->save();
+    $this->assertSame($expected_query_with_2fa, $get_query_from_request());
+
+    $config->set('force_2fa', FALSE)->save();
+    $this->assertSame($expected_query_without_2fa, $get_query_from_request());
+
+    // Test that when the "force_2fa" query parameter is present in the service
+    // URL, 2FA will be added to the validation.
+    // First, we reset the conditions value. The presence of conditions does
+    // not impact the force_2fa query parameter.
+    $config->set('2fa_conditions', [])->save();
+
+    $query['force_2fa'] = 1;
+    $expected_query_with_2fa['service'] = 'http://localhost/casservice?force_2fa=1';
+    $this->assertSame($expected_query_with_2fa, $get_query_from_request());
   }
 
   /**

@@ -1,6 +1,8 @@
 oe_authentication.settings:
   type: config_object
   label: 'OpenEuropa Authentication settings'
+  constraints:
+    FullyValidatable: ~
   mapping:
     protocol:
       type: string
@@ -23,3 +25,12 @@ oe_authentication.settings:
     restrict_user_delete_cancel_methods:
       type: boolean
       label: 'Restrict access to user cancel methods that permanently delete the account'
+    2fa_conditions:
+      type: sequence
+      label: 'Two-factor authentication conditions'
+      sequence:
+        type: condition.plugin.[id]
+        label: 'Two-factor authentication condition'
+    message_login_2fa_required:
+      type: text
+      label: 'Error message for login denied: two-factor authentication required'
