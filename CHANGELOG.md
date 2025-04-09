@@ -1,10 +1,19 @@
 # Change Log
 
+## [1.20.0](https://github.com/openeuropa/oe_authentication/tree/1.20.0) (2025-04-09)
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.19.0...1.20.0)
+
+**Merged pull requests:**
+
+- Allow to selectively require two-factor authentication for an account [\#216](https://github.com/openeuropa/oe_authentication/pull/216) ([brummbar](https://github.com/brummbar))
+- OPES-1549: Allow to delete users [\#206](https://github.com/openeuropa/oe_authentication/pull/206) ([AaronGilMartinez](https://github.com/AaronGilMartinez))
+
 ## [1.19.0](https://github.com/openeuropa/oe_authentication/tree/1.19.0) (2025-03-26)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.18.1...1.19.0)
 
 **Merged pull requests:**
 
+- Release-1.19.0: Update changelog. [\#224](https://github.com/openeuropa/oe_authentication/pull/224) ([nagyad](https://github.com/nagyad))
 - OPES-1544: Replace authentication method outdated property. [\#199](https://github.com/openeuropa/oe_authentication/pull/199) ([AaronGilMartinez](https://github.com/AaronGilMartinez))
 
 ## [1.18.1](https://github.com/openeuropa/oe_authentication/tree/1.18.1) (2025-03-11)
