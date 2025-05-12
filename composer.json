@@ -11,6 +11,7 @@
         "drupal/core": "^10.3 || ^11.0"
     },
     "require-dev": {
+        "behat/behat": "~3.16.0",
         "composer/installers": "^1.11",
         "drupal/cas_mock_server": "^2.0.1",
         "drupal/core-composer-scaffold": "^10.3 || ^11.0",
@@ -65,6 +66,7 @@
             "build/themes/contrib/{$name}": ["type:drupal-theme"]
         },
         "_readme": [
+            "Locking behat/behat on 3.16.* until we can have behat/behat 3.20.",
             "Explicit minimum version requirement of symfony/phpunit-bridge to replace drupal/core-dev testing classes and traits.",
             "Explicit requirement of mikey179/vfsstream to remove when drupal/core-dev is reinstated.",
             "Explicit requirement of nikic/php-parser ^4 as later versions are not compatible with grumphp @see https://github.com/phpro/grumphp/issues/1119"
