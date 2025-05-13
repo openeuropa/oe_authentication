@@ -16,3 +16,14 @@ When installing the module, you will need to create an update path that goes thr
 Depending on the size of your site, you may want to batch this operation.
 
 It is important to have these roles referenced so that when roles are unassigned automatically, the ones that have been assigned manually are not removed.
+
+## How it works
+
+With this module, you can create "Corporate role mappings" (/admin/people/corporate-roles-mapping) that allow you to preconfigure which roles users get when they log in to the website using EU Login. You can match the user by:
+
+* LDAP group -> a simple string comparison to determine if the user is in a given LDAP group
+* Department -> for example DIGIT.B.3 will include all users in DIGIT.B.3 (DIGIT.B.3.01, DIGIT.B.3.02, etc). You can go granular (for ex DIGIT.B.3.02) or very wide (for example DIGIT which will include everyone in DIGIT)
+
+You can create any number of mappings and when the users log in/register, the roles across any of the mappings they match with, get assigned to them. Every time they log back in, this check is done again to ensure they didn't change their LDAP group/department.
+
+Morever, when you create/update/delete the corporate role mappings, all the users on the site get updated with the corresponding roles they should match with.
