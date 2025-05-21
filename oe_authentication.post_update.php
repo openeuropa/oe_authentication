@@ -61,3 +61,12 @@ function oe_authentication_post_update_00006(): void {
     ->set('message_login_2fa_required', 'Your account is required to log in using a two-factor authentication method. Please <a href=":login">log in again via this link</a>.')
     ->save();
 }
+
+/**
+ * Add missing langcode.
+ */
+function oe_authentication_post_update_00007(): void {
+  \Drupal::configFactory()->getEditable('oe_authentication.settings')
+    ->set('langcode', 'en')
+    ->save();
+}
