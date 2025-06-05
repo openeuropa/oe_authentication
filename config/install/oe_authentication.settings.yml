@@ -1,3 +1,4 @@
+langcode: en
 protocol: 'eulogin'
 register_path: 'eim/external/register.cgi'
 validation_path: 'TicketValidationService'
