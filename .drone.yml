@@ -14,7 +14,7 @@ workspace:
 
 services:
   web:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:${PHP_VERSION}-ci
     environment:
       - DOCUMENT_ROOT=/test/oe_authentication
       - COMPOSERVER=--2
@@ -35,7 +35,7 @@ services:
 pipeline:
   composer-install:
     group: prepare
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:${PHP_VERSION}-ci
     volumes:
       - /cache/${DRONE_REPO_NAME}:/cache
     commands:
@@ -43,31 +43,31 @@ pipeline:
       - composer require drupal/core:~${CORE_VERSION} drupal/core-composer-scaffold:~${CORE_VERSION} --update-with-all-dependencies --ansi --no-progress --no-interaction
 
   site-install:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:${PHP_VERSION}-ci
     commands:
       - while ! mysqladmin ping -h mysql --silent; do sleep 1; done
       - ./vendor/bin/run drupal:site-install
 
   grumphp:
     group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/grumphp run
 
   phpunit:
     group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/phpunit
 
   behat:
     group: test
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/behat --strict
 
   debug:
-    image: registry.fpfis.eu/fpfis/httpd-php:${PHP_VERSION}-ci
+    image: registry.fpfis.eu/digit/devsecops/httpd-php:${PHP_VERSION}-ci
     commands:
       - ./vendor/bin/drush ws --count 500
     when:
