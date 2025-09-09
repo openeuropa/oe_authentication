@@ -55,27 +55,22 @@ class UserSanitizeCommandTest extends BrowserTestBase {
     // We need to write in session table to trigger the table creation.
     \Drupal::service('session_handler.storage')->write('some-id', 'serialized-session-data');
 
-    $version = $this->drushMajorVersion();
-    $expected = 'The following operations will be performed:' . PHP_EOL;
-    $expected .= '* Truncate sessions table.' . PHP_EOL;
-    $expected .= '* Sanitize text fields associated with users.' . PHP_EOL;
-    $expected .= '* Sanitize user passwords.' . PHP_EOL;
-    $expected .= '* Sanitize user emails.' . PHP_EOL;
-    $expected .= '* Preserve user emails and passwords for the specified roles.' . PHP_EOL;
-    $expected .= '* Sanitise user fields.';
-
-    if ($version > 12) {
-      $expected = 'The following operations will be performed:' . PHP_EOL;
-      $expected .= '* Sanitize user passwords.' . PHP_EOL;
-      $expected .= '* Sanitize user emails.' . PHP_EOL;
-      $expected .= '* Preserve user emails and passwords for the specified roles.' . PHP_EOL;
-      $expected .= '* Sanitize text fields associated with users.' . PHP_EOL;
-      $expected .= '* Truncate sessions table.' . PHP_EOL;
-      $expected .= '* Sanitise user fields.';
-    }
+    $expected = [
+      'The following operations will be performed:' . PHP_EOL,
+      '* Truncate sessions table.' . PHP_EOL,
+      '* Sanitize text fields associated with users.' . PHP_EOL,
+      '* Sanitize user passwords.' . PHP_EOL,
+      '* Sanitize user emails.' . PHP_EOL,
+      '* Preserve user emails and passwords for the specified roles.' . PHP_EOL,
+      '* Sanitise user fields.',
+    ];
 
     $this->drush('sql:sanitize');
-    $this->assertOutputEquals($expected);
+    $output = $this->getOutput();
+
+    foreach ($expected as $expected_command) {
+      $this->assertStringContainsString($expected_command, $output);
+    }
 
     $user = \Drupal::entityTypeManager()->getStorage('user')->load($user->id());
     $this->assertEquals('First Name ' . $user->id(), $user->get('field_oe_firstname')->value);
