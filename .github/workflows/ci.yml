@@ -1,0 +1,48 @@
+name: ci
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - master
+
+jobs:
+  automated-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php_version: ["8.3"]
+        core_version: ["10.4.0", "10.5.0", "11.1.0"]
+    env:
+      PHP_VERSION: ${{ matrix.php_version }}
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Modify web container version
+        run: |
+          # Set the php version, and replace -dev with -ci.
+          sed -i 's/httpd-php:8\.3-\(dev\|ci\)/httpd-php:${{ matrix.php_version}}-ci/g' docker-compose.yml
+          # Report the difference.
+          git diff
+
+      - name: Start services with Docker Compose
+        run: docker compose up -d
+
+      - name: Update composer
+        run: docker compose exec -T web composer self-update --2
+
+      - name: Build dependencies
+        run: docker compose exec -T web composer require drupal/core:~${{ matrix.core_version }} drupal/core-composer-scaffold:~${{ matrix.core_version }} --update-with-all-dependencies --ansi --no-progress --no-interaction
+
+      - name: Run grumphp
+        run: docker compose exec -T web ./vendor/bin/grumphp run
+
+      - name: Site install
+        run: docker compose exec -T web ./vendor/bin/run drupal:site-install
+
+      - name: Run phpunit
+        run: docker compose exec -T web ./vendor/bin/phpunit
+
+      - name: Run behat
+        run: docker compose exec -T web ./vendor/bin/behat --strict
