@@ -12,7 +12,7 @@
     },
     "require-dev": {
         "behat/behat": "~3.16.0",
-        "composer/installers": "^1.11",
+        "composer/installers": "^2.3",
         "drupal/cas_mock_server": "^2.0.1",
         "drupal/core-composer-scaffold": "^10.3 || ^11.0",
         "drupal/drupal-extension": "^5.0",
