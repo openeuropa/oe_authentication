@@ -24,7 +24,7 @@ class LogoutForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
-    $url = $this->getRequest()->get('service') ?? $this->requestStack->getCurrentRequest()->get('url');
+    $url = $this->getRequest()->query->get('service') ?? $this->requestStack->getCurrentRequest()->query->get('url');
     $form['url'] = [
       '#type' => 'value',
       '#value' => $url,
