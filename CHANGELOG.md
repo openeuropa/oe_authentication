@@ -1,11 +1,37 @@
-# Change Log
+# Changelog
+
+## [1.21.0](https://github.com/openeuropa/oe_authentication/tree/1.21.0) (2026-01-09)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.20.0...1.21.0)
+
+**Merged pull requests:**
+
+- EWPP-6093: ECAS settings for testing. [\#243](https://github.com/openeuropa/oe_authentication/pull/243) ([gorsky87](https://github.com/gorsky87))
+- EWPP-6339: Cache docker images for GitHub actions. [\#242](https://github.com/openeuropa/oe_authentication/pull/242) ([nagyad](https://github.com/nagyad))
+- EWPP-6261: Bump composer/installers to 2.x. [\#240](https://github.com/openeuropa/oe_authentication/pull/240) ([nagyad](https://github.com/nagyad))
+- EWPP-6257: Fix cas\_mock\_server after release. [\#239](https://github.com/openeuropa/oe_authentication/pull/239) ([nagyad](https://github.com/nagyad))
+- EWPP-6060: Add Drupal 11.2 support. [\#238](https://github.com/openeuropa/oe_authentication/pull/238) ([gorsky87](https://github.com/gorsky87))
+- EWPP-6002: Move CI to github actions. [\#237](https://github.com/openeuropa/oe_authentication/pull/237) ([hernani](https://github.com/hernani))
+- EWPP-5768: Update to Drupal 10.5. [\#236](https://github.com/openeuropa/oe_authentication/pull/236) ([intelektron](https://github.com/intelektron))
+- EWPP-5699: Update docker PHP image. [\#232](https://github.com/openeuropa/oe_authentication/pull/232) ([nagyad](https://github.com/nagyad))
+- Issue \#229: Missing "langcode" in oe\_authentication.settings. [\#230](https://github.com/openeuropa/oe_authentication/pull/230) ([vever001](https://github.com/vever001))
+- EWPP-0001: Adding readme to oe\_authentication\_corporate\_roles. [\#228](https://github.com/openeuropa/oe_authentication/pull/228) ([upchuk](https://github.com/upchuk))
 
 ## [1.20.0](https://github.com/openeuropa/oe_authentication/tree/1.20.0) (2025-04-09)
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.19.0...1.20.0)
 
 **Merged pull requests:**
 
+- Release-1.20.0: Update changelog. [\#227](https://github.com/openeuropa/oe_authentication/pull/227) ([nagyad](https://github.com/nagyad))
+- OPES-1588: Add some documentation. [\#226](https://github.com/openeuropa/oe_authentication/pull/226) ([brummbar](https://github.com/brummbar))
+- OPES-1515: Update epic with master. [\#225](https://github.com/openeuropa/oe_authentication/pull/225) ([brummbar](https://github.com/brummbar))
+- OPES-1576: Show only conditions that require a user [\#222](https://github.com/openeuropa/oe_authentication/pull/222) ([brummbar](https://github.com/brummbar))
+- OPES-1515: Update epic with master. [\#221](https://github.com/openeuropa/oe_authentication/pull/221) ([brummbar](https://github.com/brummbar))
 - Allow to selectively require two-factor authentication for an account [\#216](https://github.com/openeuropa/oe_authentication/pull/216) ([brummbar](https://github.com/brummbar))
+- OPES-1566: Prevent redirect loop when 2FA is not used but required by conditions [\#215](https://github.com/openeuropa/oe_authentication/pull/215) ([brummbar](https://github.com/brummbar))
+- OPES-1561: Improve UI/UX for 2FA settings in configuration form [\#213](https://github.com/openeuropa/oe_authentication/pull/213) ([brummbar](https://github.com/brummbar))
+- OPES-1548: Allow developers to customise the message shown when a login is denied for missing 2FA [\#211](https://github.com/openeuropa/oe_authentication/pull/211) ([brummbar](https://github.com/brummbar))
+- OPES-1547: Apply configured conditions on user login [\#210](https://github.com/openeuropa/oe_authentication/pull/210) ([brummbar](https://github.com/brummbar))
 - OPES-1549: Allow to delete users [\#206](https://github.com/openeuropa/oe_authentication/pull/206) ([AaronGilMartinez](https://github.com/AaronGilMartinez))
 
 ## [1.19.0](https://github.com/openeuropa/oe_authentication/tree/1.19.0) (2025-03-26)
