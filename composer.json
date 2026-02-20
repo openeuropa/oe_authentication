@@ -19,7 +19,7 @@
         "drupal/drupal-extension": "^5.0",
         "drush/drush": "^12 || ^13",
         "mikey179/vfsstream": "^1.6.10",
-        "nikic/php-parser": "^4",
+        "nikic/php-parser": "^5",
         "openeuropa/behat-transformation-context": "^0.2",
         "openeuropa/code-review-drupal": "^1.0.0-alpha",
         "openeuropa/task-runner-drupal-project-symlink": "^1.0"
