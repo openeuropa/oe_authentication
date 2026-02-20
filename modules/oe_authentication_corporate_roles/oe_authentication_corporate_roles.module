@@ -24,7 +24,14 @@ function oe_authentication_corporate_roles_user_presave(UserInterface $user) {
     return;
   }
 
-  $original = $user->original;
+  if (version_compare(\Drupal::VERSION, '11', '>=')) {
+    $original = $user->getOriginal();
+  }
+  // @todo Remove this once Drupal 10 support is dropped.
+  else {
+    // Drupal 10 fallback.
+    $original = $user->original;
+  }
   if (!$original instanceof UserInterface) {
     // It means the user is new so we can set the manual roles.
     $user->set('oe_manual_roles', $user->getRoles(TRUE));
@@ -95,7 +102,14 @@ function oe_authentication_corporate_roles_corporate_roles_mapping_update(Corpor
   $users = \Drupal::service('oe_authentication_corporate_roles.mapping_lookup')->getUsersWithMapping($mapping);
   // We need to use the original to know what roles it had before it was
   // changed.
-  $original = $mapping->original;
+  if (version_compare(\Drupal::VERSION, '11', '>=')) {
+    $original = $mapping->getOriginal();
+  }
+  // @todo Remove this once Drupal 10 support is dropped.
+  else {
+    // Drupal 10 fallback.
+    $original = $mapping->original;
+  }
   foreach ($users as $user) {
     // Remove the mapping roles.
     $original->removeMappingRoles($user);
