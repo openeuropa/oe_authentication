@@ -38,17 +38,8 @@ class WrappedCasMockServerContext extends RawDrupalContext {
         'groups' => 'Groups',
       ];
 
-      $server_manager = \Drupal::service('cas_mock_server.server_manager');
-      $cas_user_manager = \Drupal::service('cas_mock_server.user_manager');
-      $external_auth = \Drupal::service('externalauth.externalauth');
-      $entity_type_manager = \Drupal::service('entity_type.manager');
-
       $this->wrappedContext = new CasMockServerContext(
         $attributes_map,
-        $server_manager,
-        $cas_user_manager,
-        $external_auth,
-        $entity_type_manager
       );
       $this->wrappedContext->setDrupal($this->getDrupal());
       $this->wrappedContext->setMink($this->getMink());
