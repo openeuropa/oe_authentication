@@ -1,11 +1,20 @@
 # Changelog
 
+## [1.21.1](https://github.com/openeuropa/oe_authentication/tree/1.21.1) (2026-04-20)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.21.0...1.21.1)
+
+**Merged pull requests:**
+
+- EWPP-6429: Change to use new method to access original entity. [\#245](https://github.com/openeuropa/oe_authentication/pull/245) ([gorsky87](https://github.com/gorsky87))
+
 ## [1.21.0](https://github.com/openeuropa/oe_authentication/tree/1.21.0) (2026-01-09)
 
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.20.0...1.21.0)
 
 **Merged pull requests:**
 
+- Release-1.21.0: Update changelog. [\#244](https://github.com/openeuropa/oe_authentication/pull/244) ([nagyad](https://github.com/nagyad))
 - EWPP-6093: ECAS settings for testing. [\#243](https://github.com/openeuropa/oe_authentication/pull/243) ([gorsky87](https://github.com/gorsky87))
 - EWPP-6339: Cache docker images for GitHub actions. [\#242](https://github.com/openeuropa/oe_authentication/pull/242) ([nagyad](https://github.com/nagyad))
 - EWPP-6261: Bump composer/installers to 2.x. [\#240](https://github.com/openeuropa/oe_authentication/pull/240) ([nagyad](https://github.com/nagyad))
