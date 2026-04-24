@@ -8,6 +8,6 @@ on:
 
 jobs:
   ci:
-    uses: openeuropa/github-ci/.github/workflows/drupal-ci.yml@EWPP-6514
+    uses: openeuropa/github-ci/.github/workflows/drupal-ci.yml@main
     with:
       run_behat: true
