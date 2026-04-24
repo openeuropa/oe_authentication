@@ -10,7 +10,13 @@ default:
         - Drupal\DrupalExtension\Context\MinkContext
         - Drupal\Tests\oe_authentication\Behat\AuthenticationContext
         - Drupal\Tests\oe_authentication\Behat\CleanupContext
-        - Drupal\Tests\oe_authentication\Behat\WrappedCasMockServerContext
+        - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
+            attributes_map:
+              firstName: First name
+              lastName: Last name
+              departmentNumber: Department
+              domain: Organisation
+              groups: Groups
         - OpenEuropa\Behat\TransformationContext:
             pages:
               Authentication configuration: 'admin/config/system/oe_authentication'
@@ -31,13 +37,12 @@ default:
           browserName: chrome
           version: '*'
           extra_capabilities:
-            chromeOptions:
-              w3c: false
+            goog:chromeOptions:
+              w3c: true
               args:
                 - '--no-sandbox'
-                - '--start-maximized'
                 - '--disable-gpu'
-                - '--window-size=1440,900'
+                - '--window-size=1920,1080'
                 - '--disable-dev-shm-usage'
                 - '--disable-setuid-sandbox'
                 - '--disable-web-security'
