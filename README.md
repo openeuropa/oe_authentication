@@ -54,7 +54,8 @@ In the Drupal `settings.php` you can override CAS parameters such as the ones be
 
 ```php
 $config['cas.settings']['server']['hostname'] = 'authentication';
-$config['cas.settings']['server']['port'] = '7002';
+// As of CAS 3.x the port type has to be integer!
+$config['cas.settings']['server']['port'] = 7002;
 $config['cas.settings']['server']['path'] = '/cas';
 $config['oe_authentication.settings']['register_path'] = 'register';
 $config['oe_authentication.settings']['validation_path'] = 'TicketValidationService';
