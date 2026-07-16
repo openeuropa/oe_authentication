@@ -79,7 +79,8 @@ class AuthenticationContext extends RawDrupalContext {
    */
   public function blockUser(string $username): void {
     /** @var \Drupal\user\Entity\User $user */
-    $user = user_load_by_name($username);
+    $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => $username]);
+    $user = $users ? reset($users) : NULL;
 
     if ($user) {
       $user->block();
@@ -127,8 +128,9 @@ class AuthenticationContext extends RawDrupalContext {
    *   Thrown when the user with the given name does not exist.
    */
   public function visitUserPage(string $user_name): void {
-    $user = user_load_by_name($user_name);
-    if ($user === FALSE) {
+    $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => $user_name]);
+    $user = $users ? reset($users) : NULL;
+    if (!$user) {
       throw new \Exception(sprintf('User with name %s could not be found.', $user_name));
     }
     /** @var \Drupal\Core\Url $url */

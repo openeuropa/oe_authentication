@@ -6,6 +6,7 @@ namespace Drupal\oe_authentication\Event;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cas\Event\CasPostValidateEvent;
 use Drupal\cas\Event\CasPreRedirectEvent;
@@ -40,7 +41,14 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   protected RequestStack $requestStack;
 
-  public function __construct(ConfigFactoryInterface $configFactory, ?RequestStack $requestStack = NULL) {
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  public function __construct(ConfigFactoryInterface $configFactory, ?RequestStack $requestStack = NULL, ?EntityTypeManagerInterface $entityTypeManager = NULL) {
     $this->configFactory = $configFactory;
     if ($requestStack === NULL) {
       // phpcs:ignore Drupal.Semantics.FunctionTriggerError.TriggerErrorTextLayoutRelaxed
@@ -48,6 +56,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       $requestStack = \Drupal::requestStack();
     }
     $this->requestStack = $requestStack;
+    $this->entityTypeManager = $entityTypeManager ?? \Drupal::entityTypeManager();
   }
 
   /**
@@ -80,7 +89,8 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     if ($cas_settings->get('user_accounts.auto_register')) {
       $email = $event->getCasPropertyBag()->getAttribute('email');
 
-      if (user_load_by_mail($email)) {
+      $users = $this->entityTypeManager->getStorage('user')->loadByProperties(['mail' => $email]);
+      if ($users) {
         $event->cancelAutomaticRegistration($this->t('A user with this email address already exists. Please contact the site administrator.'));
         $event->stopPropagation();
       }
