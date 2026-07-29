@@ -78,14 +78,26 @@ class AuthenticationContext extends RawDrupalContext {
    *   Thrown when the user with the given name does not exist.
    */
   public function blockUser(string $username): void {
-    /** @var \Drupal\user\Entity\User $user */
-    $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => $username]);
-    $user = $users ? reset($users) : NULL;
+    $user = $this->loadUserByName($username);
 
     if ($user) {
       $user->block();
       $user->save();
     }
+  }
+
+  /**
+   * Loads a user by its username.
+   *
+   * @param string $username
+   *   The name of the user.
+   *
+   * @return \Drupal\user\UserInterface|null
+   *   The user, or NULL if no user with the given name exists.
+   */
+  protected function loadUserByName(string $username): ?UserInterface {
+    $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => $username]);
+    return $users ? reset($users) : NULL;
   }
 
   /**
@@ -128,8 +140,7 @@ class AuthenticationContext extends RawDrupalContext {
    *   Thrown when the user with the given name does not exist.
    */
   public function visitUserPage(string $user_name): void {
-    $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => $user_name]);
-    $user = $users ? reset($users) : NULL;
+    $user = $this->loadUserByName($user_name);
     if (!$user) {
       throw new \Exception(sprintf('User with name %s could not be found.', $user_name));
     }

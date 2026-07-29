@@ -56,7 +56,12 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       $requestStack = \Drupal::requestStack();
     }
     $this->requestStack = $requestStack;
-    $this->entityTypeManager = $entityTypeManager ?? \Drupal::entityTypeManager();
+    if ($entityTypeManager === NULL) {
+      // phpcs:ignore Drupal.Semantics.FunctionTriggerError.TriggerErrorTextLayoutRelaxed
+      @trigger_error('Calling ' . __METHOD__ . '() without the $entityTypeManager argument is deprecated in oe_authentication:1.x and will be required in oe_authentication:2.x.', E_USER_DEPRECATED);
+      $entityTypeManager = \Drupal::entityTypeManager();
+    }
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
