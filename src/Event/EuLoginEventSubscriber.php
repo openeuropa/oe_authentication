@@ -80,7 +80,8 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     if ($cas_settings->get('user_accounts.auto_register')) {
       $email = $event->getCasPropertyBag()->getAttribute('email');
 
-      if (user_load_by_mail($email)) {
+      $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['mail' => $email]);
+      if ($users) {
         $event->cancelAutomaticRegistration($this->t('A user with this email address already exists. Please contact the site administrator.'));
         $event->stopPropagation();
       }

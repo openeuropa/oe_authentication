@@ -87,7 +87,8 @@
             "drupal/core-composer-scaffold": true,
             "phpro/grumphp-shim": true,
             "phpstan/extension-installer": true,
-            "phpro/grumphp": false
+            "phpro/grumphp": false,
+            "symfony/runtime": true
         }
     }
 }
