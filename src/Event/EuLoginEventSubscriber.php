@@ -6,7 +6,6 @@ namespace Drupal\oe_authentication\Event;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\cas\Event\CasPostValidateEvent;
 use Drupal\cas\Event\CasPreRedirectEvent;
@@ -41,14 +40,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
    */
   protected RequestStack $requestStack;
 
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  public function __construct(ConfigFactoryInterface $configFactory, ?RequestStack $requestStack = NULL, ?EntityTypeManagerInterface $entityTypeManager = NULL) {
+  public function __construct(ConfigFactoryInterface $configFactory, ?RequestStack $requestStack = NULL) {
     $this->configFactory = $configFactory;
     if ($requestStack === NULL) {
       // phpcs:ignore Drupal.Semantics.FunctionTriggerError.TriggerErrorTextLayoutRelaxed
@@ -56,12 +48,6 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
       $requestStack = \Drupal::requestStack();
     }
     $this->requestStack = $requestStack;
-    if ($entityTypeManager === NULL) {
-      // phpcs:ignore Drupal.Semantics.FunctionTriggerError.TriggerErrorTextLayoutRelaxed
-      @trigger_error('Calling ' . __METHOD__ . '() without the $entityTypeManager argument is deprecated in oe_authentication:1.x and will be required in oe_authentication:2.x.', E_USER_DEPRECATED);
-      $entityTypeManager = \Drupal::entityTypeManager();
-    }
-    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -94,7 +80,7 @@ class EuLoginEventSubscriber implements EventSubscriberInterface {
     if ($cas_settings->get('user_accounts.auto_register')) {
       $email = $event->getCasPropertyBag()->getAttribute('email');
 
-      $users = $this->entityTypeManager->getStorage('user')->loadByProperties(['mail' => $email]);
+      $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['mail' => $email]);
       if ($users) {
         $event->cancelAutomaticRegistration($this->t('A user with this email address already exists. Please contact the site administrator.'));
         $event->stopPropagation();
