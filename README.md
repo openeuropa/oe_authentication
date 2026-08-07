@@ -287,6 +287,3 @@ We use [SemVer](http://semver.org/) for versioning. For the available versions, 
 [11]: https://github.com/hechoendrupal/drupal-console/issues/3854
 [12]: https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules
 [13]: https://www.drush.org/
-
-
-test
