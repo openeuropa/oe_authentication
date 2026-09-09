@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.22.0](https://github.com/openeuropa/oe_authentication/tree/1.22.0) (2026-09-09)
+
+[Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.21.1...1.22.0)
+
+**Merged pull requests:**
+
+- EWPP-6988: Trigger pipeline. [\#248](https://github.com/openeuropa/oe_authentication/pull/248) ([nagyad](https://github.com/nagyad))
+- EWPP-6514: Support D11.3. [\#246](https://github.com/openeuropa/oe_authentication/pull/246) ([nagyad](https://github.com/nagyad))
+
 ## [1.21.1](https://github.com/openeuropa/oe_authentication/tree/1.21.1) (2026-04-20)
 
 [Full Changelog](https://github.com/openeuropa/oe_authentication/compare/1.21.0...1.21.1)
