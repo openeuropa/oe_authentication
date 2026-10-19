@@ -17,10 +17,7 @@ function oe_authentication_user_cancel_methods_alter(&$methods) {
   $restrict_user_delete = \Drupal::configFactory()
     ->get('oe_authentication.settings')
     ->get('restrict_user_delete_cancel_methods') ?? TRUE;
-  // @todo The restriction should not check for UID 1 as it's bad practice. It
-  //   should either check for the user being an admin, or use a permission
-  //   based approach like the module drupal/user_cancel_methods_permissions.
-  if ($current_user->id() == 1 || $restrict_user_delete !== TRUE) {
+  if ($restrict_user_delete !== TRUE || $current_user->hasPermission('bypass user deletion methods restriction')) {
     return;
   }
   $restricted_options = [

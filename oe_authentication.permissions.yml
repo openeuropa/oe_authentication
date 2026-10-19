@@ -1,3 +1,8 @@
 administer authentication configuration:
   title: 'Administer Authentication configuration'
   restrict access: false
+
+bypass user deletion methods restriction:
+  title: 'Bypass user deletion methods restriction'
+  description: 'Users with this permission can delete users even if the module is configured to not allow deleting users.'
+  restrict access: true
