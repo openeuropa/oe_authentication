@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Tests the login redirect happens with the expected parameters.
  *
  * @group oe_authentication
+ * @coversDefaultClass \Drupal\oe_authentication\Event\EuLoginEventSubscriber
  */
 class EuLoginEventSubscriberTest extends KernelTestBase {
 
@@ -60,7 +61,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
   /**
    * Tests the two-factor authentication parameters.
    *
-   * @covers EuLoginEventSubscriber::forceTwoFactorAuthentication()
+   * @covers ::forceTwoFactorAuthentication
    */
   public function test2faRedirectParameter(): void {
     $config_factory = $this->container->get('config.factory');
@@ -130,7 +131,7 @@ class EuLoginEventSubscriberTest extends KernelTestBase {
   /**
    * Tests that the validation request has the correct parameters.
    *
-   * @covers EuLoginEventSubscriber::alterValidationPath()
+   * @covers ::alterValidationPath
    */
   public function testValidationParameters(): void {
     // Start the cas mock server.
