@@ -121,7 +121,7 @@ class AuthenticationSettingsForm extends ConfigFormBase {
     $form['restrict_user_delete_cancel_methods'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Restrict access to user cancel methods that permanently delete the account'),
-      '#description' => $this->t('If enabled, only the super admin user (uid 1) will have access to these methods.'),
+      '#description' => $this->t('If enabled, only users with the "Bypass user deletion methods restriction" permission will have access to these methods.'),
       '#default_value' => $this->config(static::CONFIG_NAME)->get('restrict_user_delete_cancel_methods'),
     ];
 

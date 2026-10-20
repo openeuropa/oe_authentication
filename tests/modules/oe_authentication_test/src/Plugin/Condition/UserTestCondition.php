@@ -33,10 +33,8 @@ class UserTestCondition extends ConditionPluginBase implements ContainerFactoryP
 
   /**
    * The state interface.
-   *
-   * @phpstan-ignore property.uninitializedReadonly
    */
-  protected readonly StateInterface $state;
+  protected StateInterface $state;
 
   /**
    * {@inheritdoc}
